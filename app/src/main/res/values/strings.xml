@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">校园微社区</string>
+    <string name="title_activity_login">登录</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">学号</string>
+    <string name="prompt_password">密码</string>
+    <string name="action_sign_in">登录</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_password">请输入密码</string>
+    <string name="error_field_required">请输入账号</string>
+    <string name="logining">登录中...</string>
+    <string name="at_me">\@我的</string>
+    <string name="comment">评论</string>
+    <string name="good">赞</string>
+</resources>

@@ -1,0 +1,13 @@
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+/app/build
+/chat/build
+/common/build
+/gpuimagelibrary/build
+/image_edit_library/build
+/umeng_community_library/buildgit

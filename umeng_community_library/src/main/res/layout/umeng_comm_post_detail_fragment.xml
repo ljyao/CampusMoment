@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/umeng_comm_white_color"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/post_detail_side_padding"
+    android:paddingRight="@dimen/post_detail_side_padding">
+
+    <RelativeLayout
+        android:id="@+id/umeng_comm_post_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/umeng_comm_post_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:maxLines="2"
+            android:text="这是一个帖子的标题，帅呆了"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_big16_size" />
+
+        <TextView
+            android:id="@+id/umeng_comm_post_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/umeng_comm_post_title"
+            android:layout_below="@+id/umeng_comm_post_title"
+            android:singleLine="true"
+            android:text="2015年9月17日"
+            android:textColor="@color/umeng_comm_text_share_content" />
+
+        <TextView
+            android:id="@+id/umeng_comm_post_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/umeng_comm_post_title"
+            android:layout_below="@+id/umeng_comm_post_title"
+            android:drawableLeft="@drawable/umeng_comm_location_bt"
+            android:singleLine="true"
+            android:text="海淀区牡丹园"
+            android:textColor="@color/umeng_comm_text_share_content" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/umeng_comm_grid_divider_line"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <CircleImageView
+            android:id="@+id/umeng_comm_creator_imgview"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+        <TextView
+            android:id="@+id/umeng_comm_creator_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textColor="@color/umeng_comm_text_share_content" />
+
+        <TextView
+            android:id="@+id/umeng_comm_iscreator_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="楼主"
+            android:textColor="@color/umeng_comm_url_color" />
+
+        <TextView
+            android:id="@+id/umeng_comm_comment_number_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="1楼"
+            android:textColor="@color/umeng_comm_location_text" />
+
+        <TextView
+            android:id="@+id/umeng_comm_post_content_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/umeng_comm_location_text" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>
