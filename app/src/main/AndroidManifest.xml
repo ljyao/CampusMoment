@@ -106,13 +106,12 @@
             android:name="ui.EditTextActivity_"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
-        <activity android:name="com.xinlan.imageeditlibrary.editimage.EditImageActivity" />
+        <activity
+            android:name="editimage.EditImageActivity"
+            android:theme="@style/NoActionBar" />
+
+
         <!-- youmeng -->
-
-
-        <!-- 微博版activity组件 start -->
-
-
         <!-- 发现的Activity -->
         <activity
             android:name="com.umeng.comm.ui.activities.FindActivity"
@@ -187,7 +186,6 @@
         <activity android:name="com.umeng.comm.ui.activities.NotificationActivity" />
         <activity android:name="com.umeng.comm.ui.activities.NewMsgActivity" />
         <!-- 微博版activity组件 end -->
-        <activity android:name="editimage.EditImageActivity" />
 
 
         <!-- ##################### 推送相关 ##################### -->

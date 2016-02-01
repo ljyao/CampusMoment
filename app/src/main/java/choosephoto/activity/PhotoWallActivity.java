@@ -21,15 +21,14 @@ import android.widget.TextView;
 import com.uy.bbs.R;
 import com.uy.util.BitmapUtils;
 import com.uy.util.ScreenUtils;
-import com.xinlan.imageeditlibrary.editimage.EditImageActivity;
 
 import java.io.File;
 import java.util.ArrayList;
 
-import activity.MainActivity;
 import choosephoto.adapter.Decoration;
 import choosephoto.adapter.PhotoWallAdapter;
 import de.greenrobot.event.EventBus;
+import editimage.EditImageActivity;
 import helper.AppConstants;
 import helper.ChoosePhotoEvent;
 import helper.util.FileUtils;
@@ -98,7 +97,10 @@ public class PhotoWallActivity extends AppCompatActivity {
                 String path = paths.get(0);
                 Uri uri = Uri.parse("file://" + path);
                 Intent i = new Intent(PhotoWallActivity.this, EditImageActivity.class);
-                i.setData(uri);
+                i.putExtra(EditImageActivity.FILE_PATH, path);
+                String outPath = FileUtils.getCacheDir().getAbsolutePath() + "/tmp"
+                        + System.currentTimeMillis() + ".jpg";
+                i.putExtra(EditImageActivity.EXTRA_OUTPUT, outPath);
                 startActivityForResult(i, AppConstants.REQUEST_CROP);
             }
         });
@@ -119,7 +121,6 @@ public class PhotoWallActivity extends AppCompatActivity {
             return;
         }
         Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("code", paths != null ? 100 : 101);
         intent.putStringArrayListExtra("paths", paths);
         ChoosePhotoEvent photoEvent = new ChoosePhotoEvent();

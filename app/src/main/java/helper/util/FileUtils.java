@@ -128,6 +128,10 @@ public class FileUtils {
         }
     }
 
+    public static File getCacheDir() {
+        return App.getApp().getCacheDir();
+    }
+
     public File getExtFile(String path) {
         return new File(BASE_PATH + path);
     }
@@ -364,10 +368,6 @@ public class FileUtils {
             IOUtil.closeStream(fs);
         }
 
-    }
-
-    public File getCacheDir() {
-        return App.getApp().getCacheDir();
     }
 
     //获取path路径下的图片
