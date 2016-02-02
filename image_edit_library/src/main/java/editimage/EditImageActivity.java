@@ -25,8 +25,9 @@ import editimage.view.CropImageView;
 import editimage.view.CustomViewPager;
 import editimage.view.RotateImageView;
 import editimage.view.StickerView;
-import editimage.view.imagezoom.ImageViewTouch;
-import editimage.view.imagezoom.ImageViewTouchBase;
+import imagezoom.ImageViewTouch;
+import imagezoom.ImageViewTouchBase;
+
 
 /**
  * 图片编辑 主页面

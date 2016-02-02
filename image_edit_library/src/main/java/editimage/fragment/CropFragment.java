@@ -32,7 +32,7 @@ import editimage.EditImageActivity;
 import editimage.model.RatioItem;
 import editimage.utils.Matrix3;
 import editimage.view.CropImageView;
-import editimage.view.imagezoom.ImageViewTouchBase;
+import imagezoom.ImageViewTouchBase;
 
 
 /**

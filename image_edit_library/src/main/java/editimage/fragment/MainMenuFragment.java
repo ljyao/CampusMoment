@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.uy.imageeditlibrary.R;
 
 import editimage.EditImageActivity;
-import editimage.view.imagezoom.ImageViewTouchBase;
+import imagezoom.ImageViewTouchBase;
 
 
 /**

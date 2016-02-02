@@ -25,7 +25,7 @@ import java.io.IOException;
 import editimage.BaseActivity;
 import editimage.EditImageActivity;
 import editimage.view.RotateImageView;
-import editimage.view.imagezoom.ImageViewTouchBase;
+import imagezoom.ImageViewTouchBase;
 
 
 /**
