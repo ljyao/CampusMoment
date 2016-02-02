@@ -81,8 +81,7 @@ public class CameraActivity extends CameraBaseActivity {
     public ImageView changeBtn;
     @ViewById(R.id.back)
     public ImageView backBtn;
-    @ViewById(R.id.next)
-    public ImageView galleryBtn;
+
     @ViewById(R.id.focus_index)
     public View focusIndex;
     @ViewById(R.id.surfaceView)
@@ -167,13 +166,7 @@ public class CameraActivity extends CameraBaseActivity {
                 }
             });
         }
-        //跳转相册
-        galleryBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(CameraActivity.this, AlbumActivity.class));
-            }
-        });
+
         //返回按钮
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -616,7 +609,7 @@ public class CameraActivity extends CameraBaseActivity {
             return null;
         }*/
         Matrix m = new Matrix();
-        m.setRotate(90, options.outWidth / 2, options.outHeight / 2);
+        m.postRotate(90);
         if (mCurrentCameraId == 1) {
             m.postScale(1, -1);
         }
@@ -746,7 +739,7 @@ public class CameraActivity extends CameraBaseActivity {
             bundle = new Bundle();
             bundle.putByteArray("bytes", data); //将图片字节数据保存在bundle当中，实现数据交换
             new SavePicTask(data).execute();
-            camera.startPreview(); // 拍完照后，重新开始预览
+            //camera.startPreview(); // 拍完照后，重新开始预览
         }
     }
 

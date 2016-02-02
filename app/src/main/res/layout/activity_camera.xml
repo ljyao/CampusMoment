@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/white"
+            android:background="#efefef"
             android:gravity="center_vertical"
             android:padding="2dp">
 
@@ -40,16 +40,16 @@
                 android:layout_marginLeft="20dp"
                 android:padding="5dp"
                 android:src="@drawable/camera_back" />
-
             <ImageView
-                android:id="@+id/next"
+                android:id="@+id/change"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
                 android:padding="5dp"
-                android:src="@drawable/camera_library" />
+                android:src="@drawable/camera_flip" />
+
         </RelativeLayout>
 
 
@@ -69,17 +69,6 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:src="@drawable/camera_flash_off" />
-
-            <ImageView
-                android:id="@+id/change"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:paddingBottom="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="10dp"
-                android:src="@drawable/camera_flip" />
 
         </RelativeLayout>
 
