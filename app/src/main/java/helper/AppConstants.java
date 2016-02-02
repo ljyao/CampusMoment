@@ -29,4 +29,8 @@ public class AppConstants {
     public static final int REQUEST_PICK = 9162;
     public static final int RESULT_ERROR = 404;
 
+    public static final int REQUEST_EDIT_USERHEAD = 1;
+    public static final int REQUEST_PHOTO_FEED = 2;
+
+    public static final int RESULTCODE_OK = 0;
 }

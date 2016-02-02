@@ -124,7 +124,7 @@ public class CropPhotoActivity extends CameraBaseActivity {
         int moveY = initHeight < initWidth ? -move : 0;
         Bitmap croppedImage = null;
         try {
-            croppedImage = Bitmap.createBitmap(imageSize, imageSize, Bitmap.Config.RGB_565);
+            croppedImage = Bitmap.createBitmap(imageSize, imageSize, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(croppedImage);
             Paint p = new Paint();
             p.setColor(wrapImage.isSelected() ? Color.BLACK : Color.WHITE);
@@ -177,11 +177,9 @@ public class CropPhotoActivity extends CameraBaseActivity {
     private void saveImageToCache(Bitmap croppedImage) {
         if (croppedImage != null) {
             try {
-                MyImageUtils.saveToFile(FileUtils.getInst().getCacheDir() + "/croppedcache",
-                        false, croppedImage);
+                String path = MyImageUtils.saveToFile(FileUtils.getInst().getCacheDir() + "/userHeadCache.jpg", false, croppedImage);
                 Intent i = new Intent();
-                i.setData(Uri.parse("file://" + FileUtils.getInst().getCacheDir()
-                        + "/croppedcache"));
+                i.setData(Uri.parse("file://" + path));
                 setResult(RESULT_OK, i);
                 dismissProgressDialog();
                 finish();

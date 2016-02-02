@@ -36,11 +36,17 @@
                 android:scaleType="fitCenter" />
         </LinearLayout>
 
-        <imagezoom.ImageViewTouch
-            android:id="@+id/crop_image"
+        <com.chat.views.SquareRelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter" />
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <imagezoom.ImageViewTouch
+                android:id="@+id/crop_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+        </com.chat.views.SquareRelativeLayout>
 
 
     </RelativeLayout>

@@ -27,10 +27,8 @@ import java.util.ArrayList;
 
 import choosephoto.adapter.Decoration;
 import choosephoto.adapter.PhotoWallAdapter;
-import de.greenrobot.event.EventBus;
 import editimage.EditImageActivity;
 import helper.AppConstants;
-import helper.ChoosePhotoEvent;
 import helper.util.FileUtils;
 
 
@@ -57,6 +55,7 @@ public class PhotoWallActivity extends AppCompatActivity {
      * 第一次跳转至相册页面时，传递最新照片信息
      */
     private boolean firstIn = true;
+    private int requestCode;
 
     public static void destroy() {
         if (mContext != null) {
@@ -71,6 +70,8 @@ public class PhotoWallActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_wall);
         mContext = this;
+
+        requestCode = getIntent().getIntExtra("from", -1);
 
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -95,13 +96,19 @@ public class PhotoWallActivity extends AppCompatActivity {
                     return;
                 }
                 String path = paths.get(0);
-                Uri uri = Uri.parse("file://" + path);
-                Intent i = new Intent(PhotoWallActivity.this, EditImageActivity.class);
-                i.putExtra(EditImageActivity.FILE_PATH, path);
-                String outPath = FileUtils.getCacheDir().getAbsolutePath() + "/tmp"
-                        + System.currentTimeMillis() + ".jpg";
-                i.putExtra(EditImageActivity.EXTRA_OUTPUT, outPath);
-                startActivityForResult(i, AppConstants.REQUEST_CROP);
+                if (requestCode == AppConstants.REQUEST_EDIT_USERHEAD) {
+                    Intent i = new Intent();
+                    i.setData(Uri.parse(path));
+                    editResult(i);
+                } else {
+                    Uri uri = Uri.parse("file://" + path);
+                    Intent i = new Intent(PhotoWallActivity.this, EditImageActivity.class);
+                    i.putExtra(EditImageActivity.FILE_PATH, path);
+                    String outPath = FileUtils.getCacheDir().getAbsolutePath() + "/tmp"
+                            + System.currentTimeMillis() + ".jpg";
+                    i.putExtra(EditImageActivity.EXTRA_OUTPUT, outPath);
+                    startActivityForResult(i, AppConstants.REQUEST_PHOTO_FEED);
+                }
             }
         });
     }
@@ -115,27 +122,20 @@ public class PhotoWallActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void chooseResult() {
-        ArrayList<String> paths = getSelectImagePaths();
-        if (paths == null || paths.size() == 0) {
-            return;
-        }
+    public void editResult(Intent data) {
+        Uri uri = data.getData();
         Intent intent = new Intent();
-        intent.putExtra("code", paths != null ? 100 : 101);
-        intent.putStringArrayListExtra("paths", paths);
-        ChoosePhotoEvent photoEvent = new ChoosePhotoEvent();
-        photoEvent.paths = paths;
-        EventBus.getDefault().post(photoEvent);
+        intent.setData(uri);
         PhotoAlbumActivity.destroy();
-        setResult(paths != null ? 100 : 101, intent);
+        setResult(RESULT_OK, intent);
         finish();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == EDIT_PHOTO) {
-            chooseResult();
+        if (resultCode == RESULT_OK) {
+            editResult(data);
         }
     }
 

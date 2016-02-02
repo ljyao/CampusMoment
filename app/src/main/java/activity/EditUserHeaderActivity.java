@@ -23,10 +23,10 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.ArrayList;
-
 import choosephoto.activity.PhotoWallActivity;
 import community.providable.UserPrvdr;
+import helper.AppConstants;
+import helper.util.ImageUtils;
 import helper.util.MyImageUtils;
 import imagezoom.ImageViewTouch;
 
@@ -35,7 +35,6 @@ import imagezoom.ImageViewTouch;
  */
 @EActivity(R.layout.activity_edti_userheader)
 public class EditUserHeaderActivity extends AppCompatActivity {
-    private static final int REQUEST_CODE_DETI_USERHEADE = 1;
     @ViewById(R.id.user_header)
     public SimpleDraweeView userHeader;
     @ViewById(R.id.choosephoto)
@@ -62,7 +61,8 @@ public class EditUserHeaderActivity extends AppCompatActivity {
         if (!isEdit) {
             Intent intent = new Intent(this, PhotoWallActivity.class);
             intent.putExtra("SingleChoose", true);
-            startActivityForResult(intent, REQUEST_CODE_DETI_USERHEADE);
+            intent.putExtra("from", AppConstants.REQUEST_EDIT_USERHEAD);
+            startActivityForResult(intent, AppConstants.REQUEST_EDIT_USERHEAD);
         } else {
             confirmBtn();
         }
@@ -82,9 +82,11 @@ public class EditUserHeaderActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case REQUEST_CODE_DETI_USERHEADE:
-                changeStatue(true);
-                setNewHead(data);
+            case AppConstants.REQUEST_EDIT_USERHEAD:
+                if (resultCode == RESULT_OK) {
+                    changeStatue(true);
+                    setNewHead(data);
+                }
                 break;
         }
     }
@@ -110,10 +112,7 @@ public class EditUserHeaderActivity extends AppCompatActivity {
         Worker.postMain(new Runnable() {
             @Override
             public void run() {
-                /*editViewTouch.setDrawingCacheEnabled(true);
-                editViewTouch.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-                editViewTouch.buildDrawingCache();*/
-                newPhotoBitmap = editViewTouch.getDrawingCache();
+                newPhotoBitmap = ImageUtils.getBitmapFromView(editViewTouch);
                 UserPrvdr userPrvdr = new UserPrvdr();
                 userPrvdr.updateUserProtrait(newPhotoBitmap, new UserPrvdr.UserListener() {
                     @Override
@@ -156,14 +155,8 @@ public class EditUserHeaderActivity extends AppCompatActivity {
     }
 
     private void setNewHead(Intent intent) {
-        if (intent == null) {
-            return;
-        }
-        int code = intent.getIntExtra("code", 101);
-        if (code == 100) {
-            ArrayList<String> paths = intent.getStringArrayListExtra("paths");
-            newPath = paths.get(0);
-            MyImageUtils.setImagePath(editViewTouch, newPath);
-        }
+        newPath = intent.getData().getPath();
+        MyImageUtils.setImagePath(editViewTouch, newPath);
+
     }
 }

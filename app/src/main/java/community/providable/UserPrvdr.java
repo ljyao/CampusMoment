@@ -2,6 +2,7 @@ package community.providable;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.beans.CommConfig;
@@ -85,6 +86,29 @@ public class UserPrvdr {
                     CommonUtils.saveLoginUserInfo(context, user);
                     listener.onComplete(user);
                 }
+            }
+        });
+    }
+
+    public void updateUserProtrait(final String path, final UserListener listener, final Context context) {
+        Worker.postExecuteTask(new Runnable() {
+            @Override
+            public void run() {
+                final Bitmap bmp = BitmapFactory.decodeFile(path);
+                mCommunitySDK.updateUserProtrait(bmp, new Listeners.SimpleFetchListener<PortraitUploadResponse>() {
+                    @Override
+                    public void onComplete(PortraitUploadResponse response) {
+                        if (response != null && response.errCode == ErrorCode.NO_ERROR) {
+                            Log.d("", "头像更新成功 : " + response.mJsonObject.toString());
+                            final CommUser user = CommConfig.getConfig().loginedUser;
+                            user.iconUrl = response.mIconUrl;
+                            Log.d("", "#### 登录用户的头像 : " + CommConfig.getConfig().loginedUser.iconUrl);
+                            CommonUtils.saveLoginUserInfo(context, user);
+                            bmp.recycle();
+                            listener.onComplete(user);
+                        }
+                    }
+                });
             }
         });
     }

@@ -24,7 +24,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import activity.EditUserHeaderActivity_;
 import choosephoto.adapter.PhotoAlbumLVAdapter;
 import helper.util.FileUtils;
 
@@ -123,8 +122,6 @@ public class PhotoAlbumActivity extends AppCompatActivity {
     }
 
     private void backAction() {
-        Intent intent = new Intent(PhotoAlbumActivity.this, EditUserHeaderActivity_.class);
-        startActivity(intent);
         PhotoWallActivity.destroy();
         finish();
     }
