@@ -15,12 +15,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/camera_back"
+            android:paddingLeft="5dp"
+            android:paddingTop="10dp" />
+
         <RelativeLayout
             android:id="@+id/panel_take_photo"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_alignParentBottom="true"
-            android:background="#efefef"
+            android:background="#fefefe"
             android:gravity="center_vertical"
             android:padding="2dp">
 
@@ -32,43 +40,24 @@
                 android:background="@drawable/btn_take_photo" />
 
             <ImageView
-                android:id="@+id/back"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:id="@+id/flashBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"
-                android:padding="5dp"
-                android:src="@drawable/camera_back" />
+                android:layout_marginLeft="30dp"
+                android:background="@drawable/camera_flash_off"
+                android:padding="5dp" />
+
             <ImageView
                 android:id="@+id/change"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:padding="5dp"
-                android:src="@drawable/camera_flip" />
-
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:id="@+id/camera_top"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:layout_alignParentTop="true"
-            android:background="#00000000">
-
-            <ImageView
-                android:id="@+id/flashBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_alignParentLeft="true"
-                android:paddingBottom="10dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="10dp"
-                android:src="@drawable/camera_flash_off" />
+                android:layout_marginRight="30dp"
+                android:background="@drawable/camera_flip"
+                android:padding="5dp" />
 
         </RelativeLayout>
 

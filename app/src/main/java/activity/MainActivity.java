@@ -122,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
                 CameraActivity_.intent(this).start();
                 break;
         }
+        mToolbar.setVisibility(View.VISIBLE);
+        addFeedLayout.setVisibility(View.GONE);
     }
 
     @Override

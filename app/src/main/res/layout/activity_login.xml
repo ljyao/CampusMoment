@@ -76,7 +76,7 @@
                 android:background="@drawable/sign_in_shape"
                 android:text="@string/action_sign_in"
                 android:textColor="@color/white"
-                android:textSize="17sp"
+                android:textSize="23sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
