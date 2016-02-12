@@ -14,6 +14,10 @@ public class SharePrefUtils {
     private SharedPreferences sharedPref;
     private SharedPreferences.Editor editor;
 
+    public SharePrefUtils(String fileName, Context context) {
+        sharedPref = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+    }
     public SharePrefUtils(Context context) {
         sharedPref = context.getSharedPreferences(name, Context.MODE_PRIVATE);
         editor = sharedPref.edit();

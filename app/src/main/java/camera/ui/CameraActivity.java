@@ -666,22 +666,22 @@ public class CameraActivity extends CameraBaseActivity {
                 && supportedModes.contains(Camera.Parameters.FLASH_MODE_ON)) {//关闭状态
             parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
             mCamera.setParameters(parameters);
-            flashBtn.setImageResource(R.drawable.camera_flash_on);
+            flashBtn.setBackgroundResource(R.drawable.camera_flash_on);
         } else if (Camera.Parameters.FLASH_MODE_ON.equals(flashMode)) {//开启状态
             if (supportedModes.contains(Camera.Parameters.FLASH_MODE_AUTO)) {
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
-                flashBtn.setImageResource(R.drawable.camera_flash_auto);
+                flashBtn.setBackgroundResource(R.drawable.camera_flash_auto);
                 mCamera.setParameters(parameters);
             } else if (supportedModes.contains(Camera.Parameters.FLASH_MODE_OFF)) {
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-                flashBtn.setImageResource(R.drawable.camera_flash_off);
+                flashBtn.setBackgroundResource(R.drawable.camera_flash_off);
                 mCamera.setParameters(parameters);
             }
         } else if (Camera.Parameters.FLASH_MODE_AUTO.equals(flashMode)
                 && supportedModes.contains(Camera.Parameters.FLASH_MODE_OFF)) {
             parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
             mCamera.setParameters(parameters);
-            flashBtn.setImageResource(R.drawable.camera_flash_off);
+            flashBtn.setBackgroundResource(R.drawable.camera_flash_off);
         }
     }
 

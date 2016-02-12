@@ -19,6 +19,7 @@ import com.umeng.comm.core.beans.CommUser;
 import com.uy.bbs.R;
 
 import community.providable.LoginPrvdr;
+import helper.util.SharePrefUtils;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -27,14 +28,14 @@ public class LoginActivity extends AppCompatActivity {
     // UI references.
     private EditText mUserId;
     private EditText mPasswordView;
+    private SharePrefUtils sharePrefUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        sharePrefUtils = new SharePrefUtils("user", LoginActivity.this);
         userHeader = (SimpleDraweeView) findViewById(R.id.use_header);
-
-
        /* // 获取CommunitySDK实例, 参数1为Context类型
         CommunitySDK mCommSDK = App.getCommunitySDK();
         // 打开微社区的接口, 参数1为Context类型
@@ -84,15 +85,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void attemptLogin() {
-
-
         // Reset errors.
         mUserId.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String userId = mUserId.getText().toString();
-        String password = mPasswordView.getText().toString();
+        final String userId = mUserId.getText().toString();
+        final String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -118,21 +117,27 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            LoginPrvdr loginPrvdr = new LoginPrvdr();
-            loginPrvdr.login(this, userId, new LoginPrvdr.UMLoginListener() {
-                @Override
-                public void onLoginSuccess(CommUser commUser) {
-                    Intent intent = new Intent(LoginActivity.this, MainActivity_.class);
-                    startActivity(intent);
-                    finish();
-                }
-
-                @Override
-                public void onLoginFail(int stCode) {
-
-                }
-            });
+            login(userId, password);
         }
+    }
+
+    private void login(final String userId, final String password) {
+        LoginPrvdr loginPrvdr = new LoginPrvdr();
+        loginPrvdr.login(this, userId, new LoginPrvdr.UMLoginListener() {
+            @Override
+            public void onLoginSuccess(CommUser commUser) {
+                sharePrefUtils.putBoolean("loginStatus", true);
+                sharePrefUtils.putString("userId", userId);
+                sharePrefUtils.putString("password", password);
+                Intent intent = new Intent(LoginActivity.this, MainActivity_.class);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onLoginFail(int stCode) {
+            }
+        });
     }
 
 }
