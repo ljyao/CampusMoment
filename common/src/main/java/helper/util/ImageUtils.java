@@ -22,9 +22,8 @@ public class ImageUtils {
         return bitmapCache.get(key);
     }
 
-    public static void DestoryBitmap(String key) {
-        Bitmap bitmap = bitmapCache.remove(key);
-        bitmap.recycle();
+    public static Bitmap RemoveBitmap(String key) {
+        return bitmapCache.remove(key);
     }
 
     public static void setImagePath(final ImageView imageView, final String path) {

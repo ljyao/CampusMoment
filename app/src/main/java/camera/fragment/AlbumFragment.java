@@ -5,15 +5,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
 import com.uy.bbs.R;
 
 import java.util.ArrayList;
 
-import camera.CameraManager;
 import camera.adapter.GalleryAdapter;
 import model.PhotoItem;
 
@@ -45,14 +42,14 @@ public class AlbumFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_album, null);
         photos = (ArrayList<PhotoItem>) getArguments().getSerializable("photos");
         albums = (GridView) root.findViewById(R.id.albums);
-        albums.setOnItemClickListener(new OnItemClickListener() {
+        /*albums.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 PhotoItem photo = photos.get(arg2);
                 CameraManager.getInst().processPhotoItem(getActivity(), photo);
             }
-        });
+        });*/
         return root;
     }
 

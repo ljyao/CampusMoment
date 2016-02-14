@@ -43,13 +43,8 @@ import java.util.List;
 import camera.CameraBaseActivity;
 import camera.CameraManager;
 import camera.util.CameraHelper;
-import helper.AppConstants;
 import helper.util.DistanceUtil;
-import helper.util.FileUtils;
 import helper.util.IOUtil;
-import helper.util.MyImageUtils;
-import helper.util.StringUtils;
-import model.PhotoItem;
 
 
 /**
@@ -252,16 +247,7 @@ public class CameraActivity extends CameraBaseActivity {
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent result) {
-        if (requestCode == AppConstants.REQUEST_PICK && resultCode == RESULT_OK) {
-            CameraManager.getInst().processPhotoItem(
-                    CameraActivity.this,
-                    new PhotoItem(result.getData().getPath(), System
-                            .currentTimeMillis()));
-        } else if (requestCode == AppConstants.REQUEST_CROP && resultCode == RESULT_OK) {
-            Intent newIntent = new Intent(this, PhotoProcessActivity.class);
-            newIntent.setData(result.getData());
-            startActivity(newIntent);
-        }
+
     }
 
     /**
@@ -581,43 +567,23 @@ public class CameraActivity extends CameraBaseActivity {
         }
     }
 
-    /**
-     * 将拍下来的照片存放在SD卡中
-     *
-     * @param data
-     * @throws IOException
-     */
-    public String saveToSDCard(byte[] data) throws IOException {
+
+    public Bitmap saveToBItmap(byte[] data) throws IOException {
         Bitmap croppedImage;
 
         //获得图片大小
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        croppedImage = BitmapFactory.decodeByteArray(data, 0, data.length, options);
+       /* BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize=3;*/
+        croppedImage = BitmapFactory.decodeByteArray(data, 0, data.length, null);
 
-     /*   PHOTO_SIZE = options.outHeight > options.outWidth ? options.outWidth : options.outHeight;
-        int height = options.outHeight > options.outWidth ? options.outHeight : options.outWidth;
-        options.inJustDecodeBounds = false;
-        Rect r;
-        if (mCurrentCameraId == 1) {
-            r = new Rect(height - PHOTO_SIZE, 0, height, PHOTO_SIZE);
-        } else {
-            r = new Rect(0, 0, PHOTO_SIZE, PHOTO_SIZE);
-        }
-        try {
-            croppedImage = decodeRegionCrop(data, r);
-        } catch (Exception e) {
-            return null;
-        }*/
         Matrix m = new Matrix();
         m.postRotate(90);
         if (mCurrentCameraId == 1) {
             m.postScale(1, -1);
         }
-        croppedImage = Bitmap.createBitmap(croppedImage, 0, 0, options.outWidth, options.outHeight, m, true);
-        String imagePath = MyImageUtils.saveToFile(FileUtils.getInst().getSystemPhotoPath(), true,
-                croppedImage);
-        croppedImage.recycle();
-        return imagePath;
+        croppedImage = Bitmap.createBitmap(croppedImage, 0, 0, croppedImage.getWidth(), croppedImage.getHeight(), m, true);
+
+        return croppedImage;
     }
 
     private Bitmap decodeRegionCrop(byte[] data, Rect rect) {
@@ -743,7 +709,7 @@ public class CameraActivity extends CameraBaseActivity {
         }
     }
 
-    private class SavePicTask extends AsyncTask<Void, Void, String> {
+    private class SavePicTask extends AsyncTask<Void, Void, Bitmap> {
         private byte[] data;
 
         SavePicTask(byte[] data) {
@@ -755,9 +721,10 @@ public class CameraActivity extends CameraBaseActivity {
         }
 
         @Override
-        protected String doInBackground(Void... params) {
+        protected Bitmap doInBackground(Void... params) {
             try {
-                return saveToSDCard(data);
+                return saveToBItmap(data);
+
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -765,13 +732,12 @@ public class CameraActivity extends CameraBaseActivity {
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(Bitmap result) {
             super.onPostExecute(result);
 
-            if (StringUtils.isNotEmpty(result)) {
+            if (result != null) {
                 dismissProgressDialog();
-                CameraManager.getInst().processPhotoItem(CameraActivity.this,
-                        new PhotoItem(result, System.currentTimeMillis()));
+                CameraManager.getInst().processPhotoItem(CameraActivity.this, result);
             } else {
                 toast("拍照失败，请稍后重试！", Toast.LENGTH_LONG);
             }

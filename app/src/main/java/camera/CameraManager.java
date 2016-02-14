@@ -3,14 +3,13 @@ package camera;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
 
 import java.util.Stack;
 
 import camera.ui.CameraActivity;
-import camera.ui.CropPhotoActivity_;
-import helper.AppConstants;
-import model.PhotoItem;
+import editimage.EditImageActivity;
+import helper.util.ImageUtils;
 
 public class CameraManager {
 
@@ -33,14 +32,20 @@ public class CameraManager {
         context.startActivity(intent);
     }
 
-    //判断图片是否需要裁剪
-    public void processPhotoItem(Activity activity, PhotoItem photo) {
-        Uri uri = photo.getImageUri().startsWith("file:") ? Uri.parse(photo
+
+    public void processPhotoItem(Activity activity, Bitmap photo) {
+        String key = "photoBmpCache";
+        ImageUtils.putBitmap(key, photo);
+        Intent intent = new Intent(activity, EditImageActivity.class);
+        intent.putExtra("key", key);
+        intent.putExtra("isFromCache", true);
+        activity.startActivity(intent);
+        /*Uri uri = photo.getImageUri().startsWith("file:") ? Uri.parse(photo
                 .getImageUri()) : Uri.parse("file://" + photo.getImageUri());
         Intent i = new Intent(activity, CropPhotoActivity_.class);
         i.setData(uri);
         //TODO稍后添加
-        activity.startActivityForResult(i, AppConstants.REQUEST_CROP);
+        activity.startActivityForResult(i, AppConstants.REQUEST_CROP);*/
 
     }
 
