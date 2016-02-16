@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ViewFlipper;
 
+import com.jni.bitmap_operations.JniBitmapHolder;
 import com.uy.imageeditlibrary.R;
 import com.uy.util.Worker;
 
@@ -35,7 +36,7 @@ import imagezoom.ImageViewTouchBase;
  * 图片编辑 主页面
  *
  * @author panyi
- *         <p/>
+ *         <p>
  *         包含 1.贴图 2.滤镜 3.剪裁 4.底图旋转 功能
  */
 public class EditImageActivity extends BaseActivity {
@@ -148,20 +149,48 @@ public class EditImageActivity extends BaseActivity {
     }
 
     public void loadImageFromCache(final String key) {
-        Worker.postMain(new Runnable() {
+        Bitmap bitmap = ImageUtils.RemoveBitmap(key);
+        setEditBitmap(bitmap);
+    }
+
+    public void setEditBitmap(final Bitmap bmp) {
+
+        Worker.postExecuteTask(new Runnable() {
             @Override
             public void run() {
-                if (mainBitmap != null) {
-                    mainBitmap.recycle();
-                    mainBitmap = null;
-                    System.gc();
+                Bitmap newBmp = bmp;
+                double width = bmp.getWidth();
+                double height = bmp.getHeight();
+                if (width > 4000 || height > 4000) {
+                    double scale = width / height;
+                    double newWidth, newHeight;
+                    if (width > 4000) {
+                        newWidth = 4000;
+                        newHeight = newWidth / scale;
+                    } else {
+                        newHeight = 4000;
+                        newWidth = newHeight * scale;
+                    }
+                    JniBitmapHolder jniBitmapHolder = new JniBitmapHolder(bmp);
+                    jniBitmapHolder.scaleBitmap((int) newWidth, (int) newHeight, JniBitmapHolder.ScaleMethod.BilinearInterpolation);
+                    newBmp = jniBitmapHolder.getBitmapAndFree();
                 }
-                mainBitmap = ImageUtils.RemoveBitmap(key);
-                mainImage.setImageBitmap(mainBitmap);
-                mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
+                final Bitmap finalNewBmp = newBmp;
+                Worker.postMain(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mainBitmap != null) {
+                            mainBitmap.recycle();
+                            mainBitmap = null;
+                            System.gc();
+                        }
+                        mainBitmap = finalNewBmp;
+                        mainImage.setImageBitmap(mainBitmap);
+                        mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
+                    }
+                });
             }
         });
-
     }
 
     /**
@@ -263,15 +292,7 @@ public class EditImageActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Bitmap result) {
             super.onPostExecute(result);
-            if (mainBitmap != null) {
-                mainBitmap.recycle();
-                mainBitmap = null;
-                System.gc();
-            }
-            mainBitmap = result;
-            mainImage.setImageBitmap(result);
-            mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
-            // mainImage.setDisplayType(DisplayType.FIT_TO_SCREEN);
+            setEditBitmap(result);
         }
     }// end inner class
 

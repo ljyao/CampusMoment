@@ -571,9 +571,9 @@ public class CameraActivity extends CameraBaseActivity {
     public Bitmap saveToBItmap(byte[] data) throws IOException {
         Bitmap croppedImage;
 
-        //获得图片大小
-       /* BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize=3;*/
+//        //获得图片大小
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//        options.inSampleSize=2;
         croppedImage = BitmapFactory.decodeByteArray(data, 0, data.length, null);
 
         Matrix m = new Matrix();

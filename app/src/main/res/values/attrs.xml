@@ -36,6 +36,8 @@
     <declare-styleable name="FlowLayout_Layout">
         <attr name="android:layout_gravity" />
     </declare-styleable>
-
+    <declare-styleable name="ConvenientBanner">
+        <attr name="canLoop" format="boolean" />
+    </declare-styleable>
 
 </resources>

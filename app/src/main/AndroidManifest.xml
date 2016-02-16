@@ -51,11 +51,11 @@
         <!-- 友盟App Key, 必须替换为您在友盟官网上申请到的. -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="55560482e0f55a3d55000a1e" />
+            android:value="56721b37e0f55a2eb20062f9" />
         <!-- 友盟推送的app secret, 如果不使用友盟推送可以删除 -->
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="5ec1261638fd311faf3c5fbdc80a9e4f" />
+            android:value="	5ec1261638fd311faf3c5fbdc80a9e4f" />
 
         <activity
             android:name="activity.MainActivity_"
