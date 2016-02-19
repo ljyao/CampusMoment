@@ -19,7 +19,9 @@
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/user_header"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:progressBarImage="@drawable/progressbar_load"
+            app:progressBarImageScaleType="center" />
     </com.chat.views.SquareRelativeLayout>
 
     <android.support.design.widget.FloatingActionButton

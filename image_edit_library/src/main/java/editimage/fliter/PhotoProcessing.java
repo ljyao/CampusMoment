@@ -5,8 +5,6 @@ import android.graphics.Bitmap.Config;
 
 /**
  * 图片处理类
- *
- * @author 潘易
  */
 public class PhotoProcessing {
     public static final String[] FILTERS = {"原色", "轻柔", "黑白", "经典", "绚丽",

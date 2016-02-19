@@ -51,7 +51,7 @@
         <!-- 友盟App Key, 必须替换为您在友盟官网上申请到的. -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="56721b37e0f55a2eb20062f9" />
+            android:value="55560482e0f55a3d55000a1e" />
         <!-- 友盟推送的app secret, 如果不使用友盟推送可以删除 -->
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
@@ -96,10 +96,7 @@
             android:name="camera.ui.CropPhotoActivity_"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
-        <activity
-            android:name="camera.ui.AlbumActivity_"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+
         <activity
             android:name="camera.ui.PhotoProcessActivity_"
             android:screenOrientation="portrait"
@@ -111,7 +108,7 @@
         <activity
             android:name="editimage.EditImageActivity"
             android:theme="@style/NoActionBar" />
-
+        <activity android:name="community.activity.TopicActivity_" />
 
         <!-- youmeng -->
         <!-- 发现的Activity -->

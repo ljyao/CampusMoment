@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.umeng.comm.core.beans.FeedItem;
+import com.umeng.comm.core.beans.Topic;
 import com.umeng.comm.core.constants.Constants;
 import com.umeng.comm.core.utils.ToastMsg;
 import com.uy.util.ScreenUtils;
@@ -30,8 +31,10 @@ import fragment.RefreshRecycleFragment;
 @EFragment
 public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
     private FeedPrvdr feedPrvdr;
-    private FeedPrvdr.FeedType mFeedType;
+    private FeedPrvdr.FeedType mFeedType = FeedPrvdr.FeedType.FollowFeed;
     private LinearLayoutManager layoutManager;
+    private String topicId = "";
+
     private FeedListListener feedListListener = new FeedListListener() {
         @Override
         public void onShowFeedDetail(FeedItem feedItem) {
@@ -53,11 +56,14 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
         }
     };
 
-    @AfterViews
-    public void initView() {
+    public FeedFragment() {
         feedPrvdr = new FeedPrvdr(mFeedType);
         adapter = new FeedAdapter();
         adapter.setListener(feedListListener);
+    }
+
+    @AfterViews
+    public void initView() {
         listView.setAdapter(adapter);
         listView.addItemDecoration(new FeedDecoration());
         refreshFeed();
@@ -83,7 +89,7 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
                 setRefreshState(false);
                 adapter.update(result);
             }
-        });
+        }, topicId);
     }
 
     @Override
@@ -108,8 +114,13 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
     }
 
 
-    public void setFeedType(FeedPrvdr.FeedType feedType) {
+    public void setFeedType(FeedPrvdr.FeedType feedType, Topic topic) {
+        if (topic != null) {
+            topicId = topic.id;
+            adapter.setTopic(topic);
+        }
         this.mFeedType = feedType;
+        feedPrvdr.setFeedType(feedType);
     }
 
     public interface FeedListListener {

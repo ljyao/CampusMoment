@@ -3,6 +3,7 @@ package community.fragment;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.TextView;
 
 import com.umeng.comm.core.beans.Topic;
@@ -15,11 +16,13 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 
+import community.activity.TopicActivity_;
 import community.providable.NetLoaderListener;
 import community.providable.TopicPrvdr;
 import convenientbanner.ConvenientBanner;
 import convenientbanner.holder.CBViewHolderCreator;
 import convenientbanner.holder.ImageHolder;
+import convenientbanner.listener.OnItemClickListener;
 
 /**
  * Created by ljy on 15/12/25.
@@ -37,6 +40,19 @@ public class DiscoverFragment extends Fragment {
     protected TextView topicThreeTv;
     @ViewById(R.id.topic_hot_tv)
     protected TextView topicHotTv;
+    private View.OnClickListener topicTvListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            try {
+                Topic topic = (Topic) v.getTag();
+                if (topic == null)
+                    return;
+                TopicActivity_.intent(getActivity()).topic(topic).start();
+            } catch (Exception e) {
+            }
+
+        }
+    };
 
     @AfterViews
     public void initView() {
@@ -51,18 +67,20 @@ public class DiscoverFragment extends Fragment {
 
     public void setData(List<Topic> result) {
         try {
-            List<Uri> topicImages = new ArrayList();
-            String[] topicNames = new String[3];
+            final List<Uri> topicImages = new ArrayList();
+            final List<Topic> topicBanners = new ArrayList<>();
+            Topic[] topics = new Topic[3];
             int i = 0;
             for (Topic topic : result) {
                 if (i < 3) {
-                    topicNames[i] = topic.name;
+                    topics[i] = topic;
                 }
                 i++;
                 if (!TextUtils.isEmpty(topic.icon) && !topic.icon.equals("null") && topicImages.size() < 6) {
                     int index = topic.icon.indexOf("@");
                     String iconPath = topic.icon.substring(0, index);
                     topicImages.add(Uri.parse(iconPath));
+                    topicBanners.add(topic);
                 }
             }
             CBViewHolderCreator<ImageHolder> creator = new CBViewHolderCreator() {
@@ -76,13 +94,44 @@ public class DiscoverFragment extends Fragment {
                     .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
                     //设置指示器的方向
                     .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
-                    .setCanLoop(true);
+                    .setOnItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(int position) {
+                            TopicActivity_.intent(getActivity()).topic(topicBanners.get(position)).start();
+                        }
+                    })
+                    .setCanLoop(topicImages.size() > 1 ? true : false);
 
-            topicOneTv.setText(topicNames[0]);
-            topicTwoTv.setText(topicNames[1]);
-            topicThreeTv.setText(topicNames[2]);
+
+            topicOneTv.setText(topics[0].name);
+            topicOneTv.setOnClickListener(topicTvListener);
+            topicOneTv.setTag(topics[0]);
+            topicTwoTv.setText(topics[1].name);
+            topicTwoTv.setOnClickListener(topicTvListener);
+            topicTwoTv.setTag(topics[1]);
+            topicThreeTv.setText(topics[2].name);
+            topicThreeTv.setOnClickListener(topicTvListener);
+            topicThreeTv.setTag(topics[2]);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (convenientBanner != null) {
+            convenientBanner.stopTurning();
+        }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (convenientBanner != null) {
+            convenientBanner.startTurning();
+        }
+    }
+
 }

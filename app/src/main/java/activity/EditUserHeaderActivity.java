@@ -3,7 +3,6 @@ package activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +28,7 @@ import helper.AppConstants;
 import helper.util.ImageUtils;
 import helper.util.MyImageUtils;
 import imagezoom.ImageViewTouch;
+import imagezoom.ImageViewTouchBase;
 
 /**
  * Created by ljy on 15/12/29.
@@ -46,12 +46,13 @@ public class EditUserHeaderActivity extends AppCompatActivity {
     private CommUser user;
     private boolean isEdit = false;
     private String newPath;
-    private Bitmap newPhotoBitmap;
+
 
     @AfterViews
     public void initView() {
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        editViewTouch.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
         setTitle("修改头像");
         changeStatue(false);
     }
@@ -92,9 +93,7 @@ public class EditUserHeaderActivity extends AppCompatActivity {
     }
 
     private void setUserHeader() {
-        if (newPhotoBitmap != null) {
-            userHeader.setImageBitmap(newPhotoBitmap);
-        }
+
         user = CommConfig.getConfig().loginedUser;
         int pos = user.iconUrl.indexOf("@");
         String userIcon = user.iconUrl;
@@ -112,29 +111,19 @@ public class EditUserHeaderActivity extends AppCompatActivity {
         Worker.postMain(new Runnable() {
             @Override
             public void run() {
-                newPhotoBitmap = ImageUtils.getBitmapFromView(editViewTouch);
+                final Bitmap newPhotoBitmap = ImageUtils.getBitmapFromView(editViewTouch);
                 UserPrvdr userPrvdr = new UserPrvdr();
                 userPrvdr.updateUserProtrait(newPhotoBitmap, new UserPrvdr.UserListener() {
                     @Override
                     public void onComplete(CommUser user) {
+                        Toast.makeText(EditUserHeaderActivity.this, "修改成功！", Toast.LENGTH_LONG).show();
                         dialog.dismiss();
+                        newPhotoBitmap.recycle();
                         changeStatue(false);
                     }
                 }, EditUserHeaderActivity.this);
             }
         });
-        final Bitmap bitmap = BitmapFactory.decodeFile(newPath);
-        UserPrvdr userPrvdr = new UserPrvdr();
-        userPrvdr.updateUserProtrait(bitmap, new UserPrvdr.UserListener() {
-            @Override
-            public void onComplete(CommUser user) {
-                Toast.makeText(EditUserHeaderActivity.this, "修改成功！", Toast.LENGTH_LONG).show();
-                dialog.dismiss();
-                bitmap.recycle();
-                changeStatue(false);
-
-            }
-        }, EditUserHeaderActivity.this);
 
     }
 

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/fliter_image"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:background="@drawable/camera_image_capture_water_mark_button" />
+
+    <TextView
+        android:id="@+id/fliter_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12321"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+</LinearLayout>

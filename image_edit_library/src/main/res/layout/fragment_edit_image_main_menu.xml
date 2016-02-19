@@ -1,60 +1,99 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingTop="5dp">
 
-    <TextView
-        android:id="@+id/btn_stickers"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_weight="1"
-        android:drawablePadding="@dimen/image_edit_text_padding"
-        android:drawableTop="@drawable/image_edit_icon_sticker"
         android:gravity="center"
-        android:text="@string/stickers"
-        android:textColor="#ffffff"
-        android:textSize="@dimen/image_edit_text_size" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/btn_fliter"
-        android:layout_width="fill_parent"
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/image_sticker"
+            android:padding="10dp" />
+
+        <TextView
+            android:id="@+id/btn_stickers"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/stickers"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/image_edit_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_weight="1"
-        android:drawablePadding="@dimen/image_edit_text_padding"
-        android:drawableTop="@drawable/image_edit_icon_filter"
         android:gravity="center"
-        android:text="@string/fliter"
-        android:textColor="#ffffff"
-        android:textSize="@dimen/image_edit_text_size" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/btn_crop"
-        android:layout_width="fill_parent"
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/image_photofilter" />
+
+        <TextView
+            android:id="@+id/btn_fliter"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/fliter"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/image_edit_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_weight="1"
-        android:drawablePadding="@dimen/image_edit_text_padding"
-        android:drawableTop="@drawable/image_edit_icon_crop"
         android:gravity="center"
-        android:text="@string/crop"
-        android:textColor="#ffffff"
-        android:textSize="@dimen/image_edit_text_size" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/btn_rotate"
-        android:layout_width="fill_parent"
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/image_cut" />
+
+        <TextView
+            android:id="@+id/btn_crop"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/crop"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/image_edit_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_weight="1"
-        android:drawablePadding="@dimen/image_edit_text_padding"
-        android:drawableTop="@drawable/image_edit_icon_text"
         android:gravity="center"
-        android:text="@string/rotate"
-        android:textColor="#ffffff"
-        android:textSize="@dimen/image_edit_text_size" />
+        android:orientation="vertical">
 
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/image_edit_revolve" />
+
+
+        <TextView
+            android:id="@+id/btn_rotate"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/rotate"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/image_edit_text_size" />
+    </LinearLayout>
 </LinearLayout>

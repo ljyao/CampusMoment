@@ -1,7 +1,5 @@
 package community.providable;
 
-import android.text.TextUtils;
-
 import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.beans.Topic;
 import com.umeng.comm.core.listeners.Listeners;
@@ -45,23 +43,19 @@ public class TopicPrvdr {
         });
     }
 
-    public void loadMoreData() {
-        if (TextUtils.isEmpty(mNextPageUrl)) {
-            return;
-        }
-        mCommunitySDK.fetchNextPageData(mNextPageUrl, TopicResponse.class, new Listeners.FetchListener<TopicResponse>() {
+    public void loadRecommendedTopics(final NetLoaderListener<List<Topic>> listener) {
+
+        mCommunitySDK.fetchRecommendedTopics(new Listeners.FetchListener<TopicResponse>() {
             @Override
             public void onStart() {
+
             }
 
             @Override
-            public void onComplete(TopicResponse response) {
-                // 根据response进行Toast
-                if (NetworkUtils.handleResponseAll(response)) {
-                    return;
-                }
-                final List<Topic> results = response.result;
+            public void onComplete(TopicResponse topicResponse) {
+
             }
         });
     }
+
 }

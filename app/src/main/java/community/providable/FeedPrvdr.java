@@ -1,14 +1,17 @@
 package community.providable;
 
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.FeedItem;
+import com.umeng.comm.core.beans.Topic;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.FeedsResponse;
+import com.umeng.comm.core.nets.responses.TopicResponse;
 import com.umeng.comm.core.nets.uitls.NetworkUtils;
 import com.uy.App;
 
@@ -27,7 +30,7 @@ public class FeedPrvdr {
         mCommunitySDK = App.getCommunitySDK();
     }
 
-    public void getFirstPageData(NetLoaderListener<List<FeedItem>> listener) {
+    public void getFirstPageData(NetLoaderListener<List<FeedItem>> listener, @Nullable String id) {
         switch (mFeedType) {
             case FollowFeed:
                 getFollowFeedData(listener);
@@ -35,6 +38,9 @@ public class FeedPrvdr {
             case MeFeed:
                 CommUser user = CommConfig.getConfig().loginedUser;
                 getUserFeed(user, listener);
+                break;
+            case TopicFeed:
+                loadFeedByTopic(id, listener);
                 break;
         }
     }
@@ -90,6 +96,51 @@ public class FeedPrvdr {
                         listener.onComplete(true, response.result);
                     }
                 });
+    }
+
+    public void loadFeedByTopic(String id, final NetLoaderListener<List<FeedItem>> listener) {
+        mCommunitySDK.fetchTopicFeed(id, new Listeners.FetchListener<FeedsResponse>() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onComplete(FeedsResponse response) {
+                // 根据response进行Toast
+                if (NetworkUtils.handleResponseAll(response)) {
+                    return;
+                }
+                mNextPageUrl = response.nextPageUrl;
+                List<FeedItem> newFeedItems = response.result;
+                // 更新数据
+                listener.onComplete(true, newFeedItems);
+            }
+        });
+    }
+
+    public void loadMoreData() {
+        if (TextUtils.isEmpty(mNextPageUrl)) {
+            return;
+        }
+        mCommunitySDK.fetchNextPageData(mNextPageUrl, TopicResponse.class, new Listeners.FetchListener<TopicResponse>() {
+            @Override
+            public void onStart() {
+            }
+
+            @Override
+            public void onComplete(TopicResponse response) {
+                // 根据response进行Toast
+                if (NetworkUtils.handleResponseAll(response)) {
+                    return;
+                }
+                final List<Topic> results = response.result;
+            }
+        });
+    }
+
+    public void setFeedType(FeedType feedType) {
+        this.mFeedType = feedType;
     }
 
     public enum FeedType {

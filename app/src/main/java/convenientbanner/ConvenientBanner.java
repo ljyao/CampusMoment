@@ -45,9 +45,8 @@ public class ConvenientBanner<T> extends LinearLayout {
     private ViewGroup loPageTurningPoint;
     private long autoTurningTime = 3000;
     private boolean turning;
-    private boolean canTurn = false;
     private boolean manualPageable = true;
-    private boolean canLoop = true;
+    private boolean canLoop = false;
     private AdSwitchTask adSwitchTask;
 
     public ConvenientBanner(Context context) {
@@ -58,7 +57,7 @@ public class ConvenientBanner<T> extends LinearLayout {
     public ConvenientBanner(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ConvenientBanner);
-        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop, true);
+        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop, false);
         a.recycle();
         init(context);
     }
@@ -67,7 +66,7 @@ public class ConvenientBanner<T> extends LinearLayout {
     public ConvenientBanner(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ConvenientBanner);
-        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop, true);
+        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop, false);
         a.recycle();
         init(context);
     }
@@ -76,7 +75,7 @@ public class ConvenientBanner<T> extends LinearLayout {
     public ConvenientBanner(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ConvenientBanner);
-        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop, true);
+        canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop, false);
         a.recycle();
         init(context);
     }
@@ -89,7 +88,7 @@ public class ConvenientBanner<T> extends LinearLayout {
         initViewPagerScroll();
 
         adSwitchTask = new AdSwitchTask(this);
-        if (canLoop) startTurning(autoTurningTime);
+        startTurning();
     }
 
     public ConvenientBanner setPages(CBViewHolderCreator holderCreator, List<T> datas) {
@@ -184,24 +183,26 @@ public class ConvenientBanner<T> extends LinearLayout {
 
     /***
      * 开始翻页
-     *
-     * @param autoTurningTime 自动翻页时间
      * @return
      */
-    public ConvenientBanner startTurning(long autoTurningTime) {
+    public ConvenientBanner startTurning() {
+        if (!canLoop) {
+            return this;
+        }
         //如果是正在翻页的话先停掉
         if (turning) {
             stopTurning();
         }
-        //设置可以翻页并开启翻页
-        canTurn = true;
-        this.autoTurningTime = autoTurningTime;
+
         turning = true;
         postDelayed(adSwitchTask, autoTurningTime);
         return this;
     }
 
     public void stopTurning() {
+        if (!canLoop) {
+            return;
+        }
         turning = false;
         removeCallbacks(adSwitchTask);
     }
@@ -253,10 +254,10 @@ public class ConvenientBanner<T> extends LinearLayout {
         int action = ev.getAction();
         if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_OUTSIDE) {
             // 开始翻页
-            if (canLoop) startTurning(autoTurningTime);
+            startTurning();
         } else if (action == MotionEvent.ACTION_DOWN) {
             // 停止翻页
-            if (canLoop) stopTurning();
+            stopTurning();
         }
         return super.dispatchTouchEvent(ev);
     }
@@ -344,7 +345,7 @@ public class ConvenientBanner<T> extends LinearLayout {
         private final WeakReference<ConvenientBanner> reference;
 
         AdSwitchTask(ConvenientBanner convenientBanner) {
-            this.reference = new WeakReference<ConvenientBanner>(convenientBanner);
+            this.reference = new WeakReference<>(convenientBanner);
         }
 
         @Override

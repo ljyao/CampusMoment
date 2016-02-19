@@ -1,6 +1,7 @@
 package camera.ui;
 
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -43,7 +44,6 @@ import java.util.List;
 import camera.CameraBaseActivity;
 import camera.CameraManager;
 import camera.util.CameraHelper;
-import helper.util.DistanceUtil;
 import helper.util.IOUtil;
 
 
@@ -87,9 +87,6 @@ public class CameraActivity extends CameraBaseActivity {
     private Camera.Parameters parameters = null;
     private Camera cameraInst = null;
     private Bundle bundle = null;
-    private int photoWidth = DistanceUtil.getCameraPhotoWidth();
-    private int photoNumber = 4;
-    private int photoMargin = ScreenUtils.dp2px(1, this);
     private float pointX, pointY;
     private int mode;                      //0是聚焦 1是放大
     private float dist;
@@ -568,20 +565,21 @@ public class CameraActivity extends CameraBaseActivity {
     }
 
 
-    public Bitmap saveToBItmap(byte[] data) throws IOException {
+    public Bitmap saveToBitmap(byte[] data) throws IOException {
         Bitmap croppedImage;
 
 //        //获得图片大小
-//        BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inSampleSize=2;
-        croppedImage = BitmapFactory.decodeByteArray(data, 0, data.length, null);
-
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 2;
+        croppedImage = BitmapFactory.decodeByteArray(data, 0, data.length, options);
+        double realHeight = surfaceView.getMeasuredHeight() - takePhotoPanel.getMeasuredHeight();
+        double imageScale = ScreenUtils.getScreenW(this) / realHeight;
         Matrix m = new Matrix();
         m.postRotate(90);
         if (mCurrentCameraId == 1) {
             m.postScale(1, -1);
         }
-        croppedImage = Bitmap.createBitmap(croppedImage, 0, 0, croppedImage.getWidth(), croppedImage.getHeight(), m, true);
+        croppedImage = Bitmap.createBitmap(croppedImage, 0, 0, (int) (croppedImage.getHeight() / imageScale), croppedImage.getHeight(), m, true);
 
         return croppedImage;
     }
@@ -711,19 +709,22 @@ public class CameraActivity extends CameraBaseActivity {
 
     private class SavePicTask extends AsyncTask<Void, Void, Bitmap> {
         private byte[] data;
+        private ProgressDialog progressDialog;
 
         SavePicTask(byte[] data) {
             this.data = data;
         }
 
         protected void onPreExecute() {
-            showProgressDialog("处理中");
+            progressDialog = new ProgressDialog(CameraActivity.this);
+            progressDialog.setMessage("处理中...");
+            progressDialog.show();
         }
 
         @Override
         protected Bitmap doInBackground(Void... params) {
             try {
-                return saveToBItmap(data);
+                return saveToBitmap(data);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -736,7 +737,7 @@ public class CameraActivity extends CameraBaseActivity {
             super.onPostExecute(result);
 
             if (result != null) {
-                dismissProgressDialog();
+                progressDialog.dismiss();
                 CameraManager.getInst().processPhotoItem(CameraActivity.this, result);
             } else {
                 toast("拍照失败，请稍后重试！", Toast.LENGTH_LONG);

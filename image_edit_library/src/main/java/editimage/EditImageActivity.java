@@ -36,7 +36,7 @@ import imagezoom.ImageViewTouchBase;
  * 图片编辑 主页面
  *
  * @author panyi
- *         <p>
+ *         <p/>
  *         包含 1.贴图 2.滤镜 3.剪裁 4.底图旋转 功能
  */
 public class EditImageActivity extends BaseActivity {
@@ -44,11 +44,26 @@ public class EditImageActivity extends BaseActivity {
     public static final String EXTRA_OUTPUT = "extra_output";
 
     public static final int MODE_NONE = 0;
-    public static final int MODE_STICKERS = 1;// 贴图模式
-    public static final int MODE_FILTER = 2;// 滤镜模式
-    public static final int MODE_CROP = 3;// 剪裁模式
-    public static final int MODE_TEXT = 4;// 文字模式
-    public static final int MODE_ROTATE = 5;// 旋转模式
+    /**
+     * 贴图模式
+     */
+    public static final int MODE_STICKERS = 1;
+    /**
+     * 滤镜模式
+     */
+    public static final int MODE_FILTER = 2;
+    /**
+     * 剪裁模式
+     */
+    public static final int MODE_CROP = 3;
+    /**
+     * 文字模式
+     */
+    public static final int MODE_TEXT = 4;
+    /**
+     * 旋转模式
+     */
+    public static final int MODE_ROTATE = 5;
 
     public String filePath;// 需要编辑图片路径
     public String saveFilePath;// 生成的新图片路径
@@ -252,9 +267,6 @@ public class EditImageActivity extends BaseActivity {
         }
     }
 
-    /**
-     * @author panyi
-     */
     private final class BottomGalleryAdapter extends FragmentPagerAdapter {
         public BottomGalleryAdapter(FragmentManager fm) {
             super(fm);
@@ -280,7 +292,7 @@ public class EditImageActivity extends BaseActivity {
         public int getCount() {
             return 5;
         }
-    }// end inner class
+    }
 
     private final class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
         @Override
@@ -298,8 +310,6 @@ public class EditImageActivity extends BaseActivity {
 
     /**
      * 保存按钮点击
-     *
-     * @author panyi
      */
     private final class ApplyBtnClick implements OnClickListener {
         @Override
@@ -325,8 +335,6 @@ public class EditImageActivity extends BaseActivity {
 
     /**
      * 保存按钮 点击退出
-     *
-     * @author panyi
      */
     private final class SaveBtnClick implements OnClickListener {
         @Override

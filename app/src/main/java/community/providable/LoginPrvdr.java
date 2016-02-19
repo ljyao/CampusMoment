@@ -2,6 +2,7 @@ package community.providable;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.beans.CommUser;
@@ -22,7 +23,7 @@ public class LoginPrvdr extends AbsLoginImpl {
     private UMLoginListener loginCallBack;
     private CommUser loginedUser;
 
-    public void login(Context context, String userId, UMLoginListener listener) {
+    public void login(Context context, String userId, @Nullable UMLoginListener listener) {
         dialog = new ProgressDialog(context);
         dialog.setMessage(context.getResources().getString(R.string.logining));
         this.userId = userId;
@@ -43,7 +44,9 @@ public class LoginPrvdr extends AbsLoginImpl {
             @Override
             public void onComplete(int i, CommUser commUser) {
                 loginedUser = commUser;
-                loginCallBack.onLoginSuccess(loginedUser);
+                if (loginCallBack != null) {
+                    loginCallBack.onLoginSuccess(loginedUser);
+                }
             }
         });
 

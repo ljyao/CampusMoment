@@ -5,8 +5,8 @@
     <string name="save">save</string>
     <string name="apply">apply</string>
 
-    <string name="stickers">stickers</string>
-    <string name="fliter">fliter</string>
-    <string name="crop">crop</string>
-    <string name="rotate">rotate</string>
+    <string name="stickers">贴纸</string>
+    <string name="fliter">滤镜</string>
+    <string name="crop">编辑</string>
+    <string name="rotate">旋转</string>
 </resources>

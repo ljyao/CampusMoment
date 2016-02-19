@@ -46,7 +46,7 @@ public class MeActivity extends AppCompatActivity {
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         feedFragment = FeedFragment_.builder().build();
-        feedFragment.setFeedType(FeedPrvdr.FeedType.MeFeed);
+        feedFragment.setFeedType(FeedPrvdr.FeedType.MeFeed, null);
         ft.replace(R.id.fragment, feedFragment);
         ft.setTransition(FragmentTransaction.TRANSIT_NONE);
         ft.commit();

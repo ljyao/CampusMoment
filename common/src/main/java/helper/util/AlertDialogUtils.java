@@ -1,4 +1,4 @@
-package helper.ui.util;
+package helper.util;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,7 +9,6 @@ import android.view.View;
  * Created by ljy on 15/12/11.
  */
 public class AlertDialogUtils {
-
     public static Builder builder(Context context) {
         Builder builder = new Builder(context);
         return builder;
