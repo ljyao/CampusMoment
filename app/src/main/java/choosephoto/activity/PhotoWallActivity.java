@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.uy.bbs.R;
 import com.uy.util.BitmapUtils;
-import com.uy.util.ScreenUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,7 +28,8 @@ import choosephoto.adapter.Decoration;
 import choosephoto.adapter.PhotoWallAdapter;
 import editimage.EditImageActivity;
 import helper.AppConstants;
-import helper.util.FileUtils;
+import helper.common_util.FileUtils;
+import helper.common_util.ScreenUtils;
 
 
 /**
@@ -104,7 +104,7 @@ public class PhotoWallActivity extends AppCompatActivity {
                     Uri uri = Uri.parse("file://" + path);
                     Intent i = new Intent(PhotoWallActivity.this, EditImageActivity.class);
                     i.putExtra(EditImageActivity.FILE_PATH, path);
-                    String outPath = FileUtils.getCacheDir().getAbsolutePath() + "/tmp"
+                    String outPath = FileUtils.getCacheDir(PhotoWallActivity.this) + "/tmp"
                             + System.currentTimeMillis() + ".jpg";
                     i.putExtra(EditImageActivity.EXTRA_OUTPUT, outPath);
                     startActivityForResult(i, AppConstants.REQUEST_PHOTO_FEED);

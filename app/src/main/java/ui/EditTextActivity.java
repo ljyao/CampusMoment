@@ -18,7 +18,7 @@ import org.androidannotations.annotations.ViewById;
 
 import base.BaseActivity;
 import helper.AppConstants;
-import helper.util.StringUtils;
+import helper.common_util.StringUtils;
 
 
 /**

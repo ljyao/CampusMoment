@@ -4,7 +4,7 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import helper.util.StringUtils;
+import helper.common_util.StringUtils;
 
 /**
  * @author tongqian.ni

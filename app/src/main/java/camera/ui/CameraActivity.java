@@ -26,7 +26,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.uy.bbs.R;
-import com.uy.util.ScreenUtils;
 
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
@@ -44,7 +43,8 @@ import java.util.List;
 import camera.CameraBaseActivity;
 import camera.CameraManager;
 import camera.util.CameraHelper;
-import helper.util.IOUtil;
+import helper.common_util.IOUtil;
+import helper.common_util.ScreenUtils;
 
 
 /**

@@ -11,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.uy.imageeditlibrary.R;
@@ -36,7 +35,6 @@ import editimage.fliter.PhotoProcessing;
 public class FliterListFragment extends Fragment {
     public static final String TAG = FliterListFragment.class.getName();
     private View mainView;
-    private View backBtn;// 返回主菜单按钮
 
     private Bitmap fliterBit;// 滤镜处理后的bitmap
     private EditImageActivity activity;
@@ -99,7 +97,6 @@ public class FliterListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mainView = inflater.inflate(R.layout.fragment_edit_image_fliter, null);
-        backBtn = mainView.findViewById(R.id.back_to_main);
         hlistView = (RecyclerView) mainView.findViewById(R.id.listview);
         return mainView;
     }
@@ -107,12 +104,6 @@ public class FliterListFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        backBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backToMain();
-            }
-        });
         setUpFliters();
     }
 

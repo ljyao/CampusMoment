@@ -8,9 +8,10 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.util.LruCache;
 
 import com.chat.util.LruCaCheFactory;
-import com.uy.util.ScreenUtils;
 
 import java.io.InputStream;
+
+import helper.common_util.ScreenUtils;
 
 public class AnimatedGifDrawable extends AnimationDrawable {
 

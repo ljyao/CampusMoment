@@ -19,7 +19,7 @@ import com.umeng.comm.core.beans.CommUser;
 import com.uy.bbs.R;
 
 import community.providable.LoginPrvdr;
-import helper.util.SharePrefUtils;
+import helper.common_util.SharePrefUtils;
 
 public class LoginActivity extends AppCompatActivity {
 

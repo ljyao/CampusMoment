@@ -10,7 +10,6 @@ import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.Topic;
 import com.umeng.comm.core.constants.Constants;
 import com.umeng.comm.core.utils.ToastMsg;
-import com.uy.util.ScreenUtils;
 import com.uy.util.Worker;
 
 import org.androidannotations.annotations.AfterViews;
@@ -23,6 +22,7 @@ import community.adapter.FeedAdapter;
 import community.providable.FeedPrvdr;
 import community.providable.NetLoaderListener;
 import fragment.RefreshRecycleFragment;
+import helper.common_util.ScreenUtils;
 
 
 /**

@@ -9,12 +9,13 @@ import android.widget.ImageView;
 
 import com.uy.util.BitmapUtils;
 import com.uy.util.CompressType;
-import com.uy.util.MyFileUtils;
 import com.uy.util.PriorityRunnable;
-import com.uy.util.ScreenUtils;
 import com.uy.util.Worker;
 
 import java.io.File;
+
+import helper.common_util.FileUtils;
+import helper.common_util.ScreenUtils;
 
 /**
  * 从SDCard异步加载图片
@@ -157,7 +158,8 @@ public class SDCardImageLoader {
                 }
             });
 
-            MyFileUtils.createBitmapFile(imgFile, bmp);
+            FileUtils fileUtils = new FileUtils();
+            fileUtils.createBitmapFile(imgFile, bmp);
             return false;
         }
 

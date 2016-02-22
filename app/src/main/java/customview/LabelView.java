@@ -14,10 +14,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.uy.bbs.R;
-import com.uy.util.ScreenUtils;
 
 import camera.util.EffectUtil;
 import helper.AppConstants;
+import helper.common_util.ScreenUtils;
 import model.TagItem;
 
 

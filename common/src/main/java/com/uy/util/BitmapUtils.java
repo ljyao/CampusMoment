@@ -7,6 +7,8 @@ import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 
+import helper.common_util.ScreenUtils;
+
 /**
  * Created by nice on 15/12/1.
  */

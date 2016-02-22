@@ -6,7 +6,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 import com.umeng.comm.core.beans.ImageItem;
-import com.uy.util.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +14,7 @@ import community.adapter.AlbumsAdapter;
 import community.providable.AlbumsPrvdr;
 import community.providable.NetLoaderListener;
 import fragment.RefreshRecycleFragment;
+import helper.common_util.ScreenUtils;
 
 /**
  * Created by ljy on 16/1/4.

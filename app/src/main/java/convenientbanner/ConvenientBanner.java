@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.uy.bbs.R;
-import com.uy.util.ScreenUtils;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -28,6 +27,7 @@ import convenientbanner.holder.CBViewHolderCreator;
 import convenientbanner.listener.CBPageChangeListener;
 import convenientbanner.listener.OnItemClickListener;
 import convenientbanner.view.CBLoopViewPager;
+import helper.common_util.ScreenUtils;
 
 /**
  * 页面翻转控件，极方便的广告栏

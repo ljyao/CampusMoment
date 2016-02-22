@@ -27,7 +27,7 @@ import editimage.view.CropImageView;
 import editimage.view.CustomViewPager;
 import editimage.view.RotateImageView;
 import editimage.view.StickerView;
-import helper.util.ImageUtils;
+import helper.common_util.ImageUtils;
 import imagezoom.ImageViewTouch;
 import imagezoom.ImageViewTouchBase;
 
@@ -304,7 +304,7 @@ public class EditImageActivity extends BaseActivity {
             super.onPostExecute(result);
             setEditBitmap(result);
         }
-    }// end inner class
+    }
 
     /**
      * 保存按钮点击
@@ -327,9 +327,9 @@ public class EditImageActivity extends BaseActivity {
                     break;
                 default:
                     break;
-            }// end switch
+            }
         }
-    }// end inner class
+    }
 
     /**
      * 保存按钮 点击退出
@@ -342,6 +342,5 @@ public class EditImageActivity extends BaseActivity {
             mContext.setResult(RESULT_OK, returnIntent);
             mContext.finish();
         }
-    }// end inner class
-
-}// end class
+    }
+}

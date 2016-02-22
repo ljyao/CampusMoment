@@ -18,11 +18,12 @@ import com.chat.adapter.PhotoAlbumLVAdapter;
 import com.chat.util.PhotoAlbumLVItem;
 import com.chat.util.Utility;
 import com.uy.chat.R;
-import com.uy.util.MyFileUtils;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import helper.common_util.FileUtils;
 
 
 /**
@@ -34,7 +35,7 @@ public class PhotoAlbumActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_photo_album);
 
-        if (!MyFileUtils.isSDcardOK()) {
+        if (!FileUtils.isStorageOK()) {
             Utility.showToast(this, "SD卡不可用。");
             return;
         }
@@ -128,7 +129,7 @@ public class PhotoAlbumActivity extends AppCompatActivity {
         int count = 0;
         File[] files = folder.listFiles();
         for (File file : files) {
-            if (MyFileUtils.isImage(file.getName(), file.getAbsolutePath())) {
+            if (FileUtils.isImage(file.getName(), file.getAbsolutePath())) {
                 count++;
             }
         }
@@ -143,7 +144,7 @@ public class PhotoAlbumActivity extends AppCompatActivity {
         File[] files = folder.listFiles();
         for (int i = files.length - 1; i >= 0; i--) {
             File file = files[i];
-            if (MyFileUtils.isImage(file.getName(), file.getAbsolutePath())) {
+            if (FileUtils.isImage(file.getName(), file.getAbsolutePath())) {
                 return file.getAbsolutePath();
             }
         }

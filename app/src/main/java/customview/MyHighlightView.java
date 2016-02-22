@@ -15,12 +15,12 @@ import android.widget.ImageView;
 
 import com.uy.App;
 import com.uy.bbs.R;
-import com.uy.util.ScreenUtils;
 
 import camera.util.Point2D;
 import camera.util.UIUtils;
 import customview.drawable.EditableDrawable;
 import customview.drawable.FeatherDrawable;
+import helper.common_util.ScreenUtils;
 import imagezoom.ImageViewTouch;
 
 

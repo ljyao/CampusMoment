@@ -19,11 +19,12 @@ import com.chat.adapter.Decoration;
 import com.chat.adapter.PhotoWallAdapter;
 import com.uy.chat.R;
 import com.uy.util.BitmapUtils;
-import com.uy.util.MyFileUtils;
-import com.uy.util.ScreenUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import helper.common_util.FileUtils;
+import helper.common_util.ScreenUtils;
 
 
 /**
@@ -160,7 +161,7 @@ public class PhotoWallActivity extends AppCompatActivity {
         ArrayList<String> imageFilePaths = new ArrayList<String>();
         for (int i = allFileNames.length - 1; i >= 0; i--) {
             String filePath = folderPath + File.separator + allFileNames[i];
-            if (MyFileUtils.isImage(allFileNames[i], filePath)) {
+            if (FileUtils.isImage(allFileNames[i], filePath)) {
                 imageFilePaths.add(filePath);
             }
         }

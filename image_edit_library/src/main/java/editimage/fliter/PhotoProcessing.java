@@ -10,6 +10,7 @@ public class PhotoProcessing {
     public static final String[] FILTERS = {"原色", "轻柔", "黑白", "经典", "绚丽",
             "复古", "优雅", "胶片", "回忆", "优格", "流年", "光绚"};
     private static final String TAG = "PhotoProcessing";
+    private static Object lock = new Object();
 
     // /////////////////////////////////////////////
     static {
@@ -17,49 +18,51 @@ public class PhotoProcessing {
     }
 
     public static Bitmap filterPhoto(Bitmap bitmap, int position) {
-        if (bitmap != null) {
-            sendBitmapToNative(bitmap);
+        synchronized (lock) {
+            if (bitmap != null) {
+                sendBitmapToNative(bitmap);
+            }
+            switch (position) {
+                case 0: // Original
+                    break;
+                case 1: // Instafix
+                    nativeApplyInstafix();
+                    break;
+                case 2: // Ansel
+                    nativeApplyAnsel();
+                    break;
+                case 3: // Testino
+                    nativeApplyTestino();
+                    break;
+                case 4: // XPro
+                    nativeApplyXPro();
+                    break;
+                case 5: // Retro
+                    nativeApplyRetro();
+                    break;
+                case 6: // Black & White
+                    nativeApplyBW();
+                    break;
+                case 7: // Sepia
+                    nativeApplySepia();
+                    break;
+                case 8: // Cyano
+                    nativeApplyCyano();
+                    break;
+                case 9: // Georgia
+                    nativeApplyGeorgia();
+                    break;
+                case 10: // Sahara
+                    nativeApplySahara();
+                    break;
+                case 11: // HDR
+                    nativeApplyHDR();
+                    break;
+            }
+            Bitmap filteredBitmap = getBitmapFromNative(bitmap);
+            nativeDeleteBitmap();
+            return filteredBitmap;
         }
-        switch (position) {
-            case 0: // Original
-                break;
-            case 1: // Instafix
-                nativeApplyInstafix();
-                break;
-            case 2: // Ansel
-                nativeApplyAnsel();
-                break;
-            case 3: // Testino
-                nativeApplyTestino();
-                break;
-            case 4: // XPro
-                nativeApplyXPro();
-                break;
-            case 5: // Retro
-                nativeApplyRetro();
-                break;
-            case 6: // Black & White
-                nativeApplyBW();
-                break;
-            case 7: // Sepia
-                nativeApplySepia();
-                break;
-            case 8: // Cyano
-                nativeApplyCyano();
-                break;
-            case 9: // Georgia
-                nativeApplyGeorgia();
-                break;
-            case 10: // Sahara
-                nativeApplySahara();
-                break;
-            case 11: // HDR
-                nativeApplyHDR();
-                break;
-        }
-        Bitmap filteredBitmap = getBitmapFromNative(bitmap);
-        nativeDeleteBitmap();
-        return filteredBitmap;
     }
 
     public static native int nativeInitBitmap(int width, int height);

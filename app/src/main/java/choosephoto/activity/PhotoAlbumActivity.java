@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import choosephoto.adapter.PhotoAlbumLVAdapter;
-import helper.util.FileUtils;
+import helper.common_util.FileUtils;
 
 /**
  * 分相册查看SD卡所有图片。
@@ -50,7 +50,7 @@ public class PhotoAlbumActivity extends AppCompatActivity {
 
         mContext = this;
 
-        if (!FileUtils.isSDcardOK()) {
+        if (!FileUtils.isStorageOK()) {
             Utility.showToast(this, "SD卡不可用。");
             return;
         }

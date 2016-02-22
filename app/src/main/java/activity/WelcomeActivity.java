@@ -10,7 +10,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 
 import community.providable.LoginPrvdr;
-import helper.util.SharePrefUtils;
+import helper.common_util.SharePrefUtils;
 
 /**
  * Created by Shine on 2016/2/12.

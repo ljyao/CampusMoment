@@ -1,13 +1,17 @@
-package helper.util;
+package helper.common_util;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.uy.util.Worker;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +21,13 @@ public class ImageUtils {
     public static void putBitmap(String key, Bitmap bitmap) {
         bitmapCache.put(key, bitmap);
     }
+
+    public static void saveBItmapToStorage(final Context context, final Bitmap bitmap, String dirName, final String name) {
+        File imgFile = new File(FileUtils.getImageStorageDir(context) + "/" + dirName + "/" + name);
+        FileUtils fileUtils = new FileUtils();
+        fileUtils.createBitmapFile(imgFile, bitmap);
+    }
+
 
     public static Bitmap getBitmap(String key) {
         return bitmapCache.get(key);
@@ -92,4 +103,8 @@ public class ImageUtils {
         return returnedBitmap;
     }
 
+    public static Bitmap drawableToBitamp(Drawable drawable) {
+        BitmapDrawable bd = (BitmapDrawable) drawable;
+        return bd.getBitmap();
+    }
 }

@@ -9,7 +9,7 @@ import java.util.Stack;
 
 import camera.ui.CameraActivity;
 import editimage.EditImageActivity;
-import helper.util.ImageUtils;
+import helper.common_util.ImageUtils;
 
 public class CameraManager {
 

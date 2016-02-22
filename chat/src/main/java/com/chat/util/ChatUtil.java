@@ -12,14 +12,14 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 
-import com.uy.util.ScreenUtils;
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import helper.common_util.ScreenUtils;
 
 public class ChatUtil {
     public static final String SP_ReceiveSTATUS = "ReceiveSTATUS";

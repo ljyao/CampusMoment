@@ -14,12 +14,13 @@ import android.widget.TextView;
 import com.chat.animate.AnimatedGifDrawable;
 import com.chat.animate.AnimatedImageSpan;
 import com.chat.util.LruCaCheFactory;
-import com.uy.util.ScreenUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import helper.common_util.ScreenUtils;
 
 /**
  * Created by nice on 15/11/30.

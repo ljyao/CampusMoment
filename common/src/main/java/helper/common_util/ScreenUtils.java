@@ -1,4 +1,4 @@
-package com.uy.util;
+package helper.common_util;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
