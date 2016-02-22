@@ -16,8 +16,6 @@ import editimage.fragment.StirckerFragment;
 
 /**
  * 贴图分类列表Adapter
- *
- * @author panyi
  */
 public class StickerTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
     public static final int[] typeIcon = {R.drawable.stickers_type_animal,
@@ -86,8 +84,6 @@ public class StickerTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     /**
      * 选择贴图类型
-     *
-     * @author panyi
      */
     private final class ImageClick implements OnClickListener {
         @Override

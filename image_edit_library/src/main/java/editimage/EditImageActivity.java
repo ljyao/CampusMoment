@@ -34,10 +34,8 @@ import imagezoom.ImageViewTouchBase;
 
 /**
  * 图片编辑 主页面
- *
- * @author panyi
- *         <p/>
- *         包含 1.贴图 2.滤镜 3.剪裁 4.底图旋转 功能
+ * <p>
+ * 包含 1.贴图 2.滤镜 3.剪裁 4.底图旋转 功能
  */
 public class EditImageActivity extends BaseActivity {
     public static final String FILE_PATH = "file_path";

@@ -16,8 +16,6 @@ import imagezoom.ImageViewTouchBase;
 
 /**
  * 工具栏主菜单
- *
- * @author panyi
  */
 public class MainMenuFragment extends Fragment {
     public static final String TAG = MainMenuFragment.class.getName();
@@ -97,8 +95,6 @@ public class MainMenuFragment extends Fragment {
 
     /**
      * 滤镜模式
-     *
-     * @author panyi
      */
     private final class FliterClick implements OnClickListener {
         @Override
@@ -115,8 +111,6 @@ public class MainMenuFragment extends Fragment {
 
     /**
      * 裁剪模式
-     *
-     * @author panyi
      */
     private final class CropClick implements OnClickListener {
         @Override
@@ -137,8 +131,6 @@ public class MainMenuFragment extends Fragment {
 
     /**
      * 图片旋转模式
-     *
-     * @author panyi
      */
     private final class RotateClick implements OnClickListener {
         @Override

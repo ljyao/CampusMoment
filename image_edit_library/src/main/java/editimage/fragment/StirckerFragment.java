@@ -41,8 +41,6 @@ import editimage.view.StickerView;
 
 /**
  * 贴图分类fragment
- *
- * @author panyi
  */
 public class StirckerFragment extends Fragment {
     public static final String TAG = StirckerFragment.class.getName();
@@ -274,8 +272,6 @@ public class StirckerFragment extends Fragment {
 
     /**
      * 返回主菜单页面
-     *
-     * @author panyi
      */
     private final class BackToMenuClick implements OnClickListener {
         @Override
@@ -286,8 +282,6 @@ public class StirckerFragment extends Fragment {
 
     /**
      * 保存贴图任务
-     *
-     * @author panyi
      */
     private final class SaveStickersTask extends
             AsyncTask<Bitmap, Void, Bitmap> {
@@ -309,8 +303,7 @@ public class StirckerFragment extends Fragment {
             Matrix m = new Matrix();
             m.setValues(inverseMatrix.getValues());
 
-            LinkedHashMap<Integer, StickerItem> addItems = mStickerView
-                    .getBank();
+            LinkedHashMap<Integer, StickerItem> addItems = mStickerView.getBank();
             for (Integer id : addItems.keySet()) {
                 StickerItem item = addItems.get(id);
                 item.matrix.postConcat(m);// 乘以底部图片变化矩阵

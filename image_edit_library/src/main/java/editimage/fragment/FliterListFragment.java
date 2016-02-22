@@ -68,8 +68,6 @@ public class FliterListFragment extends Fragment {
 
     /**
      * 保存Bitmap图片到指定文件
-     *
-     * @param bm
      */
     public static boolean saveBitmap(Bitmap bm, String filePath) {
         File f = new File(filePath);
@@ -182,8 +180,6 @@ public class FliterListFragment extends Fragment {
 
     /**
      * 保存滤镜处理图片任务
-     *
-     * @author panyi
      */
     private final class SaveImageTask extends AsyncTask<Bitmap, Void, Boolean> {
         private Dialog dialog;
@@ -230,8 +226,6 @@ public class FliterListFragment extends Fragment {
 
     /**
      * 图片滤镜处理任务
-     *
-     * @author panyi
      */
     private final class ProcessingImage extends
             AsyncTask<Integer, Void, Bitmap> {
