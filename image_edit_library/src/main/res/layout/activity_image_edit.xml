@@ -59,8 +59,8 @@
 
     <editimage.view.CustomViewPager
         android:id="@+id/bottom_gallery"
-        android:layout_width="fill_parent"
-        android:layout_height="95dp"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
         android:layout_alignParentBottom="true"
         android:background="@android:color/white" />
 
@@ -68,8 +68,8 @@
         android:id="@+id/work_space"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@id/bottom_gallery"
         android:layout_below="@id/banner"
+        android:layout_marginBottom="65dp"
         android:background="#f2f2f2">
 
         <imagezoom.ImageViewTouch

@@ -34,7 +34,7 @@ import editimage.fliter.PhotoProcessing;
  */
 public class FliterListFragment extends Fragment {
     public static final String TAG = FliterListFragment.class.getName();
-    private View mainView;
+    private View viewGroup;
 
     private Bitmap fliterBit;// 滤镜处理后的bitmap
     private EditImageActivity activity;
@@ -96,9 +96,9 @@ public class FliterListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mainView = inflater.inflate(R.layout.fragment_edit_image_fliter, null);
-        hlistView = (RecyclerView) mainView.findViewById(R.id.listview);
-        return mainView;
+        viewGroup = inflater.inflate(R.layout.fragment_edit_image_fliter, container, false);
+        hlistView = (RecyclerView) viewGroup.findViewById(R.id.listview);
+        return viewGroup;
     }
 
     @Override
@@ -269,6 +269,5 @@ public class FliterListFragment extends Fragment {
                     false);
             dialog.show();
         }
-
-    }// end inner class
-}// end class
+    }
+}

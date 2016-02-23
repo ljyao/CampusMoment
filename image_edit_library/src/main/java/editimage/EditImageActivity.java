@@ -11,6 +11,8 @@ import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
 
 import com.jni.bitmap_operations.JniBitmapHolder;
@@ -28,13 +30,14 @@ import editimage.view.CustomViewPager;
 import editimage.view.RotateImageView;
 import editimage.view.StickerView;
 import helper.common_util.ImageUtils;
+import helper.common_util.ScreenUtils;
 import imagezoom.ImageViewTouch;
 import imagezoom.ImageViewTouchBase;
 
 
 /**
  * 图片编辑 主页面
- * <p>
+ * <p/>
  * 包含 1.贴图 2.滤镜 3.剪裁 4.底图旋转 功能
  */
 public class EditImageActivity extends BaseActivity {
@@ -262,6 +265,30 @@ public class EditImageActivity extends BaseActivity {
         super.onDestroy();
         if (mLoadImageTask != null) {
             mLoadImageTask.cancel(true);
+        }
+    }
+
+    public void setViewPageHeight() {
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) bottomGallery.getLayoutParams();
+        if (mode == MODE_FILTER) {
+            layoutParams.height = ScreenUtils.dp2px(150, this);
+            bottomGallery.setLayoutParams(layoutParams);
+            resizeFragment(mFliterListFragment, ViewGroup.LayoutParams.MATCH_PARENT, layoutParams.height);
+        } else {
+            layoutParams.height = ScreenUtils.dp2px(65, this);
+            bottomGallery.setLayoutParams(layoutParams);
+
+        }
+    }
+
+    private void resizeFragment(Fragment f, int newWidth, int newHeight) {
+        if (f != null) {
+            View view = f.getView();
+            ViewGroup.LayoutParams p = view.getLayoutParams();
+            p.width = newWidth;
+            p.height = newHeight;
+            view.setLayoutParams(p);
+            view.requestLayout();
         }
     }
 
