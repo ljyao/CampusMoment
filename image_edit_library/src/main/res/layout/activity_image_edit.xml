@@ -57,12 +57,6 @@
         </ViewFlipper>
     </FrameLayout>
 
-    <editimage.view.CustomViewPager
-        android:id="@+id/bottom_gallery"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/white" />
 
     <FrameLayout
         android:id="@+id/work_space"
@@ -104,4 +98,10 @@
             android:visibility="gone" />
     </FrameLayout>
 
+    <FrameLayout
+        android:id="@+id/bottom_menu"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white" />
 </RelativeLayout>

@@ -3,6 +3,7 @@ package editimage.fragment;
 import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import editimage.EditImageActivity;
 import editimage.adapter.FliterAdapter;
 import editimage.fliter.FliterType;
 import editimage.fliter.PhotoProcessing;
+import helper.common_util.ScreenUtils;
 
 
 /**
@@ -39,7 +41,6 @@ public class FliterListFragment extends Fragment {
     private Bitmap fliterBit;// 滤镜处理后的bitmap
     private EditImageActivity activity;
 
-    private String[] fliters = PhotoProcessing.FILTERS;
     private Bitmap currentBitmap;// 标记变量
     private RecyclerView hlistView;
     private FliterAdapter adapter;
@@ -96,7 +97,7 @@ public class FliterListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        viewGroup = inflater.inflate(R.layout.fragment_edit_image_fliter, container, false);
+        viewGroup = inflater.inflate(R.layout.fragment_edit_image_fliter, null);
         hlistView = (RecyclerView) viewGroup.findViewById(R.id.listview);
         return viewGroup;
     }
@@ -115,7 +116,7 @@ public class FliterListFragment extends Fragment {
         fliterBit = null;
         activity.mainImage.setImageBitmap(activity.mainBitmap);// 返回原图
         activity.mode = EditImageActivity.MODE_NONE;
-        activity.bottomGallery.setCurrentItem(0);
+        activity.setCurrentItem(0);
         activity.mainImage.setScaleEnabled(true);
         activity.bannerFlipper.showPrevious();
     }
@@ -146,6 +147,7 @@ public class FliterListFragment extends Fragment {
         }
         adapter = new FliterAdapter(fliterTypes, fliterItemListener);
         hlistView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        hlistView.addItemDecoration(new FliterItemDecoration());
         hlistView.setAdapter(adapter);
     }
 
@@ -268,6 +270,19 @@ public class FliterListFragment extends Fragment {
             dialog = BaseActivity.getLoadingDialog(getActivity(), "图片处理中...",
                     false);
             dialog.show();
+        }
+    }
+
+    public class FliterItemDecoration extends RecyclerView.ItemDecoration {
+        int offset;
+
+        public FliterItemDecoration() {
+            offset = ScreenUtils.dp2px(5, getContext());
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            outRect.set(offset, offset, offset, offset);
         }
     }
 }

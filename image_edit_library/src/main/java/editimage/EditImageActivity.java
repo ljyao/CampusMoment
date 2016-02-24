@@ -5,14 +5,13 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 import android.widget.ViewFlipper;
 
 import com.jni.bitmap_operations.JniBitmapHolder;
@@ -26,7 +25,6 @@ import editimage.fragment.RotateFragment;
 import editimage.fragment.StirckerFragment;
 import editimage.utils.BitmapUtils;
 import editimage.view.CropImageView;
-import editimage.view.CustomViewPager;
 import editimage.view.RotateImageView;
 import editimage.view.StickerView;
 import helper.common_util.ImageUtils;
@@ -75,7 +73,6 @@ public class EditImageActivity extends BaseActivity {
     public StickerView mStickerView;// 贴图层View
     public CropImageView mCropPanel;// 剪切操作控件
     public RotateImageView mRotatePanel;// 旋转操作控件
-    public CustomViewPager bottomGallery;// 底部gallery
     public StirckerFragment mStirckerFragment;// 贴图Fragment
     public FliterListFragment mFliterListFragment;// 滤镜FliterListFragment
     public RotateFragment mRotateFragment;// 图片旋转Fragment
@@ -85,9 +82,10 @@ public class EditImageActivity extends BaseActivity {
     private View backBtn;
     private View applyBtn;// 应用按钮
     private View saveBtn;// 保存按钮
-    private BottomGalleryAdapter mBottomGalleryAdapter;// 底部gallery
     private MainMenuFragment mMainMenuFragment;// Menu
     private CropFragment mCropFragment;// 图片剪裁Fragment
+    private FrameLayout menuFrameLayout;
+    private Fragment currentFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -137,18 +135,14 @@ public class EditImageActivity extends BaseActivity {
         mCropPanel = (CropImageView) findViewById(R.id.crop_panel);
         mRotatePanel = (RotateImageView) findViewById(R.id.rotate_panel);
 
-        // 底部gallery
-        bottomGallery = (CustomViewPager) findViewById(R.id.bottom_gallery);
-        bottomGallery.setOffscreenPageLimit(5);
+        menuFrameLayout = (FrameLayout) findViewById(R.id.bottom_menu);
         mMainMenuFragment = MainMenuFragment.newInstance(this);
-        mBottomGalleryAdapter = new BottomGalleryAdapter(
-                this.getSupportFragmentManager());
         mStirckerFragment = StirckerFragment.newInstance(this);
         mFliterListFragment = FliterListFragment.newInstance(this);
         mCropFragment = CropFragment.newInstance(this);
         mRotateFragment = RotateFragment.newInstance(this);
 
-        bottomGallery.setAdapter(mBottomGalleryAdapter);
+        setCurrentItem(mode);
     }
 
     /**
@@ -268,55 +262,45 @@ public class EditImageActivity extends BaseActivity {
         }
     }
 
-    public void setViewPageHeight() {
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) bottomGallery.getLayoutParams();
+    public void setViewPageHeight(int mode) {
+        ViewGroup.LayoutParams layoutParams = menuFrameLayout.getLayoutParams();
         if (mode == MODE_FILTER) {
-            layoutParams.height = ScreenUtils.dp2px(150, this);
-            bottomGallery.setLayoutParams(layoutParams);
-            resizeFragment(mFliterListFragment, ViewGroup.LayoutParams.MATCH_PARENT, layoutParams.height);
+            layoutParams.height = ScreenUtils.dp2px(120, this);
+            menuFrameLayout.setLayoutParams(layoutParams);
         } else {
             layoutParams.height = ScreenUtils.dp2px(65, this);
-            bottomGallery.setLayoutParams(layoutParams);
-
+            menuFrameLayout.setLayoutParams(layoutParams);
         }
     }
 
-    private void resizeFragment(Fragment f, int newWidth, int newHeight) {
-        if (f != null) {
-            View view = f.getView();
-            ViewGroup.LayoutParams p = view.getLayoutParams();
-            p.width = newWidth;
-            p.height = newHeight;
-            view.setLayoutParams(p);
-            view.requestLayout();
-        }
-    }
 
-    private final class BottomGalleryAdapter extends FragmentPagerAdapter {
-        public BottomGalleryAdapter(FragmentManager fm) {
-            super(fm);
+    public void setCurrentItem(int index) {
+        setViewPageHeight(index);
+        Fragment nextFragment;
+        if (index == 0)
+            nextFragment = mMainMenuFragment;// 主菜单
+        else if (index == 1)
+            nextFragment = mStirckerFragment;// 贴图
+        else if (index == 2)
+            nextFragment = mFliterListFragment;// 滤镜
+        else if (index == 3)
+            nextFragment = mCropFragment;// 剪裁
+        else if (index == 4)
+            nextFragment = mRotateFragment;// 旋转
+        else
+            nextFragment = mMainMenuFragment;
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (currentFragment != null) {
+            ft.hide(currentFragment);
         }
-
-        @Override
-        public Fragment getItem(int index) {
-            // System.out.println("createFragment-->"+index);
-            if (index == 0)
-                return mMainMenuFragment;// 主菜单
-            if (index == 1)
-                return mStirckerFragment;// 贴图
-            if (index == 2)
-                return mFliterListFragment;// 滤镜
-            if (index == 3)
-                return mCropFragment;// 剪裁
-            if (index == 4)
-                return mRotateFragment;// 旋转
-            return MainMenuFragment.newInstance(mContext);
+        if (nextFragment.isAdded()) {
+            ft.show(nextFragment);
+        } else {
+            ft.add(R.id.bottom_menu, nextFragment);
         }
-
-        @Override
-        public int getCount() {
-            return 5;
-        }
+        ft.setTransition(FragmentTransaction.TRANSIT_NONE);
+        ft.commit();
+        currentFragment = nextFragment;
     }
 
     private final class LoadImageTask extends AsyncTask<String, Void, Bitmap> {

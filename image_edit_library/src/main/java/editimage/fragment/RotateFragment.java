@@ -97,7 +97,7 @@ public class RotateFragment extends Fragment {
      */
     public void backToMain() {
         activity.mode = EditImageActivity.MODE_NONE;
-        activity.bottomGallery.setCurrentItem(0);
+        activity.setCurrentItem(0);
         activity.mainImage.setVisibility(View.VISIBLE);
         this.mRotatePanel.setVisibility(View.GONE);
         activity.bannerFlipper.showPrevious();

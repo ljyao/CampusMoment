@@ -99,8 +99,7 @@ public class StirckerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mainView = inflater.inflate(R.layout.fragment_edit_image_sticker_type,
-                null);
+        mainView = inflater.inflate(R.layout.fragment_edit_image_sticker_type, null);
         this.mStickerView = activity.mStickerView;
         flipper = (ViewFlipper) mainView.findViewById(R.id.flipper);
         flipper.setInAnimation(activity, R.anim.in_bottom_to_top);
@@ -209,7 +208,7 @@ public class StirckerFragment extends Fragment {
 
     public void backToMain() {
         activity.mode = EditImageActivity.MODE_NONE;
-        activity.bottomGallery.setCurrentItem(0);
+        activity.setCurrentItem(0);
         mStickerView.setVisibility(View.GONE);
         activity.bannerFlipper.showPrevious();
     }

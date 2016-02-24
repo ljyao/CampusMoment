@@ -83,23 +83,26 @@ public class MainMenuFragment extends Fragment {
         public void onClick(View v) {
             if (v == stickerBtn) {
                 editImageActivity.mode = EditImageActivity.MODE_STICKERS;
-                editImageActivity.mStirckerFragment.getmStickerView().setVisibility(View.VISIBLE);
-                editImageActivity.bottomGallery.setCurrentItem(1);
+                editImageActivity.setCurrentItem(1);
+                View stickerView = editImageActivity.mStirckerFragment.getmStickerView();
+                if (stickerView != null) {
+                    stickerView.setVisibility(View.VISIBLE);
+                }
                 editImageActivity.bannerFlipper.showNext();
             } else if (v == fliterBtn) {
                 editImageActivity.mode = EditImageActivity.MODE_FILTER;
+                editImageActivity.setCurrentItem(2);
                 editImageActivity.mFliterListFragment.setCurrentBitmap(editImageActivity.mainBitmap);
                 editImageActivity.mainImage.setImageBitmap(editImageActivity.mainBitmap);
                 editImageActivity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
                 editImageActivity.mainImage.setScaleEnabled(false);
-                editImageActivity.bottomGallery.setCurrentItem(2);
                 editImageActivity.bannerFlipper.showNext();
             } else if (v == cropBtn) {
                 editImageActivity.mode = EditImageActivity.MODE_CROP;
+                editImageActivity.setCurrentItem(3);
                 editImageActivity.mCropPanel.setVisibility(View.VISIBLE);
                 editImageActivity.mainImage.setImageBitmap(editImageActivity.mainBitmap);
                 editImageActivity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
-                editImageActivity.bottomGallery.setCurrentItem(3);
                 editImageActivity.mainImage.setScaleEnabled(false);// 禁用缩放
                 //
                 RectF r = editImageActivity.mainImage.getBitmapRect();
@@ -108,7 +111,7 @@ public class MainMenuFragment extends Fragment {
                 editImageActivity.bannerFlipper.showNext();
             } else if (v == rotateBtn) {
                 editImageActivity.mode = EditImageActivity.MODE_ROTATE;
-                editImageActivity.bottomGallery.setCurrentItem(4);
+                editImageActivity.setCurrentItem(4);
                 editImageActivity.mainImage.setImageBitmap(editImageActivity.mainBitmap);
                 editImageActivity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
                 editImageActivity.mainImage.setVisibility(View.GONE);
@@ -120,7 +123,6 @@ public class MainMenuFragment extends Fragment {
                 editImageActivity.mRotatePanel.setVisibility(View.VISIBLE);
                 editImageActivity.bannerFlipper.showNext();
             }
-            editImageActivity.setViewPageHeight();
         }
     }
 

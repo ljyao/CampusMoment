@@ -2,20 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+
+    android:background="@android:color/white"
     android:orientation="vertical">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/fliter_image"
-        android:layout_width="60dp"
-        android:layout_height="80dp"
-        android:background="@drawable/camera_image_capture_water_mark_button" />
+        android:layout_width="65dp"
+        android:layout_height="87dp"
+        android:layout_gravity="center"
+        android:padding="2dp" />
 
     <TextView
         android:id="@+id/fliter_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="12321"
         android:textColor="@android:color/black"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 </LinearLayout>
