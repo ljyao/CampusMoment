@@ -5,11 +5,10 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/select_img_gridView_img"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:contentDescription="@null"
         android:scaleType="centerCrop" />
 
     <TextView

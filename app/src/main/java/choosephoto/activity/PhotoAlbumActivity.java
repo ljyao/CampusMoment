@@ -194,15 +194,16 @@ public class PhotoAlbumActivity extends AppCompatActivity {
                     // 获取图片的路径
                     String imagePath = cursor.getString(0);
 
-                    File parentFile = new File(imagePath).getParentFile();
-                    String parentPath = parentFile.getAbsolutePath();
+                    final File parentFile = new File(imagePath).getParentFile();
+                    final String parentPath = parentFile.getAbsolutePath();
 
                     // 不扫描重复路径
                     if (!cachePath.contains(parentPath)) {
-                        this.list.add(new PhotoAlbumLVItem(parentPath, getImageCount(parentFile), getFirstImagePath(parentFile)));
+
                         Worker.postMain(new Runnable() {
                             @Override
                             public void run() {
+                                list.add(new PhotoAlbumLVItem(parentPath, getImageCount(parentFile), getFirstImagePath(parentFile)));
                                 adapter.notifyDataSetChanged();
                             }
                         });
