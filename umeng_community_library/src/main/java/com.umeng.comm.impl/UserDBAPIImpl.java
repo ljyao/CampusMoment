@@ -25,7 +25,6 @@
 package com.umeng.comm.impl;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.activeandroid.query.Select;
 import com.umeng.comm.core.beans.CommUser;

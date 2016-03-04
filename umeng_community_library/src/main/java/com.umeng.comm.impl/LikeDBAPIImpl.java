@@ -33,7 +33,6 @@ import com.umeng.comm.core.beans.relation.DBRelationOP;
 import com.umeng.comm.core.beans.relation.EntityRelationFactory;
 import com.umeng.comm.core.db.ctrl.LikeDBAPI;
 import com.umeng.comm.core.listeners.Listeners.SimpleFetchListener;
-import com.umeng.comm.impl.AbsDbAPI;
 
 import java.util.ArrayList;
 import java.util.List;

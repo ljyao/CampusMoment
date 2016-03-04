@@ -19,7 +19,8 @@
             android:layout_height="wrap_content" android:text="@string/umeng_comm_hot" />
 
     </LinearLayout>
-    <com.umeng.comm.ui.imagepicker.widgets.RefreshLvLayout
+
+    <community.ui.imagepicker.widgets.RefreshLvLayout
         android:id="@+id/umeng_comm_topic_refersh" android:layout_width="match_parent"
         android:layout_height="wrap_content" android:layout_below="@id/button_group">
 
@@ -28,7 +29,7 @@
             android:fadingEdgeLength="0.0sp" android:fastScrollEnabled="false"
             android:listSelector="@android:color/transparent" android:scrollbars="none"
             android:scrollingCache="false" />
-    </com.umeng.comm.ui.imagepicker.widgets.RefreshLvLayout>
+    </community.ui.imagepicker.widgets.RefreshLvLayout>
 
     <com.umeng.commm.ui.widgets.BaseView android:id="@+id/umeng_comm_baseview"
         android:layout_width="match_parent" android:layout_height="match_parent"

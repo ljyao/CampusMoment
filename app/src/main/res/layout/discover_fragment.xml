@@ -5,7 +5,7 @@
     android:background="#f2f2f2"
     android:orientation="vertical">
 
-    <convenientbanner.ConvenientBanner
+    <widget.convenientbanner.ConvenientBanner
         android:id="@+id/convenientBanner"
         android:layout_width="match_parent"
         android:layout_height="120dp"

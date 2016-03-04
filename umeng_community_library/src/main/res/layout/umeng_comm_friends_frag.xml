@@ -12,7 +12,8 @@
         layout="@layout/umeng_comm_feeds_frgm_layout" android:layout_width="match_parent"
         android:layout_height="match_parent" android:layout_below="@id/umeng_comm_divide_id" />
 
-    <com.umeng.comm.ui.widgets.BaseView android:id="@+id/umeng_comm_baseview"
+    <community.ui.widgets.BaseView
+        android:id="@+id/umeng_comm_baseview"
         android:layout_width="match_parent" android:layout_height="match_parent"
         android:layout_below="@id/umeng_comm_divide_id" />
 

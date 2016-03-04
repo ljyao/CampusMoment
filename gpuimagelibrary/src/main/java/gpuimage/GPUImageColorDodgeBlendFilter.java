@@ -27,18 +27,18 @@ public class GPUImageColorDodgeBlendFilter extends GPUImageTwoInputFilter {
             " \n" +
             " void main()\n" +
             " {\n" +
-            "     vec4 base = texture2D(inputImageTexture, textureCoordinate);\n" +
+            "     vec4 helper.base = texture2D(inputImageTexture, textureCoordinate);\n" +
             "     vec4 overlay = texture2D(inputImageTexture2, textureCoordinate2);\n" +
             "     \n" +
-            "     vec3 baseOverlayAlphaProduct = vec3(overlay.a * base.a);\n" +
-            "     vec3 rightHandProduct = overlay.rgb * (1.0 - base.a) + base.rgb * (1.0 - overlay.a);\n" +
+            "     vec3 baseOverlayAlphaProduct = vec3(overlay.a * helper.base.a);\n" +
+            "     vec3 rightHandProduct = overlay.rgb * (1.0 - helper.base.a) + helper.base.rgb * (1.0 - overlay.a);\n" +
             "     \n" +
             "     vec3 firstBlendColor = baseOverlayAlphaProduct + rightHandProduct;\n" +
             "     vec3 overlayRGB = clamp((overlay.rgb / clamp(overlay.a, 0.01, 1.0)) * step(0.0, overlay.a), 0.0, 0.99);\n" +
             "     \n" +
-            "     vec3 secondBlendColor = (base.rgb * overlay.a) / (1.0 - overlayRGB) + rightHandProduct;\n" +
+            "     vec3 secondBlendColor = (helper.base.rgb * overlay.a) / (1.0 - overlayRGB) + rightHandProduct;\n" +
             "     \n" +
-            "     vec3 colorChoice = step((overlay.rgb * base.a + base.rgb * overlay.a), baseOverlayAlphaProduct);\n" +
+            "     vec3 colorChoice = step((overlay.rgb * helper.base.a + helper.base.rgb * overlay.a), baseOverlayAlphaProduct);\n" +
             "     \n" +
             "     gl_FragColor = vec4(mix(firstBlendColor, secondBlendColor, colorChoice), 1.0);\n" +
             " }";

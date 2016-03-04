@@ -11,8 +11,8 @@ import java.util.List;
 
 import community.fragment.FeedFragment;
 import community.providable.FeedPrvdr;
-import community.views.FollowedFeedView;
-import community.views.FollowedFeedView_;
+import community.views.FeedItemView;
+import community.views.FeedItemView_;
 import community.views.TopicInfoView;
 import community.views.TopicInfoView_;
 
@@ -36,7 +36,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                 itemView = TopicInfoView_.build(parent.getContext(), null);
                 break;
             case FEED:
-                FollowedFeedView feedView = FollowedFeedView_.build(parent.getContext(), null);
+                FeedItemView feedView = FeedItemView_.build(parent.getContext(), null);
                 feedView.setListener(feedListListener);
                 itemView = feedView;
                 break;
@@ -104,13 +104,13 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
     }
 
     static public class FeedViewHolder extends RecyclerView.ViewHolder {
-        private FollowedFeedView feedView;
+        private FeedItemView feedView;
         private TopicInfoView topicInfo;
 
         public FeedViewHolder(View itemView) {
             super(itemView);
-            if (itemView instanceof FollowedFeedView) {
-                feedView = (FollowedFeedView) itemView;
+            if (itemView instanceof FeedItemView) {
+                feedView = (FeedItemView) itemView;
             } else if (itemView instanceof TopicInfoView) {
                 topicInfo = (TopicInfoView) itemView;
             }

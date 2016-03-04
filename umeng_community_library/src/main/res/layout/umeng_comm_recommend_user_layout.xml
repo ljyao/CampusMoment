@@ -6,7 +6,8 @@
     <include android:id="@+id/umeng_comm_recommend_user_title"
         layout="@layout/umeng_comm_setting_title_bar" />
 
-    <com.umeng.comm.ui.imagepicker.widgets.RefreshLvLayout android:id="@+id/umeng_comm_swipe_layout"
+    <community.ui.imagepicker.widgets.RefreshLvLayout
+        android:id="@+id/umeng_comm_swipe_layout"
         android:layout_width="fill_parent" android:layout_height="fill_parent"
         android:layout_below="@id/umeng_comm_recommend_user_title">
 
@@ -15,7 +16,7 @@
             android:divider="@null" android:fadingEdgeLength="0.0sp"
             android:fastScrollEnabled="false" android:listSelector="@android:color/transparent"
             android:scrollbars="none" android:scrollingCache="false"></ListView>
-    </com.umeng.comm.ui.imagepicker.widgets.RefreshLvLayout>
+    </community.ui.imagepicker.widgets.RefreshLvLayout>
 
     <ViewStub android:id="@+id/umeng_comm_empty" android:layout_width="match_parent"
         android:layout_height="match_parent" android:layout_centerInParent="true"

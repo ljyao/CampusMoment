@@ -81,7 +81,7 @@
         android:textColor="#bbbbbb"
         android:textSize="14sp" />
 
-    <com.umeng.comm.ui.emoji.EmojiTextView
+    <community.ui.emoji.EmojiTextView
         android:id="@+id/umeng_comm_msg_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

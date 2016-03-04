@@ -3,7 +3,8 @@
     android:layout_width="match_parent" android:layout_height="wrap_content"
     android:minHeight="64dp" android:orientation="vertical">
 
-    <com.umeng.comm.ui.widgets.RoundImageView android:id="@+id/umeng_comm_active_user_icon"
+    <community.ui.widgets.RoundImageView
+        android:id="@+id/umeng_comm_active_user_icon"
         android:layout_width="46dp" android:layout_height="46dp"
         android:layout_alignParentLeft="true" android:layout_centerVertical="true"
         android:layout_marginLeft="16dp" android:src="@drawable/umeng_comm_male" />

@@ -596,7 +596,7 @@ public abstract class ImageViewTouchBase extends ImageView implements IDisposabl
     }
 
     /**
-     * Setup the base matrix so that the image is centered and scaled properly.
+     * Setup the helper.base matrix so that the image is centered and scaled properly.
      *
      * @param drawable
      * @param matrix
@@ -641,7 +641,7 @@ public abstract class ImageViewTouchBase extends ImageView implements IDisposabl
     }
 
     /**
-     * Setup the base matrix so that the image is centered and scaled properly.
+     * Setup the helper.base matrix so that the image is centered and scaled properly.
      *
      * @param bitmap
      * @param matrix

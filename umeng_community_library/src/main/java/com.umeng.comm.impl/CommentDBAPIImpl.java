@@ -35,9 +35,6 @@ import com.umeng.comm.core.beans.ImageItem;
 import com.umeng.comm.core.beans.relation.DBRelationOP;
 import com.umeng.comm.core.beans.relation.EntityRelationFactory;
 import com.umeng.comm.core.db.ctrl.CommentDBAPI;
-
-import com.umeng.comm.core.db.ctrl.impl.DatabaseAPI;
-import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.listeners.Listeners.SimpleFetchListener;
 import com.umeng.comm.core.utils.Log;
 

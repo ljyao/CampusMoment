@@ -4,7 +4,8 @@
 
     <!-- <include layout="@layout/umeng_comm_search_header_view" /> -->
 
-    <com.umeng.comm.ui.imagepicker.widgets.RefreshLvLayout android:id="@+id/umeng_comm_swipe_layout"
+    <community.ui.imagepicker.widgets.RefreshLvLayout
+        android:id="@+id/umeng_comm_swipe_layout"
         android:layout_width="fill_parent" android:layout_height="fill_parent">
 
         <ListView android:id="@+id/umeng_comm_feed_listview" android:layout_width="match_parent"
@@ -12,6 +13,6 @@
             android:dividerHeight="1dip" android:fadingEdgeLength="0.0sp"
             android:fastScrollEnabled="false" android:listSelector="@android:color/transparent"
             android:scrollbars="none" android:scrollingCache="false"></ListView>
-    </com.umeng.comm.ui.imagepicker.widgets.RefreshLvLayout>
+    </community.ui.imagepicker.widgets.RefreshLvLayout>
 
 </FrameLayout>

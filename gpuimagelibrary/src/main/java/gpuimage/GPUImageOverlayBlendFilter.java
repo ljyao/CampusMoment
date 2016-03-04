@@ -25,28 +25,28 @@ public class GPUImageOverlayBlendFilter extends GPUImageTwoInputFilter {
             " \n" +
             " void main()\n" +
             " {\n" +
-            "     mediump vec4 base = texture2D(inputImageTexture, textureCoordinate);\n" +
+            "     mediump vec4 helper.base = texture2D(inputImageTexture, textureCoordinate);\n" +
             "     mediump vec4 overlay = texture2D(inputImageTexture2, textureCoordinate2);\n" +
             "     \n" +
             "     mediump float ra;\n" +
-            "     if (2.0 * base.r < base.a) {\n" +
-            "         ra = 2.0 * overlay.r * base.r + overlay.r * (1.0 - base.a) + base.r * (1.0 - overlay.a);\n" +
+            "     if (2.0 * helper.base.r < helper.base.a) {\n" +
+            "         ra = 2.0 * overlay.r * helper.base.r + overlay.r * (1.0 - helper.base.a) + helper.base.r * (1.0 - overlay.a);\n" +
             "     } else {\n" +
-            "         ra = overlay.a * base.a - 2.0 * (base.a - base.r) * (overlay.a - overlay.r) + overlay.r * (1.0 - base.a) + base.r * (1.0 - overlay.a);\n" +
+            "         ra = overlay.a * helper.base.a - 2.0 * (helper.base.a - helper.base.r) * (overlay.a - overlay.r) + overlay.r * (1.0 - helper.base.a) + helper.base.r * (1.0 - overlay.a);\n" +
             "     }\n" +
             "     \n" +
             "     mediump float ga;\n" +
-            "     if (2.0 * base.g < base.a) {\n" +
-            "         ga = 2.0 * overlay.g * base.g + overlay.g * (1.0 - base.a) + base.g * (1.0 - overlay.a);\n" +
+            "     if (2.0 * helper.base.g < helper.base.a) {\n" +
+            "         ga = 2.0 * overlay.g * helper.base.g + overlay.g * (1.0 - helper.base.a) + helper.base.g * (1.0 - overlay.a);\n" +
             "     } else {\n" +
-            "         ga = overlay.a * base.a - 2.0 * (base.a - base.g) * (overlay.a - overlay.g) + overlay.g * (1.0 - base.a) + base.g * (1.0 - overlay.a);\n" +
+            "         ga = overlay.a * helper.base.a - 2.0 * (helper.base.a - helper.base.g) * (overlay.a - overlay.g) + overlay.g * (1.0 - helper.base.a) + helper.base.g * (1.0 - overlay.a);\n" +
             "     }\n" +
             "     \n" +
             "     mediump float ba;\n" +
-            "     if (2.0 * base.b < base.a) {\n" +
-            "         ba = 2.0 * overlay.b * base.b + overlay.b * (1.0 - base.a) + base.b * (1.0 - overlay.a);\n" +
+            "     if (2.0 * helper.base.b < helper.base.a) {\n" +
+            "         ba = 2.0 * overlay.b * helper.base.b + overlay.b * (1.0 - helper.base.a) + helper.base.b * (1.0 - overlay.a);\n" +
             "     } else {\n" +
-            "         ba = overlay.a * base.a - 2.0 * (base.a - base.b) * (overlay.a - overlay.b) + overlay.b * (1.0 - base.a) + base.b * (1.0 - overlay.a);\n" +
+            "         ba = overlay.a * helper.base.a - 2.0 * (helper.base.a - helper.base.b) * (overlay.a - overlay.b) + overlay.b * (1.0 - helper.base.a) + helper.base.b * (1.0 - overlay.a);\n" +
             "     }\n" +
             "     \n" +
             "     gl_FragColor = vec4(ra, ga, ba, 1.0);\n" +

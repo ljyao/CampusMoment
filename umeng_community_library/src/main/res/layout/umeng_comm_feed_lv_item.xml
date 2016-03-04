@@ -12,7 +12,8 @@
 
     <!-- 头像 -->
 
-    <com.umeng.comm.ui.widgets.RoundImageView android:id="@+id/user_portrait_img_btn"
+    <community.ui.widgets.RoundImageView
+        android:id="@+id/user_portrait_img_btn"
         android:layout_width="48dp" android:layout_height="48dp" android:layout_marginBottom="3dp"
         android:layout_marginLeft="15dp" android:layout_marginRight="6dp"
         android:layout_marginTop="8dp" android:contentDescription="@string/umeng_comm_desc"
@@ -42,7 +43,8 @@
         android:gravity="top" android:singleLine="true" android:textSize="18sp"
         android:textStyle="bold" />
 
-    <com.umeng.comm.ui.emoji.EmojiTextView android:id="@+id/umeng_comm_msg_text"
+    <community.ui.emoji.EmojiTextView
+        android:id="@+id/umeng_comm_msg_text"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:layout_below="@id/umeng_comm_msg_user_name" android:layout_marginLeft="0dp"
         android:layout_marginRight="15dp" android:layout_marginTop="10dp"

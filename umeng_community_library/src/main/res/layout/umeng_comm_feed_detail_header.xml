@@ -16,7 +16,8 @@
         android:drawablePadding="4dp" android:gravity="center" android:text="40"
         android:textColor="#66646d" android:textSize="14sp" />
 
-    <com.umeng.comm.ui.widgets.LikeView android:id="@+id/umeng_comm_like_users_layout"
+    <community.ui.widgets.LikeView
+        android:id="@+id/umeng_comm_like_users_layout"
         android:layout_width="match_parent" android:layout_height="30dp"
         android:layout_below="@id/umeng_comm_feed_content_layout" android:layout_marginBottom="10dp"
         android:layout_marginLeft="15dp" android:layout_marginRight="0dp"

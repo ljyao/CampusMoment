@@ -23,7 +23,8 @@
             android:paddingLeft="8dp" android:paddingRight="8dp"
             android:src="@drawable/umeng_comm_emoji_keyboard" />
 
-        <com.umeng.comm.ui.widgets.CommentEditText android:id="@+id/umeng_comm_comment_edittext"
+        <community.ui.widgets.CommentEditText
+            android:id="@+id/umeng_comm_comment_edittext"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:layout_centerVertical="true" android:layout_marginBottom="12dp"
             android:layout_marginTop="12dp"
@@ -36,7 +37,8 @@
     <include layout="@layout/umeng_comm_divide_line" android:layout_width="match_parent"
         android:layout_height="1dp" android:background="#d9d7dd" />
 
-    <com.umeng.comm.ui.emoji.EmojiBorad android:id="@+id/umeng_comm_emojiview"
+    <community.ui.emoji.EmojiBorad
+        android:id="@+id/umeng_comm_emojiview"
         android:layout_width="match_parent" android:layout_height="wrap_content"
         android:layout_below="@id/umeng_comm_comment_edittext" android:visibility="gone" />
 

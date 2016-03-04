@@ -5,7 +5,7 @@
     <!-- 好友gridview -->
 
 
-    <com.umeng.comm.ui.imagepicker.widgets.RefreshGvLayout
+    <community.ui.imagepicker.widgets.RefreshGvLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/umeng_comm_user_swipe_layout" android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -14,7 +14,7 @@
             android:layout_height="match_parent" android:clickable="false" android:divider="@null"
             android:dividerHeight="0dp" android:focusable="false" android:scrollbars="none"
             android:stretchMode="columnWidth" />
-    </com.umeng.comm.ui.imagepicker.widgets.RefreshGvLayout>
+    </community.ui.imagepicker.widgets.RefreshGvLayout>
 
     <com.umeng.commm.ui.widgets.BaseView android:id="@+id/umeng_comm_baseview"
         android:layout_width="match_parent" android:layout_height="match_parent" />

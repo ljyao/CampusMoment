@@ -49,15 +49,16 @@ import com.umeng.comm.core.utils.DeviceUtils;
 import com.umeng.comm.core.utils.Log;
 import com.umeng.comm.core.utils.ResFinder;
 import com.umeng.comm.core.utils.ToastMsg;
-import com.umeng.comm.ui.activities.BaseFragmentActivity;
-import com.umeng.comm.ui.dialogs.FeedActionDialog;
-import com.umeng.comm.ui.fragments.FeedDetailFragment;
-import com.umeng.comm.ui.imagepicker.util.BroadcastUtils;
-import com.umeng.comm.ui.mvpview.MvpFeedDetailActivityView;
-import com.umeng.comm.ui.mvpview.MvpFeedDetailView;
-import com.umeng.comm.ui.presenter.impl.FeedDetailActivityPresenter;
-import com.umeng.comm.ui.widgets.BaseView;
-import com.umeng.comm.ui.widgets.CommentEditText;
+
+import community.imagepicker.util.BroadcastUtils;
+import community.ui.activities.BaseFragmentActivity;
+import community.ui.dialogs.FeedActionDialog;
+import community.ui.fragments.FeedDetailFragment;
+import community.ui.mvpview.MvpFeedDetailActivityView;
+import community.ui.mvpview.MvpFeedDetailView;
+import community.ui.presenter.impl.FeedDetailActivityPresenter;
+import community.ui.widgets.BaseView;
+import community.ui.widgets.CommentEditText;
 
 /**
  * 某条Feed的详情页面,会根据feed id每次都会从服务器获取最新数据,暂时没有使用数据库缓存.

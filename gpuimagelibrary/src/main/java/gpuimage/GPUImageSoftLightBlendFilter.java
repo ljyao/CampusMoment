@@ -25,10 +25,10 @@ public class GPUImageSoftLightBlendFilter extends GPUImageTwoInputFilter {
             " \n" +
             " void main()\n" +
             " {\n" +
-            "     mediump vec4 base = texture2D(inputImageTexture, textureCoordinate);\n" +
+            "     mediump vec4 helper.base = texture2D(inputImageTexture, textureCoordinate);\n" +
             "     mediump vec4 overlay = texture2D(inputImageTexture2, textureCoordinate2);\n" +
             "     \n" +
-            "     gl_FragColor = base * (overlay.a * (base / base.a) + (2.0 * overlay * (1.0 - (base / base.a)))) + overlay * (1.0 - base.a) + base * (1.0 - overlay.a);\n" +
+            "     gl_FragColor = helper.base * (overlay.a * (helper.base / helper.base.a) + (2.0 * overlay * (1.0 - (helper.base / helper.base.a)))) + overlay * (1.0 - helper.base.a) + helper.base * (1.0 - overlay.a);\n" +
             " }";
 
     public GPUImageSoftLightBlendFilter() {

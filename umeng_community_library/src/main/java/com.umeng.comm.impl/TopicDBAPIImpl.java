@@ -24,9 +24,6 @@
 
 package com.umeng.comm.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.umeng.comm.core.beans.CommConfig;
@@ -38,6 +35,9 @@ import com.umeng.comm.core.beans.relation.EntityRelationFactory;
 import com.umeng.comm.core.db.ctrl.TopicDBAPI;
 import com.umeng.comm.core.listeners.Listeners.SimpleFetchListener;
 import com.umeng.comm.core.utils.CommonUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 class TopicDBAPIImpl extends AbsDbAPI<List<Topic>> implements TopicDBAPI {
 

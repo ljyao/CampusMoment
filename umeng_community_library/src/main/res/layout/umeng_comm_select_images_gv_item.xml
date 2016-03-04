@@ -3,7 +3,8 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:layout_gravity="center" android:descendantFocusability="blocksDescendants">
 
-    <com.umeng.comm.ui.widgets.SquareImageView android:id="@+id/umeng_comm_sel_imageview"
+    <community.ui.widgets.SquareImageView
+        android:id="@+id/umeng_comm_sel_imageview"
         android:layout_width="match_parent" android:layout_height="match_parent"
         android:contentDescription="@string/umeng_comm_posted_msg" android:scaleType="centerCrop" />
 

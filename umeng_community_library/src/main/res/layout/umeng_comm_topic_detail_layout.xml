@@ -12,7 +12,8 @@
             <include layout="@layout/umeng_comm_divide_line" />
         </LinearLayout>
 
-        <com.umeng.comm.ui.widgets.ViewPagerIndicator android:id="@+id/indicator"
+        <community.ui.widgets.ViewPagerIndicator
+            android:id="@+id/indicator"
             android:layout_width="match_parent" android:layout_height="55dp"
             android:orientation="horizontal" />
 

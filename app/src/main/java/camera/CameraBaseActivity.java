@@ -2,7 +2,7 @@ package camera;
 
 import android.os.Bundle;
 
-import base.BaseActivity;
+import camera.ui.BaseActivity;
 
 
 public class CameraBaseActivity extends BaseActivity {

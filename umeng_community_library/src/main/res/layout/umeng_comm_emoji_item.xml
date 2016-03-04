@@ -14,7 +14,7 @@
   ~ limitations under the License.
 -->
 
-<com.umeng.comm.ui.emoji.EmojiTextView xmlns:android="http://schemas.android.com/apk/res/android"
+<community.ui.emoji.EmojiTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/umeng_comm_emoji_icon"
     android:layout_width="36dp"
     android:layout_height="36dp"

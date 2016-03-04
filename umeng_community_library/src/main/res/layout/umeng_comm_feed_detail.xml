@@ -26,7 +26,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/umeng_comm_feed_title_line"></FrameLayout>
 
-    <com.umeng.comm.ui.widgets.BaseView
+    <community.ui.widgets.BaseView
         android:id="@+id/umeng_comm_baseview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

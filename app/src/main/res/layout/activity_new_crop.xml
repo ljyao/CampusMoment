@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <customview.CommonTitleBar
+    <widget.customview.CommonTitleBar
         android:id="@+id/title_layout"
         style="@style/head_default"
         app:titleTxt="裁剪相片" />

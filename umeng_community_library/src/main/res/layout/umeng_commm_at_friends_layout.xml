@@ -54,13 +54,13 @@
         android:contentDescription="@string/umeng_comm_login" android:gravity="left|center"
         android:paddingLeft="10dp" android:text="@string/umeng_comm_lastes_friends" />
 
-    <com.umeng.comm.ui.imagepicker.widgets.RefreshLvLayout
+    <community.ui.imagepicker.widgets.RefreshLvLayout
         android:id="@+id/umeng_comm_at_friend_listview" android:layout_width="match_parent"
         android:layout_height="0dp" android:layout_weight="1">
 
         <include android:id="@+id/umeng_comm_friend_listview" layout="@layout/umeng_commm_listview"
             android:layout_width="match_parent" android:layout_height="match_parent"
             android:layout_weight="1" android:imeOptions="actionSearch" />
-    </com.umeng.comm.ui.imagepicker.widgets.RefreshLvLayout>
+    </community.ui.imagepicker.widgets.RefreshLvLayout>
 
 </LinearLayout>

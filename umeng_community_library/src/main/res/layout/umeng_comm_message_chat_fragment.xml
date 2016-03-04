@@ -13,7 +13,8 @@
         android:layout_above="@id/umeng_comm_message_chat_inputview"
         android:background="@color/umeng_comm_color_de" />
 
-    <com.umeng.comm.ui.imagepicker.widgets.RefreshLvLayout android:id="@+id/umeng_comm_swipe_layout"
+    <community.ui.imagepicker.widgets.RefreshLvLayout
+        android:id="@+id/umeng_comm_swipe_layout"
         android:layout_width="fill_parent" android:layout_height="fill_parent"
         android:layout_above="@id/divider_line">
 
@@ -24,7 +25,7 @@
             android:scrollbars="none" android:scrollingCache="false" />
 
 
-    </com.umeng.comm.ui.imagepicker.widgets.RefreshLvLayout>
+    </community.ui.imagepicker.widgets.RefreshLvLayout>
 
 
 </RelativeLayout>

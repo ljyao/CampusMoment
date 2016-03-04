@@ -43,7 +43,6 @@ import com.umeng.comm.core.beans.relation.RecommendFeed;
 import com.umeng.comm.core.beans.relation.TopItemn;
 import com.umeng.comm.core.constants.Constants;
 import com.umeng.comm.core.db.ctrl.FeedDBAPI;
-import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.listeners.Listeners.SimpleFetchListener;
 import com.umeng.comm.core.utils.Log;
 

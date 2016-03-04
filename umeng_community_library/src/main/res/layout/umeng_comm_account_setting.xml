@@ -9,7 +9,8 @@
         android:layout_gravity="center_horizontal" android:layout_margin="10dp"
         android:gravity="center">
 
-        <com.umeng.comm.ui.widgets.SquareImageView android:id="@+id/umeng_comm_user_icon"
+        <community.ui.widgets.SquareImageView
+            android:id="@+id/umeng_comm_user_icon"
             android:layout_width="100dp" android:layout_height="100dp"
             android:contentDescription="@string/umeng_comm_desc" android:paddingRight="15dp"
             android:src="@drawable/umeng_comm_male" />

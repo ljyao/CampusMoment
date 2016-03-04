@@ -8,7 +8,7 @@
 
     <include layout="@layout/umeng_comm_divide_line" />
 
-    <com.umeng.comm.ui.imagepicker.widgets.RefreshGvLayout
+    <community.ui.imagepicker.widgets.RefreshGvLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/umeng_comm_album_swipe_layout" android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -17,6 +17,6 @@
             android:layout_height="match_parent" android:focusable="false"
             android:horizontalSpacing="6dp" android:numColumns="3" android:stretchMode="columnWidth"
             android:verticalSpacing="6dp" />
-    </com.umeng.comm.ui.imagepicker.widgets.RefreshGvLayout>
+    </community.ui.imagepicker.widgets.RefreshGvLayout>
 
 </LinearLayout>

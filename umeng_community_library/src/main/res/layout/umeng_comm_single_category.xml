@@ -41,7 +41,7 @@
 
     </LinearLayout>
 
-    <com.umeng.comm.ui.imagepicker.widgets.RefreshLvLayout
+    <community.ui.imagepicker.widgets.RefreshLvLayout
         android:id="@+id/umeng_comm_topic_refersh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,9 +58,9 @@
             android:listSelector="@android:color/transparent"
             android:scrollbars="none"
             android:scrollingCache="false" />
-    </com.umeng.comm.ui.imagepicker.widgets.RefreshLvLayout>
+    </community.ui.imagepicker.widgets.RefreshLvLayout>
 
-    <com.umeng.comm.ui.widgets.BaseView
+    <community.ui.widgets.BaseView
         android:id="@+id/umeng_comm_baseview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

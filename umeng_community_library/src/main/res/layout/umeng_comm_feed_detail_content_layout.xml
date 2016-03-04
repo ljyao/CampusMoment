@@ -18,7 +18,7 @@
 
     <!-- 头像 -->
 
-    <com.umeng.comm.ui.widgets.RoundImageView
+    <community.ui.widgets.RoundImageView
         android:id="@+id/user_portrait_img_btn"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -70,7 +70,7 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <com.umeng.comm.ui.emoji.EmojiTextView
+    <community.ui.emoji.EmojiTextView
         android:id="@+id/umeng_comm_msg_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

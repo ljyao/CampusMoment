@@ -35,11 +35,12 @@ import com.umeng.comm.core.listeners.Listeners.OnResultListener;
 import com.umeng.comm.core.listeners.Listeners.SimpleFetchListener;
 import com.umeng.comm.core.nets.responses.SimpleResponse;
 import com.umeng.comm.core.nets.uitls.NetworkUtils;
-import com.umeng.comm.ui.imagepicker.util.BroadcastUtils;
-import com.umeng.comm.ui.mvpview.MvpLikeView;
-import com.umeng.comm.ui.presenter.BasePresenter;
 
 import java.util.Iterator;
+
+import community.imagepicker.util.BroadcastUtils;
+import community.ui.mvpview.MvpLikeView;
+import community.ui.presenter.BasePresenter;
 
 public class LikePrvdr extends BasePresenter {
 

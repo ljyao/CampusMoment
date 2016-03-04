@@ -33,7 +33,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_toRightOf="@id/umeng_comm_relative_user_recyclerView" />
 
-        <com.umeng.comm.ui.widgets.EmptyView
+        <community.ui.widgets.EmptyView
             android:id="@+id/umeng_comm_user_empty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
