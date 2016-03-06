@@ -37,16 +37,19 @@ public class FeedPrvdr {
                 break;
             case MeFeed:
                 CommUser user = CommConfig.getConfig().loginedUser;
-                getUserFeed(user, listener);
+                getUserFeed(user.id, listener);
                 break;
             case TopicFeed:
                 loadFeedByTopic(id, listener);
                 break;
+            case UserFeed:
+                getUserFeed(id, listener);
+                break;
         }
     }
 
-    private void getUserFeed(CommUser user, final NetLoaderListener<List<FeedItem>> listener) {
-        mCommunitySDK.fetchUserTimeLine(user.id, new Listeners.FetchListener<FeedsResponse>() {
+    private void getUserFeed(String id, final NetLoaderListener<List<FeedItem>> listener) {
+        mCommunitySDK.fetchUserTimeLine(id, new Listeners.FetchListener<FeedsResponse>() {
             @Override
             public void onStart() {
             }

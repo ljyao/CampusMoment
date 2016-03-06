@@ -2,6 +2,7 @@ package community.fragment;
 
 import android.content.Intent;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -33,18 +34,12 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
     private FeedPrvdr feedPrvdr;
     private FeedPrvdr.FeedType mFeedType = FeedPrvdr.FeedType.FollowFeed;
     private LinearLayoutManager layoutManager;
-    private String topicId = "";
+    private String userOrTopicId = "";
 
     private FeedListListener feedListListener = new FeedListListener() {
         @Override
         public void onShowFeedDetail(FeedItem feedItem) {
-           /* if (mCommentLayout.getVisibility() == View.VISIBLE) {
-                hideCommentLayout();
-                return;
-            }
-            final int realPosition = position - mFeedsListView.getHeaderViewsCount();
-            final FeedItem feedItem = mFeedLvAdapter.getItem(realPosition < 0 ? 0
-                    : realPosition);*/
+
             if (feedItem != null && feedItem.status >= FeedItem.STATUS_SPAM
                     && feedItem.category == FeedItem.CATEGORY.FAVORITES && feedItem.status != FeedItem.STATUS_LOCK) {
                 ToastMsg.showShortMsgByResName("umeng_comm_feed_spam_deleted");
@@ -89,7 +84,7 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
                 setRefreshState(false);
                 adapter.update(result);
             }
-        }, topicId);
+        }, userOrTopicId);
     }
 
     @Override
@@ -116,9 +111,20 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
 
     public void setFeedType(FeedPrvdr.FeedType feedType, Topic topic) {
         if (topic != null) {
-            topicId = topic.id;
+            userOrTopicId = topic.id;
             adapter.setTopic(topic);
         }
+        this.mFeedType = feedType;
+        feedPrvdr.setFeedType(feedType);
+    }
+
+    public void setFeedType(FeedPrvdr.FeedType feedType, @NonNull String id) {
+        this.mFeedType = feedType;
+        userOrTopicId = id;
+        feedPrvdr.setFeedType(feedType);
+    }
+
+    public void setFeedType(FeedPrvdr.FeedType feedType) {
         this.mFeedType = feedType;
         feedPrvdr.setFeedType(feedType);
     }

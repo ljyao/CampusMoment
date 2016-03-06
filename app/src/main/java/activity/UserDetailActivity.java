@@ -18,6 +18,7 @@ import com.uy.bbs.R;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import community.fragment.FeedFragment;
@@ -28,7 +29,7 @@ import community.providable.FeedPrvdr;
  * Created by ljy on 15/12/25.
  */
 @EActivity(R.layout.activity_me)
-public class MeActivity extends AppCompatActivity {
+public class UserDetailActivity extends AppCompatActivity {
     @ViewById(R.id.user_header)
     public SimpleDraweeView userHeader;
     @ViewById(R.id.collapsing_toolbar_layout)
@@ -37,16 +38,19 @@ public class MeActivity extends AppCompatActivity {
     public Toolbar mToolbar;
     @ViewById(R.id.appbar)
     public AppBarLayout mAppBarLayout;
-    private CommUser user;
+    @Extra
+    public CommUser user;
     private FeedFragment feedFragment;
 
     @AfterViews
     public void initView() {
+        if (user == null) {
+            user = CommConfig.getConfig().loginedUser;
+        }
         setUserHeader();
-
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         feedFragment = FeedFragment_.builder().build();
-        feedFragment.setFeedType(FeedPrvdr.FeedType.MeFeed, null);
+        feedFragment.setFeedType(FeedPrvdr.FeedType.UserFeed, user.id);
         ft.replace(R.id.fragment, feedFragment);
         ft.setTransition(FragmentTransaction.TRANSIT_NONE);
         ft.commit();
@@ -55,7 +59,6 @@ public class MeActivity extends AppCompatActivity {
     }
 
     private void setUserHeader() {
-        user = CommConfig.getConfig().loginedUser;
         int pos = user.iconUrl.indexOf("@");
         String userIcon = user.iconUrl;
         if (pos > 0) {

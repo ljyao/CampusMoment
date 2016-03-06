@@ -5,14 +5,13 @@
     </style>
 
     <!-- Base application theme. -->
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="icon">@color/icons</item>
         <item name="divider">@color/divider</item>
-
     </style>
 
     <style name="NoBackcolorDialogStyle" parent="Theme.AppCompat.Dialog">

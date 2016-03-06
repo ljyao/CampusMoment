@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         fragments = new HashMap<>(5);
         DiscoverFragment discoverFragment = DiscoverFragment_.builder().build();
         FeedFragment feedFragment = FeedFragment_.builder().build();
-        feedFragment.setFeedType(FeedPrvdr.FeedType.FollowFeed, null);
+        feedFragment.setFeedType(FeedPrvdr.FeedType.FollowFeed);
         MeFragment meFragment = MeFragment_.builder().build();
         MessageFragment messageFragment = MessageFragment_.builder().build();
         fragments.put(FEED_FRAGMENT_ID, feedFragment);

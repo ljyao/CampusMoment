@@ -78,7 +78,7 @@
             android:name="choosephoto.activity.PhotoWallActivity"
             android:launchMode="singleInstance" />
         <activity
-            android:name="activity.MeActivity_"
+            android:name="activity.UserDetailActivity_"
             android:theme="@style/NoActionBar" />
         <activity android:name="activity.SetUserInfoActivity_" />
         <activity

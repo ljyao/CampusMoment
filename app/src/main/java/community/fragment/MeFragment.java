@@ -21,7 +21,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import activity.MeActivity_;
+import activity.UserDetailActivity_;
 import community.providable.UserPrvdr;
 
 /**
@@ -73,7 +73,7 @@ public class MeFragment extends Fragment {
 
     @Click(R.id.use_header_rl)
     public void onClickUser() {
-        Intent startIntent = new Intent(getActivity(), MeActivity_.class);
+        Intent startIntent = new Intent(getActivity(), UserDetailActivity_.class);
         startActivity(startIntent);
     }
 

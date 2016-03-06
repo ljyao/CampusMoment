@@ -34,25 +34,27 @@ import com.umeng.comm.ui.adapters.FeedImageAdapter;
 import com.umeng.comm.ui.mvpview.MvpLikeView;
 import com.umeng.comm.ui.presenter.impl.FeedContentPresenter;
 import com.umeng.comm.ui.presenter.impl.LikePresenter;
-import com.umeng.comm.ui.utils.FeedViewRender;
 import com.umeng.comm.ui.widgets.WrapperGridView;
 import com.uy.bbs.R;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.Date;
 import java.util.List;
 
+import activity.UserDetailActivity_;
 import adapter.ViewWrapper;
 import community.fragment.FeedFragment;
+import community.util.FeedViewRender;
 
 /**
  * Created by ljy on 15/12/21.
  */
 @EViewGroup(R.layout.feed_item_view)
-public class FollowedFeedView extends RelativeLayout implements ViewWrapper.Binder<FeedItem>, MvpLikeView {
+public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<FeedItem>, MvpLikeView {
     private static final String M = "m";
 
     @ViewById(R.id.feed_type_img_btn)
@@ -110,7 +112,7 @@ public class FollowedFeedView extends RelativeLayout implements ViewWrapper.Bind
         }
     };
 
-    public FollowedFeedView(Context context, AttributeSet attrs) {
+    public FeedItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -557,5 +559,10 @@ public class FollowedFeedView extends RelativeLayout implements ViewWrapper.Bind
 
     public void setListener(FeedFragment.FeedListListener feedListListener) {
         this.feedListListener = feedListListener;
+    }
+
+    @Click(R.id.user_portrait_img_btn)
+    public void onClickUserHead() {
+        UserDetailActivity_.intent(getContext()).user(mFeedItem.creator).start();
     }
 }

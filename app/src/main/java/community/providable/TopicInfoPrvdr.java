@@ -41,12 +41,12 @@ import com.uy.App;
 /**
  *
  */
-public class TopicDetailPrvdr {
+public class TopicInfoPrvdr {
 
 
     private CommunitySDK mCommunitySDK;
 
-    public TopicDetailPrvdr() {
+    public TopicInfoPrvdr() {
         mCommunitySDK = App.getCommunitySDK();
     }
 
