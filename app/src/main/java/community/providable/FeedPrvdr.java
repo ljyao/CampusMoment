@@ -1,5 +1,6 @@
 package community.providable;
 
+import android.location.Location;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -7,11 +8,9 @@ import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.FeedItem;
-import com.umeng.comm.core.beans.Topic;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.FeedsResponse;
-import com.umeng.comm.core.nets.responses.TopicResponse;
 import com.umeng.comm.core.nets.uitls.NetworkUtils;
 import com.uy.App;
 
@@ -24,123 +23,81 @@ public class FeedPrvdr {
     private FeedType mFeedType;
     private String mNextPageUrl;
     private CommunitySDK mCommunitySDK;
+    private NetLoaderListener<List<FeedItem>> feedFragmentListener;
+    Listeners.FetchListener<FeedsResponse> fetchListener = new Listeners.FetchListener<FeedsResponse>() {
+        @Override
+        public void onStart() {
+
+        }
+
+        @Override
+        public void onComplete(FeedsResponse response) {
+            // 根据response进行Toast
+            if (NetworkUtils.handleResponseAll(response)) {
+                if (response.errCode == ErrorCode.NO_ERROR) {
+                    // 如果返回的数据是空，则需要置下一页地址为空
+                    mNextPageUrl = "";
+                    feedFragmentListener.onComplete(false, null);
+                }
+                return;
+            }
+            mNextPageUrl = response.nextPageUrl;
+            feedFragmentListener.onComplete(true, response.result);
+        }
+    };
 
     public FeedPrvdr(FeedType feedType) {
         mFeedType = feedType;
         mCommunitySDK = App.getCommunitySDK();
     }
 
-    public void getFirstPageData(NetLoaderListener<List<FeedItem>> listener, @Nullable String id) {
+    public void getFirstPageData(NetLoaderListener<List<FeedItem>> listener, @Nullable String id, @Nullable Location location) {
+        this.feedFragmentListener = listener;
         switch (mFeedType) {
             case FollowFeed:
-                getFollowFeedData(listener);
+                getFollowFeedData();
                 break;
             case MeFeed:
                 CommUser user = CommConfig.getConfig().loginedUser;
-                getUserFeed(user.id, listener);
+                getUserFeed(user.id);
                 break;
             case TopicFeed:
-                loadFeedByTopic(id, listener);
+                loadFeedByTopic(id);
                 break;
             case UserFeed:
-                getUserFeed(id, listener);
+                getUserFeed(id);
+                break;
+            case LocationFeed:
+                getLocationFeed(location);
                 break;
         }
     }
 
-    private void getUserFeed(String id, final NetLoaderListener<List<FeedItem>> listener) {
-        mCommunitySDK.fetchUserTimeLine(id, new Listeners.FetchListener<FeedsResponse>() {
-            @Override
-            public void onStart() {
-            }
+    private void getLocationFeed(Location mLocation) {
+        mCommunitySDK.fetchNearByFeed(mLocation, fetchListener);
+    }
 
-            @Override
-            public void onComplete(FeedsResponse feedsResponse) {
-                mNextPageUrl = feedsResponse.nextPageUrl;
-                listener.onComplete(true, feedsResponse.result);
-            }
-        });
+    private void getUserFeed(String id) {
+        mCommunitySDK.fetchUserTimeLine(id, fetchListener);
 
     }
 
-    private void getFollowFeedData(final NetLoaderListener<List<FeedItem>> listener) {
-        mCommunitySDK.fetchMyFollowedFeeds(new Listeners.FetchListener<FeedsResponse>() {
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onComplete(FeedsResponse feedsResponse) {
-                mNextPageUrl = feedsResponse.nextPageUrl;
-                listener.onComplete(true, feedsResponse.result);
-            }
-        });
+    private void getFollowFeedData() {
+        mCommunitySDK.fetchMyFollowedFeeds(fetchListener);
     }
 
-    public void fetchNextPageData(final NetLoaderListener<List<FeedItem>> listener) {
+    public void fetchNextPageData(NetLoaderListener<List<FeedItem>> listener) {
         if (TextUtils.isEmpty(mNextPageUrl)) {
             return;
         }
-        mCommunitySDK.fetchNextPageData(mNextPageUrl,
-                FeedsResponse.class, new Listeners.SimpleFetchListener<FeedsResponse>() {
-                    @Override
-                    public void onComplete(FeedsResponse response) {
-                        // 根据response进行Toast
-                        if (NetworkUtils.handleResponseAll(response)) {
-                            if (response.errCode == ErrorCode.NO_ERROR) {
-                                // 如果返回的数据是空，则需要置下一页地址为空
-                                mNextPageUrl = "";
-                                listener.onComplete(false, null);
-                            }
-                            return;
-                        }
-                        mNextPageUrl = response.nextPageUrl;
-                        listener.onComplete(true, response.result);
-                    }
-                });
+        feedFragmentListener = listener;
+        mCommunitySDK.fetchNextPageData(mNextPageUrl, FeedsResponse.class, fetchListener);
     }
 
-    public void loadFeedByTopic(String id, final NetLoaderListener<List<FeedItem>> listener) {
-        mCommunitySDK.fetchTopicFeed(id, new Listeners.FetchListener<FeedsResponse>() {
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onComplete(FeedsResponse response) {
-                // 根据response进行Toast
-                if (NetworkUtils.handleResponseAll(response)) {
-                    return;
-                }
-                mNextPageUrl = response.nextPageUrl;
-                List<FeedItem> newFeedItems = response.result;
-                // 更新数据
-                listener.onComplete(true, newFeedItems);
-            }
-        });
+    public void loadFeedByTopic(String id) {
+        mCommunitySDK.fetchTopicFeed(id, fetchListener);
     }
 
-    public void loadMoreData() {
-        if (TextUtils.isEmpty(mNextPageUrl)) {
-            return;
-        }
-        mCommunitySDK.fetchNextPageData(mNextPageUrl, TopicResponse.class, new Listeners.FetchListener<TopicResponse>() {
-            @Override
-            public void onStart() {
-            }
-
-            @Override
-            public void onComplete(TopicResponse response) {
-                // 根据response进行Toast
-                if (NetworkUtils.handleResponseAll(response)) {
-                    return;
-                }
-                final List<Topic> results = response.result;
-            }
-        });
-    }
 
     public void setFeedType(FeedType feedType) {
         this.mFeedType = feedType;
@@ -151,7 +108,8 @@ public class FeedPrvdr {
         TopicFeed,
         UserFeed,
         MeFeed,
-        NearFeed
+        NearFeed,
+        LocationFeed
     }
 
 }

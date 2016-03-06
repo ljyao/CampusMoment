@@ -109,6 +109,9 @@
             android:name="editimage.EditImageActivity"
             android:theme="@style/NoActionBar" />
         <activity android:name="community.activity.TopicActivity_" />
+        <activity android:name="community.activity.HotTopicActivity_" />
+        <activity android:name="community.activity.LocationFeedActivity" />
+
 
         <!-- youmeng -->
         <!-- 发现的Activity -->

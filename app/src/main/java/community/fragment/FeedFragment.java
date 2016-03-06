@@ -2,6 +2,7 @@ package community.fragment;
 
 import android.content.Intent;
 import android.graphics.Rect;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +36,7 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
     private FeedPrvdr.FeedType mFeedType = FeedPrvdr.FeedType.FollowFeed;
     private LinearLayoutManager layoutManager;
     private String userOrTopicId = "";
+    private Location mLocation;
 
     private FeedListListener feedListListener = new FeedListListener() {
         @Override
@@ -84,7 +86,7 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
                 setRefreshState(false);
                 adapter.update(result);
             }
-        }, userOrTopicId);
+        }, userOrTopicId, mLocation);
     }
 
     @Override
@@ -124,6 +126,11 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
         feedPrvdr.setFeedType(feedType);
     }
 
+    public void setFeedType(FeedPrvdr.FeedType feedType, Location location) {
+        this.mFeedType = feedType;
+        this.mLocation = location;
+        feedPrvdr.setFeedType(feedType);
+    }
     public void setFeedType(FeedPrvdr.FeedType feedType) {
         this.mFeedType = feedType;
         feedPrvdr.setFeedType(feedType);

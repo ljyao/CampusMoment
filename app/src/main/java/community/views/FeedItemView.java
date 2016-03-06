@@ -29,7 +29,6 @@ import com.umeng.comm.core.sdkmanager.ShareSDKManager;
 import com.umeng.comm.core.utils.ResFinder;
 import com.umeng.comm.core.utils.TimeUtils;
 import com.umeng.comm.core.utils.ToastMsg;
-import com.umeng.comm.ui.activities.LocationFeedActivity;
 import com.umeng.comm.ui.adapters.FeedImageAdapter;
 import com.umeng.comm.ui.mvpview.MvpLikeView;
 import com.umeng.comm.ui.presenter.impl.FeedContentPresenter;
@@ -47,6 +46,7 @@ import java.util.List;
 
 import activity.UserDetailActivity_;
 import adapter.ViewWrapper;
+import community.activity.LocationFeedActivity;
 import community.fragment.FeedFragment;
 import community.util.FeedViewRender;
 

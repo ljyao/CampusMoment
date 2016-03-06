@@ -16,6 +16,7 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 
+import community.activity.HotTopicActivity_;
 import community.activity.TopicActivity_;
 import community.providable.NetLoaderListener;
 import community.providable.TopicPrvdr;
@@ -44,10 +45,14 @@ public class DiscoverFragment extends Fragment {
         @Override
         public void onClick(View v) {
             try {
-                Topic topic = (Topic) v.getTag();
-                if (topic == null)
-                    return;
-                TopicActivity_.intent(getActivity()).topic(topic).start();
+                if (v == topicHotTv) {
+                    HotTopicActivity_.intent(getContext()).start();
+                } else {
+                    Topic topic = (Topic) v.getTag();
+                    if (topic == null)
+                        return;
+                    TopicActivity_.intent(getActivity()).topic(topic).start();
+                }
             } catch (Exception e) {
             }
 
@@ -102,7 +107,6 @@ public class DiscoverFragment extends Fragment {
                     })
                     .setCanLoop(topicImages.size() > 1 ? true : false);
 
-
             topicOneTv.setText(topics[0].name);
             topicOneTv.setOnClickListener(topicTvListener);
             topicOneTv.setTag(topics[0]);
@@ -112,6 +116,8 @@ public class DiscoverFragment extends Fragment {
             topicThreeTv.setText(topics[2].name);
             topicThreeTv.setOnClickListener(topicTvListener);
             topicThreeTv.setTag(topics[2]);
+
+            topicHotTv.setOnClickListener(topicTvListener);
         } catch (Exception e) {
             e.printStackTrace();
         }
