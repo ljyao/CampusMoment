@@ -123,6 +123,6 @@ public class BitmapUtils {
         // 获取到这个图片的原始宽度和高度
         float picWidth = opt.outWidth;
         float picHeight = opt.outHeight;
-        return !(picHeight <= 0 || picWidth <= 0);
+        return !(picHeight <= 100 || picWidth <= 100);
     }
 }

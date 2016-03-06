@@ -27,19 +27,19 @@
         android:layout_marginTop="8dp"
         android:contentDescription="@string/umeng_comm_desc"
         android:scaleType="centerCrop"
-        fresco:failureImage="@drawable/user_header_icon"
+        fresco:failureImage="@drawable/avator_default"
         fresco:roundAsCircle="true" />
 
     <ImageView
         android:id="@+id/umeng_comm_dialog_btn"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="15dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/timeline_icon_more"
         android:contentDescription="@string/umeng_comm_desc"
-        android:scaleType="center" />
+        android:scaleType="center"
+        android:src="@drawable/timeline_icon_more" />
 
     <!-- 收藏 -->
 
@@ -138,12 +138,12 @@
 
         <ImageView
             android:id="@+id/umeng_comm_msg_location"
-            android:layout_width="12dp"
-            android:layout_height="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="0dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/umeng_community_location"
+            android:background="@drawable/community_location"
             android:contentDescription="@string/umeng_comm_new_post" />
 
         <TextView
@@ -206,6 +206,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/toolbar_icon_retweet"
                     android:drawablePadding="8dp"
+                    android:gravity="center"
                     android:text="@string/umeng_comm_zero"
                     android:textColor="#bbbbbb"
                     android:textSize="15sp" />
@@ -230,6 +231,7 @@
                     android:layout_marginRight="15dp"
                     android:drawableLeft="@drawable/toolbar_icon_comment"
                     android:drawablePadding="8dp"
+                    android:gravity="center"
                     android:text="@string/umeng_comm_zero"
                     android:textColor="#bbbbbb"
                     android:textSize="15sp" />
@@ -248,12 +250,12 @@
                 android:gravity="center">
 
                 <TextView
-
                     android:id="@+id/umeng_comm_like_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/toolbar_icon_unlike"
                     android:drawablePadding="8dp"
+                    android:gravity="center"
                     android:text="@string/umeng_comm_zero"
                     android:textColor="#bbbbbb"
                     android:textSize="15sp" />

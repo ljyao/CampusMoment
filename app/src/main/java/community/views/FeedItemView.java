@@ -1,6 +1,7 @@
 package community.views;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -90,6 +91,8 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
     public TextView mCommentCountTextView;
     @ViewById(R.id.umeng_comm_distance)
     public TextView mDistanceTextView;
+    @ViewById(R.id.location_layout)
+    public RelativeLayout locationLayout;
     protected FeedItem mFeedItem;
 
     FeedContentPresenter mPresenter;
@@ -438,7 +441,9 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
         if (TextUtils.isEmpty(mFeedItem.locationAddr)) {
             mLocationTv.setVisibility(View.GONE);
             mLocationImgView.setVisibility(View.GONE);
+            locationLayout.setVisibility(GONE);
         } else {
+            locationLayout.setVisibility(VISIBLE);
             mLocationTv.setVisibility(View.VISIBLE);
             mLocationImgView.setVisibility(View.VISIBLE);
             mLocationTv.setText(mFeedItem.locationAddr);
@@ -564,5 +569,13 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
     @Click(R.id.user_portrait_img_btn)
     public void onClickUserHead() {
         UserDetailActivity_.intent(getContext()).user(mFeedItem.creator).start();
+    }
+
+    @Click(R.id.umeng_comm_dialog_btn)
+    public void moreActionBar() {
+        AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+        View itemAction = inflate(getContext(), R.layout.feed_item_action, null);
+        alertDialog.setView(itemAction);
+        alertDialog.show();
     }
 }
