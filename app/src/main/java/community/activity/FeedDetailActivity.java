@@ -1,4 +1,4 @@
-package activity;
+package community.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -27,13 +27,15 @@ import com.umeng.comm.core.utils.ResFinder;
 import com.umeng.comm.core.utils.ToastMsg;
 import com.umeng.comm.ui.activities.BaseFragmentActivity;
 import com.umeng.comm.ui.dialogs.FeedActionDialog;
-import com.umeng.comm.ui.fragments.FeedDetailFragment;
 import com.umeng.comm.ui.imagepicker.util.BroadcastUtils;
 import com.umeng.comm.ui.mvpview.MvpFeedDetailActivityView;
 import com.umeng.comm.ui.mvpview.MvpFeedDetailView;
 import com.umeng.comm.ui.presenter.impl.FeedDetailActivityPresenter;
 import com.umeng.comm.ui.widgets.BaseView;
 import com.umeng.comm.ui.widgets.CommentEditText;
+import com.uy.bbs.R;
+
+import community.fragment.FeedDetailFragment;
 
 /**
  * 某条Feed的详情页面,会根据feed id每次都会从服务器获取最新数据,暂时没有使用数据库缓存.
@@ -96,7 +98,7 @@ public class FeedDetailActivity extends BaseFragmentActivity implements OnClickL
         super.onCreate(arg0);
         // 【注意】如果来源于通知栏打开详情页，需要进行相关初始化操作，如果已经初始化，则方法内部会直接返回~
         CommunityFactory.getCommSDK(getApplicationContext());
-        setContentView(ResFinder.getLayout("umeng_comm_feed_detail"));
+        setContentView(R.layout.feed_detail_activity);
         CommonUtils.injectComponentImpl(getApplicationContext());// 重新注入登录组件的实现，避免的推送启动时无自定义的登录组件实现
 
         // 设置Fragment的container id

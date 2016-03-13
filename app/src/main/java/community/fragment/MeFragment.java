@@ -22,6 +22,7 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import activity.UserDetailActivity_;
+import community.providable.NetLoaderListener;
 import community.providable.UserPrvdr;
 
 /**
@@ -49,9 +50,9 @@ public class MeFragment extends Fragment {
         userHeader.setImageURI(uri);
         userName.setText(user.name);
         UserPrvdr userPrvdr = new UserPrvdr();
-        userPrvdr.getUserInfo(user.id, new UserPrvdr.UserListener() {
+        userPrvdr.getUserInfo(user, new NetLoaderListener<CommUser>() {
             @Override
-            public void onComplete(CommUser user) {
+            public void onComplete(boolean statue, CommUser result) {
                 feedNum.setText(user.feedCount + "");
                 followNum.setText(user.followCount + "");
                 fansNum.setText(user.fansCount + "");
@@ -91,4 +92,5 @@ public class MeFragment extends Fragment {
         super.onAttach(context);
         this.context = context;
     }
+
 }

@@ -30,29 +30,18 @@
         fresco:failureImage="@drawable/avator_default"
         fresco:roundAsCircle="true" />
 
+
     <ImageView
         android:id="@+id/umeng_comm_dialog_btn"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="15dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/timeline_icon_more"
         android:contentDescription="@string/umeng_comm_desc"
-        android:scaleType="center"
-        android:src="@drawable/timeline_icon_more" />
+        android:scaleType="center" />
 
-    <!-- 收藏 -->
-
-    <TextView
-        android:id="@+id/umeng_comm_favorites_textview"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginTop="8dp"
-        android:layout_toLeftOf="@id/umeng_comm_dialog_btn"
-        android:background="@null"
-        android:src="@drawable/umeng_comm_favorites_normal"
-        android:visibility="gone" />
 
     <!-- 头像右边的内容布局 -->
     <!-- 用户头像、文本、时间、图片的整体布局 -->
@@ -131,10 +120,11 @@
 
     <RelativeLayout
         android:id="@+id/location_layout"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/forward_image_gv_layout"
-        android:paddingLeft="10dp">
+        android:layout_marginLeft="10dp"
+        android:background="#eee">
 
         <ImageView
             android:id="@+id/umeng_comm_msg_location"

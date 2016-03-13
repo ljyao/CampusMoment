@@ -8,13 +8,16 @@ import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.constants.ErrorCode;
+import com.umeng.comm.core.db.ctrl.impl.DatabaseAPI;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.Response;
 import com.umeng.comm.core.nets.responses.ImageResponse;
 import com.umeng.comm.core.nets.responses.PortraitUploadResponse;
 import com.umeng.comm.core.nets.responses.ProfileResponse;
+import com.umeng.comm.core.nets.uitls.NetworkUtils;
 import com.umeng.comm.core.utils.CommonUtils;
 import com.umeng.comm.core.utils.Log;
+import com.umeng.comm.core.utils.ToastMsg;
 import com.uy.App;
 import com.uy.util.Worker;
 
@@ -24,8 +27,8 @@ import com.uy.util.Worker;
 public class UserPrvdr {
     private CommunitySDK mCommunitySDK = App.getCommunitySDK();
 
-    public void getUserInfo(final String uid, final UserListener userListener) {
-        mCommunitySDK.fetchUserProfile(uid, new Listeners.FetchListener<ProfileResponse>() {
+    public void getUserInfo(final CommUser user, final NetLoaderListener<CommUser> userListener) {
+        mCommunitySDK.fetchUserProfile(user.id, new Listeners.FetchListener<ProfileResponse>() {
             @Override
             public void onStart() {
 
@@ -33,12 +36,11 @@ public class UserPrvdr {
 
             @Override
             public void onComplete(ProfileResponse profileResponse) {
-                CommUser user = new CommUser(uid);
                 user.fansCount = profileResponse.mFansCount;
                 user.feedCount = profileResponse.mFeedsCount;
                 user.followCount = profileResponse.mFollowedUserCount;
                 user.isFollowed = profileResponse.hasFollowed;
-                userListener.onComplete(user);
+                userListener.onComplete(true, user);
             }
         });
     }
@@ -113,7 +115,80 @@ public class UserPrvdr {
         });
     }
 
+    /**
+     * 关注某个好友</br>
+     *
+     * @param user
+     */
+    public void followUser(final CommUser user, final NetLoaderListener<Boolean> listener) {
+        mCommunitySDK.followUser(user, new Listeners.SimpleFetchListener<Response>() {
+
+            @Override
+            public void onComplete(Response response) {
+                if (NetworkUtils.handleResponseComm(response)) {
+                    ToastMsg.showShortMsgByResName("umeng_comm_follow_user_failed");
+                    user.isFollowed = false;
+                    listener.onComplete(true, user.isFollowed);
+                    return;
+                }
+                if (response.errCode == ErrorCode.NO_ERROR) {
+                    ToastMsg.showShortMsgByResName("umeng_comm_follow_user_success");
+                    user.isFollowed = true;
+                    DatabaseAPI.getInstance().getFollowDBAPI().follow(user);
+                    listener.onComplete(true, user.isFollowed);
+                    return;
+                }
+                if (response.errCode == ErrorCode.ERROR_USER_FOCUSED) {
+                    ToastMsg.showShortMsgByResName("umeng_comm_user_has_focused");
+                    user.isFollowed = true;
+                    listener.onComplete(true, user.isFollowed);
+                    return;
+                }
+                user.isFollowed = false;
+                ToastMsg.showShortMsgByResName("umeng_comm_follow_user_failed");
+                listener.onComplete(true, user.isFollowed);
+            }
+        });
+    }
+
+    /**
+     * 取消关注某个好友</br>
+     *
+     * @param user
+     */
+    public void cancelFollowUser(final CommUser user, final NetLoaderListener<Boolean> listener) {
+
+        mCommunitySDK.cancelFollowUser(user, new Listeners.SimpleFetchListener<Response>() {
+
+            @Override
+            public void onComplete(Response response) {
+                if (NetworkUtils.handleResponseComm(response)) {
+                    ToastMsg.showShortMsgByResName("umeng_comm_follow_cancel_failed");
+                    user.isFollowed = true;
+                    listener.onComplete(true, user.isFollowed);
+                    return;
+                }
+                if (response.errCode == ErrorCode.NO_ERROR) {
+                    ToastMsg.showShortMsgByResName("umeng_comm_follow_cancel_success");
+                    user.isFollowed = false;
+                    listener.onComplete(true, user.isFollowed);
+                    return;
+                }
+                if (response.errCode == ErrorCode.ERROR_USER_NOT_FOCUSED) {
+                    ToastMsg.showShortMsgByResName("umeng_comm_user_has_not_focused");
+                    user.isFollowed = false;
+                    listener.onComplete(true, user.isFollowed);
+                    return;
+                }
+                ToastMsg.showShortMsgByResName("umeng_comm_follow_cancel_failed");
+                user.isFollowed = true;
+                listener.onComplete(true, user.isFollowed);
+            }
+        });
+    }
+
     public interface UserListener {
         void onComplete(CommUser user);
     }
+
 }

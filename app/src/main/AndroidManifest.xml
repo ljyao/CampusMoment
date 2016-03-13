@@ -165,7 +165,7 @@
 
         <!-- feed详情页面 -->
         <activity
-            android:name="activity.FeedDetailActivity"
+            android:name="community.activity.FeedDetailActivity"
             android:configChanges="orientation|keyboardHidden"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 

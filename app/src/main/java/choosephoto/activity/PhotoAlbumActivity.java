@@ -70,14 +70,14 @@ public class PhotoAlbumActivity extends AppCompatActivity {
 
         // 第二种方式：使用ContentProvider。（效率更高）
         list = new ArrayList<>();
-        Intent t = getIntent();
+
         if (!getIntent().hasExtra("latest_count")) {
             return;
         }
         // “最近照片”
-        list.add(new PhotoAlbumLVItem(getResources().getString(
-                R.string.latest_image), t.getIntExtra("latest_count", -1), t
-                .getStringExtra("latest_first_img")));
+        Intent t = getIntent();
+        list.add(new PhotoAlbumLVItem(getResources().getString(R.string.latest_image), t.getIntExtra("latest_count", -1), t.getStringExtra("latest_first_img")));
+
         initData();
         adapter = new PhotoAlbumLVAdapter(this, list);
         listView.setAdapter(adapter);
@@ -95,6 +95,7 @@ public class PhotoAlbumActivity extends AppCompatActivity {
                     intent.putExtra("folderPath", list.get(position).getPathName());
                 }
                 startActivity(intent);
+                overridePendingTransition(0, 0);
             }
         });
 

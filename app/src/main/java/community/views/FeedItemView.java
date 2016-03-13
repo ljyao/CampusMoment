@@ -24,17 +24,21 @@ import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.ImageItem;
 import com.umeng.comm.core.beans.ShareContent;
 import com.umeng.comm.core.constants.Constants;
+import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.db.ctrl.impl.DatabaseAPI;
 import com.umeng.comm.core.listeners.Listeners;
+import com.umeng.comm.core.nets.responses.SimpleResponse;
 import com.umeng.comm.core.sdkmanager.ShareSDKManager;
 import com.umeng.comm.core.utils.ResFinder;
 import com.umeng.comm.core.utils.TimeUtils;
 import com.umeng.comm.core.utils.ToastMsg;
 import com.umeng.comm.ui.adapters.FeedImageAdapter;
+import com.umeng.comm.ui.imagepicker.util.BroadcastUtils;
 import com.umeng.comm.ui.mvpview.MvpLikeView;
 import com.umeng.comm.ui.presenter.impl.FeedContentPresenter;
 import com.umeng.comm.ui.presenter.impl.LikePresenter;
 import com.umeng.comm.ui.widgets.WrapperGridView;
+import com.uy.App;
 import com.uy.bbs.R;
 
 import org.androidannotations.annotations.AfterViews;
@@ -63,7 +67,7 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
     @ViewById(R.id.user_portrait_img_btn)
     public SimpleDraweeView mProfileImgView;
     @ViewById(R.id.umeng_comm_dialog_btn)
-    public ImageView mShareBtn;
+    public ImageView mMoreBtn;
     @ViewById(R.id.umeng_comm_msg_user_name)
     public TextView mUserNameTv;
     @ViewById(R.id.umeng_comm_msg_text)
@@ -93,13 +97,14 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
     public TextView mDistanceTextView;
     @ViewById(R.id.location_layout)
     public RelativeLayout locationLayout;
-    protected FeedItem mFeedItem;
 
+    protected FeedItem mFeedItem;
     FeedContentPresenter mPresenter;
     LikePresenter mLikePresenter;
     Listeners.OnItemViewClickListener<FeedItem> mItemViewClickListener;
     private FeedFragment.FeedListListener feedListListener;
-
+    private boolean isShowFavouriteView = false;
+    private boolean isFromFeedDetailePage = false;
     private String mContainerClzName;
     private boolean mIsShowDistance = false;
     /**
@@ -115,6 +120,7 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
         }
     };
 
+
     public FeedItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -128,12 +134,15 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
 
     @AfterViews
     protected void initView() {
+
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                feedListListener.onShowFeedDetail(mFeedItem);
+                if (!isFromFeedDetailePage)
+                    feedListListener.onShowFeedDetail(mFeedItem);
             }
         });
+
         initEventHandle();
         initPresenters();
     }
@@ -227,15 +236,6 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
         targetView.startAnimation(scaleAnimation);
     }
 
-    public void setShareActivity(final Activity activity) {
-        mShareBtn.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                shareToSns(activity);
-            }
-        });
-    }
 
     private void shareToSns(Activity activity) {
         ShareContent shareItem = new ShareContent();
@@ -463,7 +463,9 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
                     ToastMsg.showShortMsgByResName("umeng_comm_feed_spam_deleted");
                     return;
                 } else {
-                    feedListListener.onShowFeedDetail(mFeedItem);
+                    if (!isFromFeedDetailePage) {
+                        feedListListener.onShowFeedDetail(mFeedItem);
+                    }
                 }
             }
         });
@@ -509,15 +511,14 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
         mFeedItem = feedItem;
         mPresenter.setFeedItem(mFeedItem);
         bindFeedItemData();
+        setMoreBtnImage();
     }
 
     /**
      * 在feed详情页面隐藏赞、评论、转发三个按钮
      */
     public void hideActionButtons() {
-        mLikeCountTextView.setVisibility(View.GONE);
-        mCommentCountTextView.setVisibility(View.GONE);
-        mForwardCountTextView.setVisibility(View.GONE);
+        mButtomLayout.setVisibility(GONE);
     }
 
     public void setOnItemViewClickListener(final int position, final Listeners.OnItemViewClickListener<FeedItem> listener) {
@@ -572,10 +573,108 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
     }
 
     @Click(R.id.umeng_comm_dialog_btn)
-    public void moreActionBar() {
-        AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
-        View itemAction = inflate(getContext(), R.layout.feed_item_action, null);
-        alertDialog.setView(itemAction);
-        alertDialog.show();
+    public void onclickMoreBar() {
+        if (isShowFavouriteView) {
+            if (mFeedItem.category == FeedItem.CATEGORY.FAVORITES) {
+                cancelFavoritesFeed();
+            } else {
+                favoritesFeed();
+            }
+        } else {
+            AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+            View itemAction = inflate(getContext(), R.layout.feed_item_action, null);
+            alertDialog.setView(itemAction);
+            alertDialog.show();
+        }
     }
+
+    /**
+     * 是否显示收藏按钮。目前该方法仅仅在Feed详情页面调用</br> [修改该方法请慎重]
+     */
+    public void setShowFavouriteView(boolean isShow) {
+        isShowFavouriteView = isShow;
+        isFromFeedDetailePage = true;
+    }
+
+    /**
+     * 收藏Feed</br>
+     */
+    private void favoritesFeed() {
+        App.getCommunitySDK().favoriteFeed(mFeedItem.id, new Listeners.SimpleFetchListener<SimpleResponse>() {
+
+            @Override
+            public void onComplete(SimpleResponse response) {
+                if (response.errCode != ErrorCode.NO_ERROR) {
+                    if (response.errCode == ErrorCode.ERR_CODE_FEED_FAVOURITED) {
+                        mMoreBtn.setBackgroundResource(R.drawable.toolbar_fav_icon_res);
+                        ToastMsg.showShortMsgByResName("umeng_comm_has_favorited");
+                        mFeedItem.category = FeedItem.CATEGORY.FAVORITES;
+                        BroadcastUtils.sendFeedUpdateBroadcast(getContext(), mFeedItem);
+                    } else if (response.errCode == ErrorCode.ERR_CODE_FAVOURITED_OVER_FLOW) {
+                        ToastMsg.showShortMsgByResName("umeng_comm_favorites_overflow");
+                    } else if (response.errCode == ErrorCode.USER_FORBIDDEN_ERR_CODE) {
+                        ToastMsg.showShortMsgByResName("umeng_comm_user_unusable");
+                    } else {
+                        ToastMsg.showShortMsgByResName("umeng_comm_favorites_failed");
+                    }
+                } else {
+                    mMoreBtn.setBackgroundResource(R.drawable.toolbar_fav_icon_res);
+                    ToastMsg.showShortMsgByResName("umeng_comm_favorites_success");
+                    mFeedItem.category = FeedItem.CATEGORY.FAVORITES;
+                    mFeedItem.addTime = String.valueOf(System.currentTimeMillis());
+                    DatabaseAPI.getInstance().getFeedDBAPI().saveFeedToDB(mFeedItem);
+                    // 数据同步
+                    BroadcastUtils.sendFeedUpdateBroadcast(getContext(), mFeedItem);
+                    BroadcastUtils.sendFeedFavouritesBroadcast(getContext(), mFeedItem);
+                }
+            }
+        });
+    }
+
+    /**
+     * 取消收藏feed</br>
+     */
+    private void cancelFavoritesFeed() {
+        App.getCommunitySDK().cancelFavoriteFeed(mFeedItem.id,
+                new Listeners.SimpleFetchListener<SimpleResponse>() {
+                    @Override
+                    public void onComplete(SimpleResponse response) {
+                        if (response.errCode != ErrorCode.NO_ERROR) {
+                            if (response.errCode == ErrorCode.ERR_CODE_FEED_NOT_FAVOURITED) {
+                                mMoreBtn.setBackgroundResource(R.drawable.toolbar_fav_icon_nor);
+                                ToastMsg.showShortMsgByResName("umeng_comm_not_favorited");
+                                mFeedItem.category = FeedItem.CATEGORY.NORMAL;
+                                BroadcastUtils.sendFeedUpdateBroadcast(getContext(), mFeedItem);
+                            } else if (response.errCode == ErrorCode.USER_FORBIDDEN_ERR_CODE) {
+                                ToastMsg.showShortMsgByResName("umeng_comm_user_unusable");
+                            } else {
+                                ToastMsg.showShortMsgByResName("umeng_comm_cancel_favorites_failed");
+                            }
+                        } else {
+                            mMoreBtn.setBackgroundResource(R.drawable.toolbar_fav_icon_nor);
+                            ToastMsg.showShortMsgByResName("umeng_comm_cancel_favorites_success");
+                            mFeedItem.category = FeedItem.CATEGORY.NORMAL;
+                            DatabaseAPI.getInstance().getFeedDBAPI().saveFeedToDB(mFeedItem);
+                            // 数据同步
+                            BroadcastUtils.sendFeedUpdateBroadcast(getContext(), mFeedItem);
+                        }
+                    }
+                });
+    }
+
+    private void setMoreBtnImage() {
+        if (mMoreBtn == null) {
+            return;
+        }
+        if (isShowFavouriteView) {
+            if (mFeedItem.category == FeedItem.CATEGORY.FAVORITES) {
+                mMoreBtn.setBackgroundResource(R.drawable.toolbar_fav_icon_res);
+            } else {
+                mMoreBtn.setBackgroundResource(R.drawable.toolbar_fav_icon_nor);
+            }
+        } else {
+            mMoreBtn.setBackgroundResource(R.drawable.timeline_icon_more);
+        }
+    }
+
 }

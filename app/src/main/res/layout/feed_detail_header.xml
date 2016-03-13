@@ -7,9 +7,8 @@
 
     <!-- Feed内容视图 -->
 
-    <include
-        android:id="@+id/umeng_comm_feed_content_layout"
-        layout="@layout/umeng_comm_feed_detail_content_layout"
+    <community.views.FeedItemView_
+        android:id="@+id/feed_content_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -17,11 +16,11 @@
         android:id="@+id/umeng_comm_like_count_tv"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_below="@id/umeng_comm_feed_content_layout"
+        android:layout_below="@id/feed_content_layout"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-        android:drawableLeft="@drawable/umeng_comm_like_white"
+        android:drawableLeft="@drawable/wares_icon_wish"
         android:drawablePadding="4dp"
         android:gravity="center"
         android:text="40"
@@ -32,7 +31,7 @@
         android:id="@+id/umeng_comm_like_users_layout"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_below="@id/umeng_comm_feed_content_layout"
+        android:layout_below="@id/feed_content_layout"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="0dp"

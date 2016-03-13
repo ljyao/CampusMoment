@@ -153,6 +153,7 @@ public class PhotoWallActivity extends AppCompatActivity {
             firstIn = false;
         }
         startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 
     // 重写返回键

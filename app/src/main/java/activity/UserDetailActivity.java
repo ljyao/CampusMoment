@@ -10,13 +10,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.CommUser;
 import com.uy.bbs.R;
+import com.uy.util.Worker;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
@@ -24,6 +27,8 @@ import org.androidannotations.annotations.ViewById;
 import community.fragment.FeedFragment;
 import community.fragment.FeedFragment_;
 import community.providable.FeedPrvdr;
+import community.providable.NetLoaderListener;
+import community.providable.UserPrvdr;
 
 /**
  * Created by ljy on 15/12/25.
@@ -38,24 +43,77 @@ public class UserDetailActivity extends AppCompatActivity {
     public Toolbar mToolbar;
     @ViewById(R.id.appbar)
     public AppBarLayout mAppBarLayout;
+    @ViewById(R.id.follow_btn)
+    public Button followBtn;
     @Extra
     public CommUser user;
     private FeedFragment feedFragment;
+    private UserPrvdr userPrvdr;
 
     @AfterViews
     public void initView() {
+        userPrvdr = new UserPrvdr();
         if (user == null) {
             user = CommConfig.getConfig().loginedUser;
         }
-        setUserHeader();
+        followBtn.getBackground().setAlpha(180);
+
+        setData(user);
+        refreshUser(user);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         feedFragment = FeedFragment_.builder().build();
         feedFragment.setFeedType(FeedPrvdr.FeedType.UserFeed, user.id);
         ft.replace(R.id.fragment, feedFragment);
         ft.setTransition(FragmentTransaction.TRANSIT_NONE);
         ft.commit();
+    }
 
+    public void setData(CommUser user) {
+
+        setUserHeader();
+        if (user.isFollowed) {
+            followBtn.setText("取消关注");
+        } else {
+            followBtn.setText("关注");
+        }
         setToolBar();
+    }
+
+    private void refreshUser(final CommUser user) {
+        userPrvdr.getUserInfo(user, new NetLoaderListener<CommUser>() {
+            @Override
+            public void onComplete(boolean statue, CommUser result) {
+                if (result != null) {
+                    UserDetailActivity.this.user = result;
+                    setData(user);
+                }
+            }
+        });
+    }
+
+    @Click(R.id.follow_btn)
+    public void followUser() {
+        NetLoaderListener<Boolean> listener = new NetLoaderListener<Boolean>() {
+            @Override
+            public void onComplete(boolean statue, final Boolean result) {
+                Worker.postMain(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (result) {
+                            followBtn.setText("取消关注");
+                        } else {
+                            followBtn.setText("关注");
+                        }
+                    }
+                });
+
+            }
+        };
+        if (user.isFollowed) {
+            userPrvdr.cancelFollowUser(user, listener);
+        } else {
+            userPrvdr.followUser(user, listener);
+        }
     }
 
     private void setUserHeader() {

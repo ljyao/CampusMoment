@@ -19,7 +19,7 @@ import org.androidannotations.annotations.EFragment;
 
 import java.util.List;
 
-import activity.FeedDetailActivity;
+import community.activity.FeedDetailActivity;
 import community.adapter.FeedAdapter;
 import community.providable.FeedPrvdr;
 import community.providable.NetLoaderListener;
@@ -146,4 +146,5 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
             outRect.set(0, 0, 0, ScreenUtils.dp2px(3, parent.getContext()));
         }
     }
+
 }
