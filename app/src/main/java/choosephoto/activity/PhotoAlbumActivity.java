@@ -15,9 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.chat.util.PhotoAlbumLVItem;
-import com.chat.util.Utility;
 import com.uy.bbs.R;
 import com.uy.util.Worker;
 
@@ -26,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import choosephoto.adapter.PhotoAlbumLVAdapter;
+import choosephoto.adapter.PhotoAlbumLVItem;
 import helper.common_util.FileUtils;
 
 /**
@@ -152,7 +152,7 @@ public class PhotoAlbumActivity extends AppCompatActivity {
         mContext = this;
 
         if (!FileUtils.isStorageOK()) {
-            Utility.showToast(this, "SD卡不可用。");
+            Toast.makeText(this, "SD卡不可用!", Toast.LENGTH_LONG).show();
             return;
         }
 

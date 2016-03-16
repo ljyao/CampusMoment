@@ -13,4 +13,6 @@
     <string name="at_me">\@我的</string>
     <string name="comment">评论</string>
     <string name="good">赞</string>
+    <string name="latest_image">最近照片</string>
+    <string name="select_album">选择相册</string>
 </resources>

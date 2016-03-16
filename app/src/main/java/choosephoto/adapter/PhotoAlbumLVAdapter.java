@@ -8,8 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.chat.util.PhotoAlbumLVItem;
-import com.chat.util.SDCardImageLoader;
 import com.uy.bbs.R;
 import com.uy.util.CompressType;
 
