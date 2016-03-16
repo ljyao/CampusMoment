@@ -9,7 +9,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/chat" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/gpuimagelibrary" />
             <option value="$PROJECT_DIR$/image_edit_library" />
@@ -20,7 +19,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/chat" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/gpuimagelibrary" />
             <option value="$PROJECT_DIR$/image_edit_library" />

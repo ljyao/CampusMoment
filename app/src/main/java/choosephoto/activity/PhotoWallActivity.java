@@ -70,9 +70,9 @@ public class PhotoWallActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_wall);
         mContext = this;
+        PhotoAlbumActivity.initData(this, null);
 
         requestCode = getIntent().getIntExtra("from", -1);
-
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(getResources().getString(R.string.latest_image));
@@ -153,7 +153,7 @@ public class PhotoWallActivity extends AppCompatActivity {
             firstIn = false;
         }
         startActivity(intent);
-        overridePendingTransition(0, 0);
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
     // 重写返回键

@@ -1,1 +1,1 @@
-include ':app', ':chat', ':common', ':gpuimagelibrary', ':umeng_community_library', ':image_edit_library'
+include ':app', ':common', ':gpuimagelibrary', ':umeng_community_library', ':image_edit_library'
