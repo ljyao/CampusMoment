@@ -9,13 +9,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.chat.util.SDCardImageLoader;
 import com.uy.bbs.R;
 import com.uy.util.CompressType;
 
 import java.util.ArrayList;
 
 import choosephoto.Views.WrapHeightImageView;
+import choosephoto.util.SDCardImageLoader;
 
 public class PhotoWallAdapter extends RecyclerView.Adapter {
     private Context context;

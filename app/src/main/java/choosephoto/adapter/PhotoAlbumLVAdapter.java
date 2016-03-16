@@ -14,6 +14,8 @@ import com.uy.util.CompressType;
 import java.io.File;
 import java.util.ArrayList;
 
+import choosephoto.util.SDCardImageLoader;
+
 public class PhotoAlbumLVAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<PhotoAlbumLVItem> list;
