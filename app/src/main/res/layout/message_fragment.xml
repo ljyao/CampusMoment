@@ -41,6 +41,7 @@
         android:background="@color/white_grey" />
 
     <RelativeLayout
+        android:id="@+id/comment_rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white">

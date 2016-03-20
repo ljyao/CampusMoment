@@ -70,7 +70,6 @@
             </intent-filter>
         </activity>
         <activity android:name="activity.LoginActivity" />
-        <activity android:name="com.chat.activity.ChatActivity" />
         <activity
             android:name="choosephoto.activity.PhotoAlbumActivity"
             android:launchMode="singleInstance" />
@@ -93,15 +92,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
-            android:name="camera.ui.CropPhotoActivity_"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
-
-        <activity
-            android:name="camera.ui.PhotoProcessActivity_"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
-        <activity
             android:name="ui.EditTextActivity_"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
@@ -111,7 +101,7 @@
         <activity android:name="community.activity.TopicActivity_" />
         <activity android:name="community.activity.HotTopicActivity_" />
         <activity android:name="community.activity.LocationFeedActivity" />
-
+        <activity android:name="community.activity.CommentReceivedActivity_" />
 
         <!-- youmeng -->
         <!-- 发现的Activity -->

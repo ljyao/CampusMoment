@@ -61,8 +61,7 @@ public class UserDetailActivity extends AppCompatActivity {
         setData(user);
         refreshUser(user);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        feedFragment = FeedFragment_.builder().build();
-        feedFragment.setFeedType(FeedPrvdr.FeedType.UserFeed, user.id);
+        feedFragment = FeedFragment_.builder().feedType(FeedPrvdr.FeedType.UserFeed).userId(user.id).build();
         ft.replace(R.id.fragment, feedFragment);
         ft.setTransition(FragmentTransaction.TRANSIT_NONE);
         ft.commit();

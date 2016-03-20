@@ -172,6 +172,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void initFragment() {
+        fragments = new HashMap<>(5);
+        DiscoverFragment discoverFragment = DiscoverFragment_.builder().build();
+        FeedFragment feedFragment = FeedFragment_.builder().feedType(FeedPrvdr.FeedType.FollowFeed).build();
+        MeFragment meFragment = MeFragment_.builder().build();
+        MessageFragment messageFragment = MessageFragment_.builder().build();
+        fragments.put(FEED_FRAGMENT_ID, feedFragment);
+        fragments.put(MESSAGE_FRAGMENT_ID, messageFragment);
+        fragments.put(DISCOVER_FRAGMENT_ID, discoverFragment);
+        fragments.put(AT_FRAGMENT_ID, meFragment);
+    }
     public void showFragment(int i) {
         Fragment nextFragment = fragments.get(i);
         if (currentFragment == nextFragment) {
@@ -195,18 +206,6 @@ public class MainActivity extends AppCompatActivity {
         currentFragment = nextFragment;
     }
 
-    public void initFragment() {
-        fragments = new HashMap<>(5);
-        DiscoverFragment discoverFragment = DiscoverFragment_.builder().build();
-        FeedFragment feedFragment = FeedFragment_.builder().build();
-        feedFragment.setFeedType(FeedPrvdr.FeedType.FollowFeed);
-        MeFragment meFragment = MeFragment_.builder().build();
-        MessageFragment messageFragment = MessageFragment_.builder().build();
-        fragments.put(FEED_FRAGMENT_ID, feedFragment);
-        fragments.put(MESSAGE_FRAGMENT_ID, messageFragment);
-        fragments.put(DISCOVER_FRAGMENT_ID, discoverFragment);
-        fragments.put(AT_FRAGMENT_ID, meFragment);
-    }
 
     // 重写返回键
     @Override

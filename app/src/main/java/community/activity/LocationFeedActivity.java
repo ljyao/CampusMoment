@@ -28,8 +28,10 @@ public class LocationFeedActivity extends AppCompatActivity {
         FeedItem feedItem = getIntent().getParcelableExtra(Constants.FEED);
         setTitle(feedItem.locationAddr);
 
-        FeedFragment fragment = FeedFragment_.builder().build();
-        fragment.setFeedType(FeedPrvdr.FeedType.LocationFeed, feedItem.location);
+        FeedFragment fragment = FeedFragment_.builder()
+                .feedType(FeedPrvdr.FeedType.LocationFeed)
+                .location(feedItem.location).build();
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.main_container, fragment);
         ft.setTransition(FragmentTransaction.TRANSIT_NONE);

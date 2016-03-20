@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -574,6 +575,10 @@ public class FeedDetailFragment extends CommentEditFragment<List<FeedItem>, Feed
     public void onRefreshStart() {
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+    }
+
     private class LoginReceiver extends BaseBroadcastReceiver {
         @Override
         protected void onReceiveIntent(Context context, Intent intent) {
@@ -582,5 +587,4 @@ public class FeedDetailFragment extends CommentEditFragment<List<FeedItem>, Feed
             }
         }
     }
-
 }

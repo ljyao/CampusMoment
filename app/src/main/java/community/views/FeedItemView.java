@@ -32,6 +32,7 @@ import com.umeng.comm.core.sdkmanager.ShareSDKManager;
 import com.umeng.comm.core.utils.ResFinder;
 import com.umeng.comm.core.utils.TimeUtils;
 import com.umeng.comm.core.utils.ToastMsg;
+import com.umeng.comm.ui.activities.FeedDetailActivity;
 import com.umeng.comm.ui.adapters.FeedImageAdapter;
 import com.umeng.comm.ui.imagepicker.util.BroadcastUtils;
 import com.umeng.comm.ui.mvpview.MvpLikeView;
@@ -98,6 +99,7 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
     @ViewById(R.id.location_layout)
     public RelativeLayout locationLayout;
 
+    public boolean isReceivedComment = false;
     protected FeedItem mFeedItem;
     FeedContentPresenter mPresenter;
     LikePresenter mLikePresenter;
@@ -120,7 +122,6 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
         }
     };
 
-
     public FeedItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -138,7 +139,7 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isFromFeedDetailePage)
+                if (!isFromFeedDetailePage && !isReceivedComment)
                     feedListListener.onShowFeedDetail(mFeedItem);
             }
         });
@@ -193,7 +194,7 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
         });
     }
 
-    private void hideImageGridView() {
+    public void hideImageGridView() {
         if (mImageGv != null) {
             mImageGv.setAdapter(new FeedImageAdapter(getContext()));
             mImageGv.setVisibility(View.GONE);
@@ -396,7 +397,10 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
 
             @Override
             public void onClick(View v) {
-                mPresenter.clickOriginFeedItem(mFeedItem);
+                Intent intent = new Intent(getContext(), FeedDetailActivity.class);
+                mFeedItem.extraData.clear();
+                intent.putExtra(Constants.FEED, mFeedItem);
+                getContext().startActivity(intent);
             }
         });
         if (mImageGv != null) {
@@ -411,13 +415,37 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
 
             @Override
             public void onClick(View v) {
-                mPresenter.clickOriginFeedItem(mFeedItem);
+                feedListListener.onShowFeedDetail(getForwardDetailFeed());
             }
         });
 
         // 隐藏位置图标
         mLocationImgView.setVisibility(View.GONE);
         mLocationTv.setVisibility(View.GONE);
+    }
+
+    /**
+     * 点击转发feed的原始feed时需要从内容中删除原始作者的名字
+     *
+     * @return
+     */
+    private FeedItem getForwardDetailFeed() {
+        FeedItem feedItem = mFeedItem.sourceFeed;
+        if (feedItem != null) {
+            String feedText = feedItem.text;
+            // 如果点击是被转发的内容,那么将@原始feed的创建者的用户名从内容中去掉
+            int creatorNameIndex = feedText.indexOf(":");
+            if (feedText.startsWith("@") && creatorNameIndex >= 0) {
+                FeedItem originfeedItem = feedItem.clone();
+                int length = feedText.length();
+                int start = creatorNameIndex + 1;
+                originfeedItem.text = feedText.substring(start, length);
+                feedItem = originfeedItem;
+            }
+        } else {
+            feedItem = mFeedItem;
+        }
+        return feedItem;
     }
 
     /**
@@ -463,7 +491,7 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
                     ToastMsg.showShortMsgByResName("umeng_comm_feed_spam_deleted");
                     return;
                 } else {
-                    if (!isFromFeedDetailePage) {
+                    if (!isFromFeedDetailePage && !isReceivedComment) {
                         feedListListener.onShowFeedDetail(mFeedItem);
                     }
                 }

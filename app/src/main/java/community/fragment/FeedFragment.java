@@ -3,7 +3,7 @@ package community.fragment;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.location.Location;
-import android.support.annotation.NonNull;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -16,6 +16,7 @@ import com.uy.util.Worker;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.FragmentArg;
 
 import java.util.List;
 
@@ -32,11 +33,16 @@ import helper.common_util.ScreenUtils;
  */
 @EFragment
 public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
+    @FragmentArg
+    public FeedPrvdr.FeedType feedType;
+    @FragmentArg
+    public Topic topic;
+    @FragmentArg
+    public String userId;
+    @FragmentArg
+    public Location location;
     private FeedPrvdr feedPrvdr;
-    private FeedPrvdr.FeedType mFeedType = FeedPrvdr.FeedType.FollowFeed;
     private LinearLayoutManager layoutManager;
-    private String userOrTopicId = "";
-    private Location mLocation;
 
     private FeedListListener feedListListener = new FeedListListener() {
         @Override
@@ -54,13 +60,24 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
     };
 
     public FeedFragment() {
-        feedPrvdr = new FeedPrvdr(mFeedType);
-        adapter = new FeedAdapter();
-        adapter.setListener(feedListListener);
+
     }
 
     @AfterViews
     public void initView() {
+        if (feedType == null)
+            feedType = FeedPrvdr.FeedType.FollowFeed;
+        feedPrvdr = new FeedPrvdr(this.feedType);
+        adapter = new FeedAdapter(feedType);
+        if (feedType == FeedPrvdr.FeedType.TopicFeed) {
+            feedPrvdr.setTopicId(topic.id);
+            adapter.setTopic(topic);
+        } else if (feedType == FeedPrvdr.FeedType.LocationFeed) {
+            feedPrvdr.setLocation(location);
+        } else if (feedType == FeedPrvdr.FeedType.UserFeed) {
+            feedPrvdr.setUserId(userId);
+        }
+        adapter.setListener(feedListListener);
         listView.setAdapter(adapter);
         listView.addItemDecoration(new FeedDecoration());
         refreshFeed();
@@ -86,7 +103,7 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
                 setRefreshState(false);
                 adapter.update(result);
             }
-        }, userOrTopicId, mLocation);
+        });
     }
 
     @Override
@@ -100,7 +117,6 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
         });
     }
 
-
     private void setRefreshState(final boolean state) {
         Worker.postMain(new Runnable() {
             @Override
@@ -110,30 +126,14 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
         }, 500);
     }
 
-
-    public void setFeedType(FeedPrvdr.FeedType feedType, Topic topic) {
-        if (topic != null) {
-            userOrTopicId = topic.id;
-            adapter.setTopic(topic);
-        }
-        this.mFeedType = feedType;
-        feedPrvdr.setFeedType(feedType);
+    public void setTopic(Topic topic) {
+        this.topic = topic;
+        adapter.setTopic(topic);
+        adapter.notifyItemChanged(0);
     }
 
-    public void setFeedType(FeedPrvdr.FeedType feedType, @NonNull String id) {
-        this.mFeedType = feedType;
-        userOrTopicId = id;
-        feedPrvdr.setFeedType(feedType);
-    }
-
-    public void setFeedType(FeedPrvdr.FeedType feedType, Location location) {
-        this.mFeedType = feedType;
-        this.mLocation = location;
-        feedPrvdr.setFeedType(feedType);
-    }
-    public void setFeedType(FeedPrvdr.FeedType feedType) {
-        this.mFeedType = feedType;
-        feedPrvdr.setFeedType(feedType);
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
     }
 
     public interface FeedListListener {
@@ -146,5 +146,4 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
             outRect.set(0, 0, 0, ScreenUtils.dp2px(3, parent.getContext()));
         }
     }
-
 }

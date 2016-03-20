@@ -2,6 +2,7 @@
 package community.fragment;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -176,5 +177,9 @@ public class TopicFragment extends RecommendTopicFragment {
     public void onPause() {
         mInputMan.hideSoftInputFromWindow(mSearchEdit.getWindowToken(), 0);
         super.onPause();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
     }
 }

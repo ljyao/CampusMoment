@@ -1,5 +1,6 @@
 package community.fragment;
 
+import android.os.Bundle;
 import android.view.View;
 
 import com.umeng.comm.ui.adapters.CommentMeAdapter;
@@ -32,5 +33,9 @@ public class CommentReceivedFragment extends FeedListFragment<CommentReceivedPre
     protected void initRefreshView() {
         super.initRefreshView();
         mFeedsListView.setOnItemClickListener(null);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
     }
 }

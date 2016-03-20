@@ -39,7 +39,7 @@ public class SDCardImageLoader {
 
         // 获取应用程序最大可用内存
         int maxMemory = (int) Runtime.getRuntime().maxMemory();
-        int cacheSize = maxMemory;
+        int cacheSize = maxMemory / 2;
 
         // 设置图片缓存大小为程序最大可用内存
         if (imageCachePool == null) {
@@ -129,13 +129,13 @@ public class SDCardImageLoader {
                 File imgCacheFile = new File(cacheDir, imgFile.getName());
                 if (imgCacheFile.exists()) {
                     final Bitmap bitmap = BitmapFactory.decodeFile(imgCacheFile.getPath());
+                    imageCachePool.put(filePath, bitmap);
                     Worker.postMain(new Runnable() {
                         @Override
                         public void run() {
                             callback.imageLoaded(bitmap);
                         }
                     });
-                    imageCachePool.put(filePath, bitmap);
 
                 } else {
                     loadSDFileImage(imgCacheFile);

@@ -1,7 +1,6 @@
 package community.providable;
 
 import android.location.Location;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.umeng.comm.core.CommunitySDK;
@@ -10,10 +9,12 @@ import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
+import com.umeng.comm.core.nets.responses.FeedCommentResponse;
 import com.umeng.comm.core.nets.responses.FeedsResponse;
 import com.umeng.comm.core.nets.uitls.NetworkUtils;
 import com.uy.App;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -23,6 +24,9 @@ public class FeedPrvdr {
     private FeedType mFeedType;
     private String mNextPageUrl;
     private CommunitySDK mCommunitySDK;
+    private String topicId;
+    private String userId;
+    private Location location;
     private NetLoaderListener<List<FeedItem>> feedFragmentListener;
     Listeners.FetchListener<FeedsResponse> fetchListener = new Listeners.FetchListener<FeedsResponse>() {
         @Override
@@ -45,13 +49,30 @@ public class FeedPrvdr {
             feedFragmentListener.onComplete(true, response.result);
         }
     };
+    protected Listeners.SimpleFetchListener<FeedCommentResponse> mCommentListener = new Listeners.SimpleFetchListener<FeedCommentResponse>() {
+
+        @Override
+        public void onStart() {
+
+        }
+
+        @Override
+        public void onComplete(FeedCommentResponse response) {
+            if (NetworkUtils.handleResponseAll(response)) {
+                return;
+            }
+            mNextPageUrl = response.nextPageUrl;
+            feedFragmentListener.onComplete(true, response.result);
+        }
+    };
+
 
     public FeedPrvdr(FeedType feedType) {
         mFeedType = feedType;
         mCommunitySDK = App.getCommunitySDK();
     }
 
-    public void getFirstPageData(NetLoaderListener<List<FeedItem>> listener, @Nullable String id, @Nullable Location location) {
+    public void getFirstPageData(NetLoaderListener<List<FeedItem>> listener) {
         this.feedFragmentListener = listener;
         switch (mFeedType) {
             case FollowFeed:
@@ -62,15 +83,22 @@ public class FeedPrvdr {
                 getUserFeed(user.id);
                 break;
             case TopicFeed:
-                loadFeedByTopic(id);
+                loadFeedByTopic(topicId);
                 break;
             case UserFeed:
-                getUserFeed(id);
+                getUserFeed(userId);
                 break;
             case LocationFeed:
                 getLocationFeed(location);
                 break;
+            case ReceivedComments:
+                getReceivedComments();
+                break;
         }
+    }
+
+    private void getReceivedComments() {
+        mCommunitySDK.fetchReceivedComments(0, mCommentListener);
     }
 
     private void getLocationFeed(Location mLocation) {
@@ -103,13 +131,26 @@ public class FeedPrvdr {
         this.mFeedType = feedType;
     }
 
-    public enum FeedType {
+    public void setTopicId(String topicId) {
+        this.topicId = topicId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public enum FeedType implements Serializable {
         FollowFeed,
         TopicFeed,
         UserFeed,
         MeFeed,
         NearFeed,
-        LocationFeed
+        LocationFeed,
+        ReceivedComments
     }
 
 }

@@ -27,6 +27,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
     private FeedPrvdr.FeedType feedType;
     private List<FeedItem> items;
 
+    public FeedAdapter(FeedPrvdr.FeedType mFeedType) {
+        feedType = mFeedType;
+    }
+
 
     @Override
     public FeedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -37,22 +41,19 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                 break;
             case FEED:
                 FeedItemView feedView = FeedItemView_.build(parent.getContext(), null);
+                if (feedType == FeedPrvdr.FeedType.ReceivedComments) {
+                    feedView.isReceivedComment = true;
+                }
                 feedView.setListener(feedListListener);
                 itemView = feedView;
                 break;
         }
 
-        return new FeedViewHolder(itemView);
+        return new FeedViewHolder(itemView, feedType);
     }
 
     public void setListener(FeedFragment.FeedListListener feedListListener) {
         this.feedListListener = feedListListener;
-    }
-
-    public void setTopic(Topic topic) {
-        this.feedType = FeedPrvdr.FeedType.TopicFeed;
-        this.topic = topic;
-        notifyDataSetChanged();
     }
 
     @Override
@@ -70,7 +71,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
     @Override
     public int getItemCount() {
-        if (items == null) {
+        if (items == null || items.size() == 0) {
             if (feedType == FeedPrvdr.FeedType.TopicFeed) {
                 return 1;
             } else {
@@ -103,12 +104,18 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         }
     }
 
+    public void setTopic(Topic topic) {
+        this.topic = topic;
+    }
+
     static public class FeedViewHolder extends RecyclerView.ViewHolder {
+        private FeedPrvdr.FeedType feedType;
         private FeedItemView feedView;
         private TopicInfoView topicInfo;
 
-        public FeedViewHolder(View itemView) {
+        public FeedViewHolder(View itemView, FeedPrvdr.FeedType feedType) {
             super(itemView);
+            this.feedType = feedType;
             if (itemView instanceof FeedItemView) {
                 feedView = (FeedItemView) itemView;
             } else if (itemView instanceof TopicInfoView) {
@@ -118,6 +125,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
         public void setData(FeedItem feedItem) {
             feedView.bind(feedItem);
+            if (feedType == FeedPrvdr.FeedType.ReceivedComments) {
+                feedView.hideActionButtons();
+            }
         }
 
         public void setData(Topic topic) {

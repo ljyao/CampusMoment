@@ -32,8 +32,7 @@ public class TopicActivity extends AppCompatActivity {
         setTitle(topic.name);
         getTopicInfo(topic.id);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        fragment = FeedFragment_.builder().build();
-        fragment.setFeedType(FeedPrvdr.FeedType.TopicFeed, topic);
+        fragment = FeedFragment_.builder().feedType(FeedPrvdr.FeedType.TopicFeed).topic(topic).build();
         ft.add(R.id.fragment, fragment);
         ft.setTransition(FragmentTransaction.TRANSIT_NONE);
         ft.commit();
@@ -45,7 +44,7 @@ public class TopicActivity extends AppCompatActivity {
             @Override
             public void onComplete(boolean statue, Topic result) {
                 topic = result;
-                fragment.setFeedType(FeedPrvdr.FeedType.TopicFeed, topic);
+                fragment.setTopic(topic);
             }
         });
     }

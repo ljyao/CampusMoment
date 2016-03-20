@@ -90,7 +90,8 @@
         android:layout_height="wrap_content"
         android:layout_alignWithParentIfMissing="true"
         android:layout_below="@id/umeng_comm_msg_text"
-        android:layout_marginTop="5dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="3dp"
         android:background="@color/forward_grey"
         android:gravity="right">
 
