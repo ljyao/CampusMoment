@@ -26,6 +26,7 @@ import java.util.Map;
 
 import camera.ui.CameraActivity_;
 import choosephoto.activity.PhotoWallActivity;
+import community.activity.PostFeedActivity_;
 import community.fragment.DiscoverFragment;
 import community.fragment.DiscoverFragment_;
 import community.fragment.FeedFragment;
@@ -113,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
     public void onCliceAdd(View v) {
         switch (v.getId()) {
             case R.id.add_txt_feed:
+                PostFeedActivity_.intent(this).start();
                 break;
             case R.id.add_photo_feed:
                 Intent intent = new Intent(this, PhotoWallActivity.class);
@@ -183,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
         fragments.put(DISCOVER_FRAGMENT_ID, discoverFragment);
         fragments.put(AT_FRAGMENT_ID, meFragment);
     }
+
     public void showFragment(int i) {
         Fragment nextFragment = fragments.get(i);
         if (currentFragment == nextFragment) {

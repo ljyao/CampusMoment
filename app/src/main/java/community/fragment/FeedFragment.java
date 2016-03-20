@@ -101,7 +101,8 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
             @Override
             public void onComplete(boolean statue, List<FeedItem> result) {
                 setRefreshState(false);
-                adapter.update(result);
+                if (result != null && result.size() > 0)
+                    adapter.update(result);
             }
         });
     }
@@ -143,7 +144,7 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
     static class FeedDecoration extends RecyclerView.ItemDecoration {
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            outRect.set(0, 0, 0, ScreenUtils.dp2px(3, parent.getContext()));
+            outRect.set(0, 0, 0, ScreenUtils.dp2px(1, parent.getContext()));
         }
     }
 }

@@ -102,6 +102,8 @@
         <activity android:name="community.activity.HotTopicActivity_" />
         <activity android:name="community.activity.LocationFeedActivity" />
         <activity android:name="community.activity.CommentReceivedActivity_" />
+        <activity android:name="community.activity.PostFeedActivity_" />
+        <activity android:name="community.activity.LikeUsersActivity" />
 
         <!-- youmeng -->
         <!-- 发现的Activity -->

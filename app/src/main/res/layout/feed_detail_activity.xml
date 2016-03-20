@@ -7,7 +7,7 @@
 
     <include
         android:id="@+id/umeng_comm_feed_title_layout"
-        layout="@layout/umeng_comm_title_layout"
+        layout="@layout/comm_title_layout"
         android:layout_width="match_parent"
         android:layout_height="48dp" />
 

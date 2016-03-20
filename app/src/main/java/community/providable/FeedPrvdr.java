@@ -41,8 +41,8 @@ public class FeedPrvdr {
                 if (response.errCode == ErrorCode.NO_ERROR) {
                     // 如果返回的数据是空，则需要置下一页地址为空
                     mNextPageUrl = "";
-                    feedFragmentListener.onComplete(false, null);
                 }
+                feedFragmentListener.onComplete(false, null);
                 return;
             }
             mNextPageUrl = response.nextPageUrl;

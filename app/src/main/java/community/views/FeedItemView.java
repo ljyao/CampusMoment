@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
@@ -32,7 +33,6 @@ import com.umeng.comm.core.sdkmanager.ShareSDKManager;
 import com.umeng.comm.core.utils.ResFinder;
 import com.umeng.comm.core.utils.TimeUtils;
 import com.umeng.comm.core.utils.ToastMsg;
-import com.umeng.comm.ui.activities.FeedDetailActivity;
 import com.umeng.comm.ui.adapters.FeedImageAdapter;
 import com.umeng.comm.ui.imagepicker.util.BroadcastUtils;
 import com.umeng.comm.ui.mvpview.MvpLikeView;
@@ -52,9 +52,11 @@ import java.util.List;
 
 import activity.UserDetailActivity_;
 import adapter.ViewWrapper;
+import community.activity.FeedDetailActivity;
 import community.activity.LocationFeedActivity;
 import community.fragment.FeedFragment;
 import community.util.FeedViewRender;
+import helper.common_util.ScreenUtils;
 
 /**
  * Created by ljy on 15/12/21.
@@ -399,7 +401,10 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), FeedDetailActivity.class);
                 mFeedItem.extraData.clear();
-                intent.putExtra(Constants.FEED, mFeedItem);
+                FeedItem feedItem = getForwardDetailFeed();
+                if (feedItem == null)
+                    return;
+                intent.putExtra(Constants.FEED, feedItem);
                 getContext().startActivity(intent);
             }
         });
@@ -415,7 +420,10 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
 
             @Override
             public void onClick(View v) {
-                feedListListener.onShowFeedDetail(getForwardDetailFeed());
+                FeedItem feedItem = getForwardDetailFeed();
+                if (feedItem == null)
+                    return;
+                feedListListener.onShowFeedDetail(feedItem);
             }
         });
 
@@ -695,6 +703,11 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
             return;
         }
         if (isShowFavouriteView) {
+            ViewGroup.LayoutParams params = mMoreBtn.getLayoutParams();
+            int width = ScreenUtils.dp2px(20, getContext());
+            params.width = width;
+            params.height = width;
+            mMoreBtn.setLayoutParams(params);
             if (mFeedItem.category == FeedItem.CATEGORY.FAVORITES) {
                 mMoreBtn.setBackgroundResource(R.drawable.toolbar_fav_icon_res);
             } else {

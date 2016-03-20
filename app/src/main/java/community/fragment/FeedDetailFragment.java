@@ -24,7 +24,6 @@ import com.umeng.comm.core.listeners.Listeners.LoginOnViewClickListener;
 import com.umeng.comm.core.listeners.Listeners.OnItemViewClickListener;
 import com.umeng.comm.core.receiver.BaseBroadcastReceiver;
 import com.umeng.comm.core.utils.ResFinder;
-import com.umeng.comm.ui.adapters.FeedCommentAdapter;
 import com.umeng.comm.ui.fragments.CommentEditFragment;
 import com.umeng.comm.ui.imagepicker.util.BroadcastUtils;
 import com.umeng.comm.ui.imagepicker.widgets.RefreshLayout;
@@ -34,12 +33,13 @@ import com.umeng.comm.ui.mvpview.MvpFeedDetailView;
 import com.umeng.comm.ui.mvpview.MvpLikeView;
 import com.umeng.comm.ui.presenter.impl.FeedDetailPresenter;
 import com.umeng.comm.ui.utils.ViewFinder;
-import com.umeng.comm.ui.widgets.LikeView;
 import com.uy.bbs.R;
 
 import java.util.List;
 
+import community.adapter.FeedCommentAdapter;
 import community.views.FeedItemView;
+import community.views.LikeView;
 
 
 /**
@@ -140,7 +140,7 @@ public class FeedDetailFragment extends CommentEditFragment<List<FeedItem>, Feed
 
     @Override
     protected int getFragmentLayout() {
-        return R.layout.umeng_comm_feed_detail_fragment;
+        return R.layout.feed_detail_fragment;
     }
 
     @Override
@@ -235,10 +235,8 @@ public class FeedDetailFragment extends CommentEditFragment<List<FeedItem>, Feed
 
         mLikeView = headerViewFinder.findViewById(R.id.umeng_comm_like_users_layout);
 
-        mCommentCountTextView = headerViewFinder.findViewById(ResFinder
-                .getId("umeng_comm_comment_count_tv"));
-        mForwardCountTextView = headerViewFinder.findViewById(ResFinder
-                .getId("umeng_comm_forward_count_tv"));
+        mCommentCountTextView = headerViewFinder.findViewById(R.id.umeng_comm_comment_count_tv);
+        mForwardCountTextView = headerViewFinder.findViewById(R.id.umeng_comm_forward_count_tv);
 
         return headerViewFinder.getRootView();
     }

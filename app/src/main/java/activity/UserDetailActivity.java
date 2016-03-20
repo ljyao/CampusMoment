@@ -56,7 +56,7 @@ public class UserDetailActivity extends AppCompatActivity {
         if (user == null) {
             user = CommConfig.getConfig().loginedUser;
         }
-        followBtn.getBackground().setAlpha(180);
+        followBtn.getBackground().setAlpha(150);
 
         setData(user);
         refreshUser(user);

@@ -1,28 +1,5 @@
-/*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014-2015 Umeng, Inc
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
 
-package com.umeng.comm.ui.activities;
+package community.activity;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
@@ -65,6 +42,7 @@ import com.umeng.comm.core.utils.DeviceUtils;
 import com.umeng.comm.core.utils.Log;
 import com.umeng.comm.core.utils.ResFinder;
 import com.umeng.comm.core.utils.ToastMsg;
+import com.umeng.comm.ui.activities.BaseFragmentActivity;
 import com.umeng.comm.ui.adapters.ImageSelectedAdapter;
 import com.umeng.comm.ui.dialogs.AtFriendDialog;
 import com.umeng.comm.ui.dialogs.LocationPickerDlg;
@@ -77,7 +55,11 @@ import com.umeng.comm.ui.utils.ContentChecker;
 import com.umeng.comm.ui.utils.FeedViewRender;
 import com.umeng.comm.ui.widgets.FeedEditText;
 import com.umeng.comm.ui.widgets.TopicTipView;
-import com.umeng_community_library.R;
+import com.uy.bbs.R;
+
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +67,8 @@ import java.util.List;
 /**
  * 发布feed的Activity
  */
-public class PostFeedActivity extends BaseFragmentActivity implements OnClickListener,
+@EActivity
+public class PostFeedActivity extends BaseFragmentActivity implements
         MvpPostFeedActivityView {
 
     private static final String CHAR_WELL = "#";
@@ -99,15 +82,48 @@ public class PostFeedActivity extends BaseFragmentActivity implements OnClickLis
     /**
      * 内容编辑框，最多300字
      */
-    protected FeedEditText mEditText;
-    /**
-     * 选择的图片的GridView
-     */
-    protected GridView mGridView;
+    @ViewById(R.id.umeng_comm_post_msg_edittext)
+    public FeedEditText mEditText;
+    @ViewById(R.id.umeng_comm_select_layout)
+    public FrameLayout mFragmentLatout;
     /**
      * 通过拍照获取到的图片地址
      */
     // private String mNewImagePath;
+    /**
+     * 选择的图片的GridView
+     */
+    @ViewById(R.id.umeng_comm_prev_images_gv)
+    public GridView mGridView;
+    /**
+     * 我的位置TextView
+     */
+    @ViewById(R.id.umeng_comm_location_text)
+    public TextView mLocationTv;
+    /**
+     * 选择话题的ToggleButton
+     */
+    @ViewById(R.id.umeng_comm_pick_topic_btn)
+    public ToggleButton mTopicButton;
+    /**
+     * 选择图片的ImageButton
+     */
+    @ViewById(R.id.umeng_comm_add_image_btn)
+    public ImageButton mPhotoButton;
+    /**
+     * 地理位置的icon
+     */
+    @ViewById(R.id.umeng_comm_post_loc_icon)
+    public ImageView mLocIcon;
+    @ViewById(R.id.umeng_community_loc_layout)
+    public View mLocationLayout;
+    /**
+     * 加载地理位置时的Progress
+     */
+    @ViewById(R.id.umeng_comm_post_loc_progressbar)
+    public ProgressBar mLocProgressBar;
+    @ViewById(R.id.umeng_comm_topic_tip)
+    public TopicTipView mTopicTipView;
     /**
      * 位置
      */
@@ -121,17 +137,11 @@ public class PostFeedActivity extends BaseFragmentActivity implements OnClickLis
      */
     protected List<CommUser> mSelectFriends = new ArrayList<CommUser>();
     /**
-     * 我的位置TextView
-     */
-    protected TextView mLocationTv;
-    /**
      * 保存地理位置的list
      */
     protected List<LocationItem> mLocationItems = new ArrayList<LocationItem>();
     protected String TAG = PostFeedActivity.class.getSimpleName();
     protected boolean isForwardFeed = false;
-    protected TopicTipView mTopicTipView;
-    FrameLayout mFragmentLatout;
     FeedPostPresenter mPostPresenter;
     TakePhotoPresenter mTakePhotoPresenter = new TakePhotoPresenter();
     // 隐藏Fragment的回调
@@ -159,23 +169,6 @@ public class PostFeedActivity extends BaseFragmentActivity implements OnClickLis
      */
     private TopicPickerFragment mTopicFragment;
     /**
-     * 选择话题的ToggleButton
-     */
-    private ToggleButton mTopicButton;
-    /**
-     * 选择图片的ImageButton
-     */
-    private ImageButton mPhotoButton;
-    /**
-     * 地理位置的icon
-     */
-    private ImageView mLocIcon;
-    private View mLocationLayout;
-    /**
-     * 加载地理位置时的Progress
-     */
-    private ProgressBar mLocProgressBar;
-    /**
      * 是否是发布失败重新发布
      */
     private boolean isRepost = false;
@@ -184,7 +177,7 @@ public class PostFeedActivity extends BaseFragmentActivity implements OnClickLis
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
 
-        setContentView(R.layout.umeng_comm_post_feed_layout);
+        setContentView(R.layout.activity_post_feed_layout);
         setFragmentContainerId(ResFinder.getId("umeng_comm_select_layout"));
         initViews();
         initLocationLayout();
@@ -235,14 +228,7 @@ public class PostFeedActivity extends BaseFragmentActivity implements OnClickLis
      * 初始化相关View
      */
     protected void initViews() {
-        // 发送和回退按钮
-        findViewById(ResFinder.getId("umeng_comm_post_ok_btn")).setOnClickListener(this);
-        findViewById(ResFinder.getId("umeng_comm_post_back_btn")).setOnClickListener(this);
 
-        mLocProgressBar = (ProgressBar) findViewById(ResFinder.getId(
-                "umeng_comm_post_loc_progressbar"));
-
-        mLocIcon = (ImageView) findViewById(ResFinder.getId("umeng_comm_post_loc_icon"));
         mLocIcon.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -250,29 +236,8 @@ public class PostFeedActivity extends BaseFragmentActivity implements OnClickLis
                 initLocationLayout();
             }
         });
-        mLocationTv = (TextView) findViewById(ResFinder.getId("umeng_comm_location_text"));
-        mLocationLayout = findViewById(
-                ResFinder.getId("umeng_community_loc_layout"));
-
         initEditView();
-        // 以下四个按钮分别是选择话题、添加图片、选择位置、@好友
-        findViewById(ResFinder.getId("umeng_comm_take_photo_btn")).setOnClickListener(this);
-        findViewById(ResFinder.getId("umeng_comm_select_location_btn")).setOnClickListener(
-                this);
-        findViewById(ResFinder.getId("umeng_comm_at_friend_btn")).setOnClickListener(this);
-
-        mPhotoButton = (ImageButton) findViewById(ResFinder
-                .getId("umeng_comm_add_image_btn"));
-        mPhotoButton.setOnClickListener(this);
-        mTopicButton = (ToggleButton) findViewById(ResFinder.getId(
-                "umeng_comm_pick_topic_btn"));
-        mTopicButton.setOnClickListener(this);
-
-        mFragmentLatout = (FrameLayout)
-                findViewById(ResFinder.getId("umeng_comm_select_layout"));
-        mGridView = (GridView) findViewById(ResFinder.getId("umeng_comm_prev_images_gv"));
         initSelectedImageAdapter();
-        mTopicTipView = (TopicTipView) findViewById(ResFinder.getId("umeng_comm_topic_tip"));
         if (CommConfig.getConfig().loginedUser.gender == Gender.FEMALE) {// 根据性别做不同的提示
             mTopicTipView.setText(ResFinder.getString("umeng_comm_topic_tip_female"));
         }
@@ -363,8 +328,6 @@ public class PostFeedActivity extends BaseFragmentActivity implements OnClickLis
      */
     private void initEditView() {
 
-        mEditText = (FeedEditText) findViewById(ResFinder.getId(
-                "umeng_comm_post_msg_edittext"));
         mEditText.setFocusableInTouchMode(true);
         mEditText.requestFocus();
         mEditText.setMinimumHeight(DeviceUtils.dp2px(this, 150));
@@ -517,29 +480,44 @@ public class PostFeedActivity extends BaseFragmentActivity implements OnClickLis
         this.finish();
     }
 
-    @Override
-    public void onClick(View v) {
-        final int id = v.getId();
-        if (ResFinder.getId("umeng_comm_post_ok_btn") == id) { // 点击发送按钮
-            postFeed(prepareFeed());
-        } else if (ResFinder.getId("umeng_comm_post_back_btn") == id) { // 点击back按钮
-            dealBackLogic();
-        } else if (ResFinder.getId("umeng_comm_take_photo_btn") == id) { // 拍照按钮
-            mTakePhotoPresenter.takePhoto();
-            changeButtonStatus(false, false);
-        } else if (ResFinder.getId("umeng_comm_select_location_btn") == id) { // 选择位置
-            showLocPickerDlg();
-            changeButtonStatus(false, false);
-        } else if (ResFinder.getId("umeng_comm_add_image_btn") == id) { // 添加图片
-            pickImages();
-            changeButtonStatus(true, false);
-        } else if (ResFinder.getId("umeng_comm_at_friend_btn") == id) { // @好友
-            showAtFriendsDialog();
-            changeButtonStatus(false, false);
-        } else if (ResFinder.getId("umeng_comm_pick_topic_btn") == id) { // 选择话题
-            showTopicFragment();
-            changeButtonStatus(false, true);
-        }
+    @Click(R.id.umeng_comm_post_ok_btn)
+    public void onClickPostFeed(View v) {
+        postFeed(prepareFeed());
+    }
+
+    @Click(R.id.umeng_comm_post_back_btn)
+    public void onClickBack(View v) {
+        dealBackLogic();
+    }
+
+    @Click(R.id.umeng_comm_take_photo_btn)
+    public void onClickTakePhoto(View v) {
+        mTakePhotoPresenter.takePhoto();
+        changeButtonStatus(false, false);
+    }
+
+    @Click(R.id.umeng_comm_select_location_btn)
+    public void onClickLocation(View v) {
+        showLocPickerDlg();
+        changeButtonStatus(false, false);
+    }
+
+    @Click(R.id.umeng_comm_add_image_btn)
+    public void onClickAddImage(View v) {
+        pickImages();
+        changeButtonStatus(true, false);
+    }
+
+    @Click(R.id.umeng_comm_at_friend_btn)
+    public void onClickAtFriend(View v) {
+        showAtFriendsDialog();
+        changeButtonStatus(false, false);
+    }
+
+    @Click(R.id.umeng_comm_pick_topic_btn)
+    public void onClickTopic(View v) {
+        showTopicFragment();
+        changeButtonStatus(false, true);
     }
 
     private void pickImages() {
@@ -631,8 +609,6 @@ public class PostFeedActivity extends BaseFragmentActivity implements OnClickLis
 
     /**
      * 已选择图片显示的Adapter
-     *
-     * @param listener 删除某张图片的回调
      */
     private void initSelectedImageAdapter() {
         mImageSelectedAdapter = new ImageSelectedAdapter(PostFeedActivity.this);
@@ -693,8 +669,7 @@ public class PostFeedActivity extends BaseFragmentActivity implements OnClickLis
     private void showAtFriendsDialog() {
 
         if (mAtFriendDlg == null) {
-            mAtFriendDlg = new AtFriendDialog(PostFeedActivity.this, ResFinder.getStyle(
-                    "umeng_comm_dialog_fullscreen"));
+            mAtFriendDlg = new AtFriendDialog(this, R.style.umeng_comm_dialog_fullscreen);
         }
         mAtFriendDlg.setOwnerActivity(PostFeedActivity.this);
         // 数据获取监听器

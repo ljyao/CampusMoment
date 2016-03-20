@@ -10,8 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout.LayoutParams;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.umeng.comm.core.beans.FeedItem;
@@ -21,7 +20,6 @@ import com.umeng.comm.core.constants.HttpProtocol;
 import com.umeng.comm.core.impl.CommunityFactory;
 import com.umeng.comm.core.listeners.Listeners.LoginOnViewClickListener;
 import com.umeng.comm.core.utils.CommonUtils;
-import com.umeng.comm.core.utils.DeviceUtils;
 import com.umeng.comm.core.utils.Log;
 import com.umeng.comm.core.utils.ResFinder;
 import com.umeng.comm.core.utils.ToastMsg;
@@ -71,7 +69,7 @@ public class FeedDetailActivity extends BaseFragmentActivity implements OnClickL
     /**
      * 刷新按钮
      */
-    private ImageButton mRefreshButton;
+    private ImageView mRefreshButton;
     /**
      * 布局监听器,监听布局高度，用以计算评论时布局应该滚动的高度
      */
@@ -96,13 +94,14 @@ public class FeedDetailActivity extends BaseFragmentActivity implements OnClickL
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
+
         // 【注意】如果来源于通知栏打开详情页，需要进行相关初始化操作，如果已经初始化，则方法内部会直接返回~
         CommunityFactory.getCommSDK(getApplicationContext());
         setContentView(R.layout.feed_detail_activity);
         CommonUtils.injectComponentImpl(getApplicationContext());// 重新注入登录组件的实现，避免的推送启动时无自定义的登录组件实现
 
         // 设置Fragment的container id
-        setFragmentContainerId(ResFinder.getId("umeng_comm_feed_container"));
+        setFragmentContainerId(R.id.umeng_comm_feed_container);
         mActivityPresenter = new FeedDetailActivityPresenter(this);
         mActivityPresenter.attach(this);
         initViews();
@@ -110,9 +109,6 @@ public class FeedDetailActivity extends BaseFragmentActivity implements OnClickL
         BroadcastUtils.registerFeedUpdateBroadcast(this, mReceiver);
     }
 
-    /**
-     *
-     */
     protected final void onNewIntent(Intent paramIntent) {
         super.onNewIntent(paramIntent);
         initFeed(paramIntent);
@@ -167,11 +163,11 @@ public class FeedDetailActivity extends BaseFragmentActivity implements OnClickL
      */
     private void initViews() {
         initTitleLayout();
-        mRootView = findViewById(ResFinder.getId("umeng_comm_feed_detail_root"));
-        mBaseView = (BaseView) findViewById(ResFinder.getId("umeng_comm_baseview"));
+        mRootView = findViewById(R.id.umeng_comm_feed_detail_root);
+        mBaseView = (BaseView) findViewById(R.id.umeng_comm_baseview);
         mBaseView.forceLayout();
 
-        findViewById(ResFinder.getId("umeng_comm_feed_container")).setOnTouchListener(
+        findViewById(R.id.umeng_comm_feed_container).setOnTouchListener(
                 new OnTouchListener() {
 
                     @SuppressLint("ClickableViewAccessibility")
@@ -220,22 +216,15 @@ public class FeedDetailActivity extends BaseFragmentActivity implements OnClickL
 
     @SuppressWarnings("deprecation")
     private void initTitleLayout() {
-        TextView titleTextView = (TextView) findViewById(ResFinder.getId(
-                "umeng_comm_title_tv"));
-        titleTextView.setText(ResFinder.getString("umeng_comm_feed_detail"));
+        TextView titleTextView = (TextView) findViewById(R.id.umeng_comm_title_tv);
+        titleTextView.setText(R.string.umeng_comm_feed_detail);
         titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
         // back btn
-        findViewById(ResFinder.getId("umeng_comm_title_back_btn")).setOnClickListener(this);
+        findViewById(R.id.umeng_comm_title_back_btn).setOnClickListener(this);
         // 刷新按钮
-        mRefreshButton = (ImageButton) findViewById(ResFinder.getId(
-                "umeng_comm_title_setting_btn"));
-        LayoutParams layoutParams = (LayoutParams) mRefreshButton.getLayoutParams();
-        layoutParams.width = DeviceUtils.dp2px(this, 20);
-        layoutParams.height = DeviceUtils.dp2px(this, 20);
-        layoutParams.rightMargin = DeviceUtils.dp2px(getApplicationContext(), 4);
-        mRefreshButton.setLayoutParams(layoutParams);
-        mRefreshButton.setBackgroundDrawable(ResFinder.getDrawable("umeng_comm_more"));
+        mRefreshButton = (ImageView) findViewById(R.id.umeng_comm_title_setting_btn);
+
         mRefreshButton.setOnClickListener(new LoginOnViewClickListener() {
             @Override
             protected void doAfterLogin(View v) {

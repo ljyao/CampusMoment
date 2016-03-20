@@ -35,7 +35,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 
 import com.umeng.comm.core.beans.CommConfig;
@@ -47,10 +46,12 @@ import com.umeng.comm.ui.fragments.CommunityMainFragment;
 import com.umeng.comm.ui.utils.FontUtils;
 import com.umeng.comm.ui.utils.ViewFinder;
 
-/**
- * 继承自FragmentActivity的Activity类型, 封装了FragmentManager和去除了title
- */
+
 public class BaseFragmentActivity extends FragmentActivity {
+    /**
+     * 当前显示的Fragment
+     */
+    public Fragment mCurrentFragment;
     /**
      * Fragment管理器
      */
@@ -59,16 +60,11 @@ public class BaseFragmentActivity extends FragmentActivity {
      * Fragment的parent view,即Fragment的容器
      */
     protected int mFragmentContainer;
-    /**
-     * 当前显示的Fragment
-     */
-    public Fragment mCurrentFragment;
-
     protected UMImageLoader mImageLoader = ImageLoaderManager.getInstance().getCurrentSDK();
+    protected CommunityMainFragment mFeedsFragment = new CommunityMainFragment();
     private int totalTime = 0;
     private boolean isFinish = false;
     private InputMethodManager mInputMan;
-    protected CommunityMainFragment mFeedsFragment = new CommunityMainFragment();
     private ViewFinder mViewFinder;
 
     /**
@@ -100,7 +96,6 @@ public class BaseFragmentActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle arg0) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(arg0);
         mFragmentManager = getSupportFragmentManager();
         mInputMan = (InputMethodManager) getSystemService(
