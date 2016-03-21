@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.comm.core.beans.CommConfig;
@@ -19,7 +18,6 @@ import com.uy.bbs.R;
 import com.uy.util.Worker;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
@@ -43,8 +41,6 @@ public class UserDetailActivity extends AppCompatActivity {
     public Toolbar mToolbar;
     @ViewById(R.id.appbar)
     public AppBarLayout mAppBarLayout;
-    @ViewById(R.id.follow_btn)
-    public Button followBtn;
     @Extra
     public CommUser user;
     private FeedFragment feedFragment;
@@ -56,7 +52,6 @@ public class UserDetailActivity extends AppCompatActivity {
         if (user == null) {
             user = CommConfig.getConfig().loginedUser;
         }
-        followBtn.getBackground().setAlpha(150);
 
         setData(user);
         refreshUser(user);
@@ -68,13 +63,7 @@ public class UserDetailActivity extends AppCompatActivity {
     }
 
     public void setData(CommUser user) {
-
         setUserHeader();
-        if (user.isFollowed) {
-            followBtn.setText("取消关注");
-        } else {
-            followBtn.setText("关注");
-        }
         setToolBar();
     }
 
@@ -90,7 +79,6 @@ public class UserDetailActivity extends AppCompatActivity {
         });
     }
 
-    @Click(R.id.follow_btn)
     public void followUser() {
         NetLoaderListener<Boolean> listener = new NetLoaderListener<Boolean>() {
             @Override
@@ -98,11 +86,6 @@ public class UserDetailActivity extends AppCompatActivity {
                 Worker.postMain(new Runnable() {
                     @Override
                     public void run() {
-                        if (result) {
-                            followBtn.setText("取消关注");
-                        } else {
-                            followBtn.setText("关注");
-                        }
                     }
                 });
 
@@ -147,8 +130,21 @@ public class UserDetailActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, SetUserInfoActivity_.class);
                 startActivity(intent);
                 break;
+            case R.id.menu_follow_user:
+                followUser();
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (user.isFollowed) {
+            menu.findItem(R.id.menu_follow_user).setTitle("取消关注");
+        } else {
+            menu.findItem(R.id.menu_follow_user).setTitle("关注");
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override

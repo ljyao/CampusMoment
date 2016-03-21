@@ -22,6 +22,7 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import activity.UserDetailActivity_;
+import community.activity.FollowedUserActivity_;
 import community.providable.NetLoaderListener;
 import community.providable.UserPrvdr;
 
@@ -91,6 +92,18 @@ public class MeFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         this.context = context;
+    }
+
+    @Click(R.id.follow_num_ll)
+    public void onClickFollowUser() {
+        FollowedUserActivity_.intent(getContext()).userId(user.id).
+                type(FollowedUserFragment.UserListType.followed).start();
+    }
+
+    @Click(R.id.fans_num_ll)
+    public void onClickFollowUserFans() {
+        FollowedUserActivity_.intent(getContext()).userId(user.id).
+                type(FollowedUserFragment.UserListType.fans).start();
     }
 
 }

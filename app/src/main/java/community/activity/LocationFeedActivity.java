@@ -4,6 +4,7 @@ package community.activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.constants.Constants;
@@ -38,4 +39,13 @@ public class LocationFeedActivity extends AppCompatActivity {
         ft.commit();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
