@@ -3,6 +3,7 @@ package community.views;
 import android.content.Context;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,6 +24,8 @@ public class UserView extends RelativeLayout implements ViewWrapper.Binder<CommU
     public SimpleDraweeView mImageView;
     @ViewById(R.id.user_name)
     public TextView mTextView;
+    @ViewById(R.id.follow_iv)
+    public ImageView followIv;
     private CommUser user;
 
     public UserView(Context context, AttributeSet attrs) {
@@ -40,6 +43,13 @@ public class UserView extends RelativeLayout implements ViewWrapper.Binder<CommU
         }
         mImageView.setImageURI(Uri.parse(user.iconUrl));
         mTextView.setText(user.name);
+        if (user.isFollowed && user.isFollowingMe) {
+            followIv.setBackgroundResource(R.drawable.card_icon_arrow);
+        } else if (user.isFollowed) {
+            followIv.setBackgroundResource(R.drawable.card_icon_attention);
+        } else {
+            followIv.setBackgroundResource(R.drawable.card_icon_addattention);
+        }
     }
 
     @Click({R.id.userhead_icon, R.id.user_name})

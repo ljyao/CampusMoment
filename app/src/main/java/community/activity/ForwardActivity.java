@@ -11,35 +11,36 @@ import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.CommUser.Permisson;
 import com.umeng.comm.core.beans.FeedItem;
-import com.umeng.comm.core.constants.Constants;
 import com.umeng.comm.core.utils.DeviceUtils;
 import com.umeng.comm.core.utils.Log;
 import com.umeng.comm.core.utils.ResFinder;
 import com.umeng.comm.ui.utils.FeedViewRender;
 
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
+
 /**
  * 转发Feed的Activity
  */
+@EActivity
 public class ForwardActivity extends PostFeedActivity {
+    /**
+     * 被转发的FeedItem
+     */
+    @Extra
+    public FeedItem feeditem;
     /**
      * 被转发的文本内容
      */
     protected TextView mFeedText;
-
     /**
      * 被转发的第一个图片
      */
     protected ImageView mFeedIcon;
-
     /**
      * 底部的话题、拍照、位置等图标的布局
      */
     protected View mBottomTabLayout;
-    /**
-     * 被转发的FeedItem
-     */
-    FeedItem mForwardedFeeditem;
-
     /**
      * 原feed的第一张图片，在转发的时候显示
      */
@@ -48,15 +49,7 @@ public class ForwardActivity extends PostFeedActivity {
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
-
-        Bundle extraBundle = getIntent().getExtras();
-        Object forwardItem = extraBundle.getParcelable(Constants.FEED);
-        if (forwardItem != null && forwardItem instanceof FeedItem) {
-            mForwardedFeeditem = (FeedItem) (forwardItem);
-            parseForwardData(mForwardedFeeditem);
-        } else {
-            Log.e(TAG, "### 转发的数据出错");
-        }
+        parseForwardData(feeditem);
         // 更新view的显示内容
         updateViewContent();
         isForwardFeed = true;
@@ -143,7 +136,7 @@ public class ForwardActivity extends PostFeedActivity {
 
     @Override
     protected void postFeed(FeedItem feedItem) {
-        mPostPresenter.forwardFeed(feedItem, mForwardedFeeditem);
+        mPostPresenter.forwardFeed(feedItem, feeditem);
     }
 
     /**
@@ -153,11 +146,11 @@ public class ForwardActivity extends PostFeedActivity {
      * 否则返回该转发的id
      */
     private String getForwardFeedId() {
-        if (mForwardedFeeditem == null) {
+        if (feeditem == null) {
             return "";
         }
 
-        return mForwardedFeeditem.id;
+        return feeditem.id;
     }
 
     /**
@@ -170,13 +163,13 @@ public class ForwardActivity extends PostFeedActivity {
         FeedItem newFeed = new FeedItem();
 
         // 被转发的项
-        newFeed.sourceFeed = mForwardedFeeditem;
+        newFeed.sourceFeed = feeditem;
         newFeed.sourceFeedId = getForwardFeedId();
-        String originText = mForwardedFeeditem.text;
+        String originText = feeditem.text;
         if (!isForwardFeed()) {
-            newFeed.sourceFeed.text = "@" + mForwardedFeeditem.creator.name + ": "
+            newFeed.sourceFeed.text = "@" + feeditem.creator.name + ": "
                     + originText;
-            CommUser friend = mForwardedFeeditem.creator;
+            CommUser friend = feeditem.creator;
             newFeed.sourceFeed.atFriends.add(friend);
         }
 
@@ -200,7 +193,7 @@ public class ForwardActivity extends PostFeedActivity {
      * @return
      */
     private boolean isForwardFeed() {
-        return (mForwardedFeeditem != null);
+        return (feeditem != null);
     }
 
     /**

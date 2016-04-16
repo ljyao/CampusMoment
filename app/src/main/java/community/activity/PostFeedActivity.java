@@ -216,12 +216,13 @@ public class PostFeedActivity extends BaseFragmentActivity implements
     }
 
     private boolean isCharsOverflow(String extraText) {
-        int extraTextLen = 0;
-        if (!TextUtils.isEmpty(extraText)) {
-            extraTextLen = extraText.length();
-        }
-        int len = mEditText.getText().length();
-        return len + extraTextLen >= CommConfig.getConfig().mFeedLen;
+        return false;
+//        int extraTextLen = 0;
+//        if (!TextUtils.isEmpty(extraText)) {
+//            extraTextLen = extraText.length();
+//        }
+//        int len = mEditText.getText().length();
+//        return len + extraTextLen >= CommConfig.getConfig().mFeedLen;
     }
 
     /**

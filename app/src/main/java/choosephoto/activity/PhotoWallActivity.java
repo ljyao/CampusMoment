@@ -1,12 +1,9 @@
 package choosephoto.activity;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -19,13 +16,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.uy.bbs.R;
-import com.uy.util.BitmapUtils;
 
 import java.io.File;
 import java.util.ArrayList;
 
 import choosephoto.adapter.Decoration;
 import choosephoto.adapter.PhotoWallAdapter;
+import choosephoto.util.ImageLoader;
 import editimage.EditImageActivity;
 import helper.AppConstants;
 import helper.common_util.FileUtils;
@@ -70,8 +67,6 @@ public class PhotoWallActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_wall);
         mContext = this;
-        PhotoAlbumActivity.initData(this, null);
-
         requestCode = getIntent().getIntExtra("from", -1);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -83,7 +78,7 @@ public class PhotoWallActivity extends AppCompatActivity {
         mPhotoWall.setLayoutManager(layoutManager);
         mPhotoWall.setItemAnimator(new DefaultItemAnimator());
         mPhotoWall.addItemDecoration(new Decoration(ScreenUtils.dp2px(1, PhotoWallActivity.this)));
-        list = getLatestImagePaths(100);
+        list = ImageLoader.getLatestImagePaths(this, 100);
         adapter = new PhotoWallAdapter(this, list, singleChoose);
         mPhotoWall.setAdapter(adapter);
 
@@ -108,6 +103,9 @@ public class PhotoWallActivity extends AppCompatActivity {
                             + System.currentTimeMillis() + ".jpg";
                     i.putExtra(EditImageActivity.EXTRA_OUTPUT, outPath);
                     startActivityForResult(i, AppConstants.REQUEST_PHOTO_FEED);
+                    ImageLoader.getInstance(mContext).destroy();
+                    PhotoAlbumActivity.destroy();
+                    finish();
                 }
             }
         });
@@ -178,10 +176,10 @@ public class PhotoWallActivity extends AppCompatActivity {
             int lastSeparator = folderPath.lastIndexOf(File.separator);
             String folderName = folderPath.substring(lastSeparator + 1);
             setTitle(folderName);
-            list.addAll(getAllImagePathsByFolder(folderPath));
+            list.addAll(ImageLoader.getAllImagePathsByFolder(folderPath));
         } else if (code == 200) { // 最近照片
             setTitle(R.string.latest_image);
-            list.addAll(getLatestImagePaths(100));
+            list.addAll(ImageLoader.getLatestImagePaths(this, 100));
         }
 
         adapter.notifyDataSetChanged();
@@ -191,69 +189,6 @@ public class PhotoWallActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * 获取指定路径下的所有图片文件。
-     */
-    private ArrayList<String> getAllImagePathsByFolder(String folderPath) {
-        File folder = new File(folderPath);
-        String[] allFileNames = folder.list();
-        if (allFileNames == null || allFileNames.length == 0) {
-            return null;
-        }
-
-        ArrayList<String> imageFilePaths = new ArrayList<String>();
-        for (int i = allFileNames.length - 1; i >= 0; i--) {
-            String filePath = folderPath + File.separator + allFileNames[i];
-            if (FileUtils.isImage(allFileNames[i], filePath)) {
-                imageFilePaths.add(filePath);
-            }
-        }
-
-        return imageFilePaths;
-    }
-
-    /**
-     * 使用ContentProvider读取SD卡最近图片。
-     */
-    private ArrayList<String> getLatestImagePaths(int maxCount) {
-        Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-
-        String key_MIME_TYPE = MediaStore.Images.Media.MIME_TYPE;
-        String key_DATA = MediaStore.Images.Media.DATA;
-
-        ContentResolver mContentResolver = getContentResolver();
-
-        // 只查询jpg和png的图片,按最新修改排序
-        Cursor cursor = mContentResolver.query(mImageUri,
-                new String[]{key_DATA}, key_MIME_TYPE + "=? or "
-                        + key_MIME_TYPE + "=? or " + key_MIME_TYPE + "=?",
-                new String[]{"image/jpg", "image/jpeg", "image/png"},
-                MediaStore.Images.Media.DATE_MODIFIED);
-
-        ArrayList<String> latestImagePaths = null;
-        if (cursor != null) {
-            // 从最新的图片开始读取.
-            // 当cursor中没有数据时，cursor.moveToLast()将返回false
-            if (cursor.moveToLast()) {
-                latestImagePaths = new ArrayList<String>();
-
-                while (true) {
-                    // 获取图片的路径
-                    String path = cursor.getString(0);
-                    if (BitmapUtils.isImage(path)) {
-                        latestImagePaths.add(path);
-                    }
-
-                    if (latestImagePaths.size() >= maxCount || !cursor.moveToPrevious()) {
-                        break;
-                    }
-                }
-            }
-            cursor.close();
-        }
-
-        return latestImagePaths;
-    }
 
     // 获取已选择的图片路径
     private ArrayList<String> getSelectImagePaths() {
@@ -262,7 +197,7 @@ public class PhotoWallActivity extends AppCompatActivity {
             return null;
         }
 
-        ArrayList<String> selectedImageList = new ArrayList<String>();
+        ArrayList<String> selectedImageList = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             if (map.get(i)) {
                 selectedImageList.add(list.get(i));

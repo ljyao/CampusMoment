@@ -53,6 +53,7 @@ import java.util.List;
 import activity.UserDetailActivity_;
 import adapter.ViewWrapper;
 import community.activity.FeedDetailActivity;
+import community.activity.ForwardActivity_;
 import community.activity.LocationFeedActivity;
 import community.fragment.FeedFragment;
 import community.util.FeedViewRender;
@@ -224,7 +225,7 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
             @Override
             protected void doAfterLogin(View v) {
                 clickAnima(mForwardCountTextView);
-                mPresenter.gotoForwardActivity(mFeedItem);
+                ForwardActivity_.intent(getContext()).feeditem(mFeedItem).start();
             }
         });
 

@@ -2,7 +2,6 @@ package helper.common_util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.view.View;
 
@@ -56,18 +55,14 @@ public class FileUtils {
      * 判断该文件是否是一个图片。
      */
     public static boolean isImage(String fileName, String filePath) {
-        if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png")) {
-            BitmapFactory.Options opt = new BitmapFactory.Options();
-            opt.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(filePath, opt);
-
-            // 获取到这个图片的原始宽度和高度
-            float picWidth = opt.outWidth;
-            float picHeight = opt.outHeight;
-            return !(picHeight <= 0 || picWidth <= 0);
-        } else {
-            return false;
-        }
+        //            BitmapFactory.Options opt = new BitmapFactory.Options();
+//            opt.inJustDecodeBounds = true;
+//            BitmapFactory.decodeFile(filePath, opt);
+//
+//            // 获取到这个图片的原始宽度和高度
+//            float picWidth = opt.outWidth;
+//            float picHeight = opt.outHeight;
+        return fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png");
     }
 
     public static String getCacheDir(Context context) {

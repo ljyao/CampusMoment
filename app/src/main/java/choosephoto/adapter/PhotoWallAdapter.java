@@ -15,12 +15,12 @@ import com.uy.util.CompressType;
 import java.util.ArrayList;
 
 import choosephoto.Views.WrapHeightImageView;
-import choosephoto.util.SDCardImageLoader;
+import choosephoto.util.ImageLoader;
 
 public class PhotoWallAdapter extends RecyclerView.Adapter {
     private Context context;
     private ArrayList<String> imagePathList = null;
-    private SDCardImageLoader loader;
+    private ImageLoader loader;
     private SparseBooleanArray selectionMap;
     private boolean singleChoose;
 
@@ -28,7 +28,7 @@ public class PhotoWallAdapter extends RecyclerView.Adapter {
         this.context = context;
         this.imagePathList = imagePathList;
 
-        loader = new SDCardImageLoader(context);
+        loader = ImageLoader.getInstance(context);
         selectionMap = new SparseBooleanArray();
     }
 
@@ -36,7 +36,7 @@ public class PhotoWallAdapter extends RecyclerView.Adapter {
         this.context = context;
         this.imagePathList = imagePathList;
 
-        loader = new SDCardImageLoader(context);
+        loader = ImageLoader.getInstance(context);
         selectionMap = new SparseBooleanArray();
         this.singleChoose = singleChoose;
     }
@@ -61,10 +61,20 @@ public class PhotoWallAdapter extends RecyclerView.Adapter {
                     viewHolder.imageView.setColorFilter(null);
                 }
                 if (singleChoose) {
+                    int oldSelected = -1;
+                    for (int i = 0; i < imagePathList.size(); i++) {
+                        if (selectionMap.get(i)) {
+                            oldSelected = i;
+                            break;
+                        }
+                    }
                     selectionMap.clear();
+                    if (oldSelected != -1) {
+                        notifyItemChanged(oldSelected);
+                    }
                 }
                 selectionMap.put(viewHolder.position, viewHolder.isChecked);
-                notifyDataSetChanged();
+                notifyItemChanged(viewHolder.position);
 
             }
         });

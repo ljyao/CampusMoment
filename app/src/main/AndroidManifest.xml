@@ -105,7 +105,7 @@
         <activity android:name="community.activity.PostFeedActivity_" />
         <activity android:name="community.activity.LikeUsersActivity" />
         <activity android:name="community.activity.FollowedUserActivity_" />
-
+        <activity android:name="community.activity.ForwardActivity_" />
         <!-- youmeng -->
         <!-- 发现的Activity -->
         <activity

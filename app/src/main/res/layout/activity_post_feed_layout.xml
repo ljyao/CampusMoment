@@ -22,12 +22,12 @@
 
             <ImageView
                 android:id="@+id/umeng_comm_post_back_btn"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="6dp"
-                android:background="@drawable/umeng_comm_cancel_bt"
+                android:background="@drawable/cancel"
                 android:contentDescription="@string/umeng_comm_new_post"></ImageView>
 
             <TextView
@@ -43,12 +43,12 @@
 
             <ImageButton
                 android:id="@+id/umeng_comm_post_ok_btn"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="6dp"
-                android:background="@drawable/umeng_comm_send_bt"
+                android:background="@drawable/confirm"
                 android:contentDescription="@string/umeng_comm_new_post"></ImageButton>
         </RelativeLayout>
 

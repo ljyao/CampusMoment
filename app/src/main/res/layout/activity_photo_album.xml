@@ -5,15 +5,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <ListView
         android:id="@+id/select_img_listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@color/gray_bg"
+        android:divider="#eee"
         android:dividerHeight="1dp"
         android:fadingEdge="none"
         android:listSelector="@android:color/transparent"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:scrollbars="none"
         android:scrollingCache="false" />
 

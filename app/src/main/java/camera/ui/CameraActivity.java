@@ -47,10 +47,6 @@ import helper.common_util.IOUtil;
 import helper.common_util.ScreenUtils;
 
 
-/**
- * 相机界面
- * Created by sky on 15/7/6.
- */
 @EActivity
 public class CameraActivity extends CameraBaseActivity {
 

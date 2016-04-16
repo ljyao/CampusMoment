@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.chat.views.SquareRelativeLayout
+    <widget.SquareRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             app:progressBarImage="@drawable/progressbar_load"
             app:progressBarImageScaleType="center" />
-    </com.chat.views.SquareRelativeLayout>
+    </widget.SquareRelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/choosephoto"
