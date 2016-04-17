@@ -1,11 +1,10 @@
 package camera;
 
+import android.app.Activity;
 import android.os.Bundle;
 
-import base.BaseActivity;
 
-
-public class CameraBaseActivity extends BaseActivity {
+public class CameraBaseActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

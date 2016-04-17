@@ -11,14 +11,17 @@ import com.umeng.comm.core.beans.Topic;
 import com.uy.bbs.R;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import community.activity.FeedListActivity_;
 import community.activity.HotTopicActivity_;
 import community.activity.TopicActivity_;
+import community.providable.FeedPrvdr;
 import community.providable.NetLoaderListener;
 import community.providable.TopicPrvdr;
 import convenientbanner.ConvenientBanner;
@@ -124,6 +127,17 @@ public class DiscoverFragment extends Fragment {
         }
     }
 
+    @Click(R.id.hot_feed)
+    public void onClickHotFeed() {
+        FeedListActivity_.intent(this).title("热门微博")
+                .feedType(FeedPrvdr.FeedType.HotestFeed).start();
+    }
+
+    @Click(R.id.real_time_feed)
+    public void onClickRealTimeFeed() {
+        FeedListActivity_.intent(this).title("最新微博")
+                .feedType(FeedPrvdr.FeedType.RealTimeFeed).start();
+    }
     @Override
     public void onPause() {
         super.onPause();

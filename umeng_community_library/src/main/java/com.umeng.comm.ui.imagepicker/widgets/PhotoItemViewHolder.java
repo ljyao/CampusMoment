@@ -18,6 +18,7 @@ import com.umeng.comm.core.imageloader.ImgDisplayOption;
 import com.umeng.comm.core.sdkmanager.ImageLoaderManager;
 import com.umeng.comm.core.utils.ResFinder;
 import com.umeng.comm.ui.imagepicker.model.PhotoModel;
+import com.umeng_community_library.R;
 
 
 /**
@@ -26,6 +27,8 @@ import com.umeng.comm.ui.imagepicker.model.PhotoModel;
 public class PhotoItemViewHolder implements OnCheckedChangeListener,
         OnLongClickListener {
 
+    View mRootView;
+    Context mContext;
     private ImageView mPhotoImageView;
     private CheckBox mPhotoCheckBox;
     private onPhotoItemCheckedListener listener;
@@ -34,10 +37,6 @@ public class PhotoItemViewHolder implements OnCheckedChangeListener,
     private onItemClickListener mItemClickListener;
     private int position;
 
-    View mRootView;
-
-    Context mContext;
-
     private PhotoItemViewHolder(Context context) {
         mContext = context;
     }
@@ -45,8 +44,7 @@ public class PhotoItemViewHolder implements OnCheckedChangeListener,
     public PhotoItemViewHolder(Context context, ViewGroup parent,
             onPhotoItemCheckedListener listener) {
         this(context);
-        mRootView = LayoutInflater.from(context).inflate(
-                ResFinder.getLayout("umeng_commm_imagepicker_photo_item"), parent,
+        mRootView = LayoutInflater.from(context).inflate(R.layout.umeng_comm_imagepicker_photo_item, parent,
                 false);
         this.listener = listener;
         mRootView.setDrawingCacheEnabled(false);
@@ -120,15 +118,6 @@ public class PhotoItemViewHolder implements OnCheckedChangeListener,
         this.position = position;
     }
 
-    public static interface onPhotoItemCheckedListener {
-        public void onCheckedChanged(PhotoItemViewHolder photoItem, PhotoModel photoModel,
-                                     boolean isChecked);
-    }
-
-    public interface onItemClickListener {
-        public void onItemClick(int position);
-    }
-
     @Override
     public boolean onLongClick(View v) {
         if (mItemClickListener != null) {
@@ -136,6 +125,15 @@ public class PhotoItemViewHolder implements OnCheckedChangeListener,
         }
 
         return true;
+    }
+
+    public interface onPhotoItemCheckedListener {
+        void onCheckedChanged(PhotoItemViewHolder photoItem, PhotoModel photoModel,
+                              boolean isChecked);
+    }
+
+    public interface onItemClickListener {
+        void onItemClick(int position);
     }
 
 }

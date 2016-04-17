@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
 import java.io.InputStream;
@@ -18,12 +19,19 @@ import java.io.InputStream;
  * @author alessandro
  */
 public class FastBitmapDrawable extends Drawable implements IBitmapDrawable {
-
     protected Bitmap mBitmap;
     protected Paint mPaint;
+    protected int mIntrinsicWidth, mIntrinsicHeight;
 
     public FastBitmapDrawable(Bitmap b) {
         mBitmap = b;
+        if (null != mBitmap) {
+            mIntrinsicWidth = mBitmap.getWidth();
+            mIntrinsicHeight = mBitmap.getHeight();
+        } else {
+            mIntrinsicWidth = 0;
+            mIntrinsicHeight = 0;
+        }
         mPaint = new Paint();
         mPaint.setDither(true);
         mPaint.setFilterBitmap(true);
@@ -35,7 +43,14 @@ public class FastBitmapDrawable extends Drawable implements IBitmapDrawable {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(mBitmap, 0.0f, 0.0f, mPaint);
+        if (null != mBitmap && !mBitmap.isRecycled()) {
+            final Rect bounds = getBounds();
+            if (!bounds.isEmpty()) {
+                canvas.drawBitmap(mBitmap, null, bounds, mPaint);
+            } else {
+                canvas.drawBitmap(mBitmap, 0f, 0f, mPaint);
+            }
+        }
     }
 
     @Override
@@ -55,22 +70,22 @@ public class FastBitmapDrawable extends Drawable implements IBitmapDrawable {
 
     @Override
     public int getIntrinsicWidth() {
-        return mBitmap.getWidth();
+        return mIntrinsicWidth;
     }
 
     @Override
     public int getIntrinsicHeight() {
-        return mBitmap.getHeight();
+        return mIntrinsicHeight;
     }
 
     @Override
     public int getMinimumWidth() {
-        return mBitmap.getWidth();
+        return mIntrinsicWidth;
     }
 
     @Override
     public int getMinimumHeight() {
-        return mBitmap.getHeight();
+        return mIntrinsicHeight;
     }
 
     public void setAntiAlias(boolean value) {
@@ -81,5 +96,13 @@ public class FastBitmapDrawable extends Drawable implements IBitmapDrawable {
     @Override
     public Bitmap getBitmap() {
         return mBitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        mBitmap = bitmap;
+    }
+
+    public Paint getPaint() {
+        return mPaint;
     }
 }

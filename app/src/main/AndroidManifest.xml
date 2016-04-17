@@ -88,11 +88,7 @@
             android:launchMode="singleInstance" />
         <!--相机-->
         <activity
-            android:name="camera.ui.CameraActivity_"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
-        <activity
-            android:name="ui.EditTextActivity_"
+            android:name="camera.CameraActivity_"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
@@ -101,7 +97,7 @@
         <activity android:name="community.activity.TopicActivity_" />
         <activity android:name="community.activity.HotTopicActivity_" />
         <activity android:name="community.activity.LocationFeedActivity" />
-        <activity android:name="community.activity.CommentReceivedActivity_" />
+        <activity android:name="community.activity.FeedListActivity_" />
         <activity android:name="community.activity.PostFeedActivity_" />
         <activity android:name="community.activity.LikeUsersActivity" />
         <activity android:name="community.activity.FollowedUserActivity_" />
@@ -276,13 +272,9 @@
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <!-- 图片选择相关 -->
-        <activity android:name=".PhotoSelectorActivity" />
-        <activity android:name=".PhotoPreviewActivity" />
+        <activity android:name="com.umeng.comm.ui.imagepicker.PhotoSelectorActivity" />
+        <activity android:name="com.umeng.comm.ui.imagepicker.PhotoPreviewActivity" />
 
-        <!-- 点击链接时跳转的Activity -->
-        <activity
-            android:name=".BrowserActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize" />
     </application>
 
 </manifest>

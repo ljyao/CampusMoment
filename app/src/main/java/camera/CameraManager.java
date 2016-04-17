@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 
 import java.util.Stack;
 
-import camera.ui.CameraActivity;
 import editimage.EditImageActivity;
 import helper.common_util.ImageUtils;
 

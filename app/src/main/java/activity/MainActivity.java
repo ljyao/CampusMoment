@@ -24,7 +24,7 @@ import org.androidannotations.annotations.ViewById;
 import java.util.HashMap;
 import java.util.Map;
 
-import camera.ui.CameraActivity_;
+import camera.CameraActivity_;
 import choosephoto.activity.PhotoWallActivity;
 import community.activity.PostFeedActivity_;
 import community.fragment.DiscoverFragment;

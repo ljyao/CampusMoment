@@ -1,4 +1,4 @@
-package camera.ui;
+package camera;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
@@ -40,8 +40,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import camera.CameraBaseActivity;
-import camera.CameraManager;
 import camera.util.CameraHelper;
 import helper.common_util.IOUtil;
 import helper.common_util.ScreenUtils;
@@ -121,7 +119,7 @@ public class CameraActivity extends CameraBaseActivity {
                     cameraInst.takePicture(null, null, new MyPictureCallback());
                 } catch (Throwable t) {
                     t.printStackTrace();
-                    toast("拍照失败，请重试！", Toast.LENGTH_LONG);
+                    Toast.makeText(CameraActivity.this, "拍照失败，请重试！", Toast.LENGTH_LONG).show();
                     try {
                         cameraInst.startPreview();
                     } catch (Throwable e) {
@@ -677,8 +675,7 @@ public class CameraActivity extends CameraBaseActivity {
                 e.printStackTrace();
             }
         } else {
-            toast("切换失败，请重试！", Toast.LENGTH_LONG);
-
+            Toast.makeText(CameraActivity.this, "切换失败，请重试！", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -736,7 +733,7 @@ public class CameraActivity extends CameraBaseActivity {
                 progressDialog.dismiss();
                 CameraManager.getInst().processPhotoItem(CameraActivity.this, result);
             } else {
-                toast("拍照失败，请稍后重试！", Toast.LENGTH_LONG);
+                Toast.makeText(CameraActivity.this, "拍照失败，请稍后重试！", Toast.LENGTH_LONG).show();
             }
         }
     }

@@ -94,7 +94,19 @@ public class FeedPrvdr {
             case ReceivedComments:
                 getReceivedComments();
                 break;
+            case HotestFeed:
+                getHotestFeeds();
+            case RealTimeFeed:
+                getRealTimeFeed();
         }
+    }
+
+    private void getRealTimeFeed() {
+        mCommunitySDK.fetchRealTimeFeed(fetchListener);
+    }
+
+    private void getHotestFeeds() {
+        mCommunitySDK.fetchHotestFeeds(fetchListener, 1, 0);
     }
 
     private void getReceivedComments() {
@@ -150,6 +162,8 @@ public class FeedPrvdr {
         MeFeed,
         NearFeed,
         LocationFeed,
+        HotestFeed,
+        RealTimeFeed,
         ReceivedComments
     }
 
