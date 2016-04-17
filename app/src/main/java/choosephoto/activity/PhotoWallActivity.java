@@ -53,6 +53,7 @@ public class PhotoWallActivity extends AppCompatActivity {
      */
     private boolean firstIn = true;
     private int requestCode;
+    private TextView preViewBtN;
 
     public static void destroy() {
         if (mContext != null) {
@@ -81,7 +82,13 @@ public class PhotoWallActivity extends AppCompatActivity {
         list = ImageLoader.getLatestImagePaths(this, 100);
         adapter = new PhotoWallAdapter(this, list, singleChoose);
         mPhotoWall.setAdapter(adapter);
-
+        preViewBtN = (TextView) findViewById(R.id.preview_btn);
+        preViewBtN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PhotoPreviewActivity_.intent(PhotoWallActivity.this).photos(getSelectImagePaths()).start();
+            }
+        });
         confirmPhoto = (TextView) findViewById(R.id.confirm_photo);
         confirmPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
