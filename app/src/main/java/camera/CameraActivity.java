@@ -1,6 +1,7 @@
 package camera;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -46,7 +47,7 @@ import helper.common_util.ScreenUtils;
 
 
 @EActivity
-public class CameraActivity extends CameraBaseActivity {
+public class CameraActivity extends Activity {
 
     static final int FOCUS = 1;            // 聚焦
     static final int ZOOM = 2;            // 缩放
@@ -94,6 +95,7 @@ public class CameraActivity extends CameraBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+        CameraManager.getInst().addActivity(this);
         mCameraHelper = new CameraHelper(this);
         initView();
         initEvent();
@@ -363,7 +365,7 @@ public class CameraActivity extends CameraBaseActivity {
             e.printStackTrace();
         }
         cameraInst.startPreview();
-        cameraInst.cancelAutoFocus();// 2如果要实现连续的自动对焦，这一句必须加上
+        cameraInst.cancelAutoFocus();// 2如果要实现连续的自动对焦
     }
 
     private void setUpPicSize(Camera.Parameters parameters) {
@@ -689,6 +691,11 @@ public class CameraActivity extends CameraBaseActivity {
         return c;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        CameraManager.getInst().removeActivity(this);
+    }
     private final class MyPictureCallback implements Camera.PictureCallback {
 
         @Override

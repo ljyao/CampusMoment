@@ -20,6 +20,7 @@ import com.umeng.comm.core.utils.ResFinder;
 import com.umeng.comm.ui.fragments.RecommendTopicFragment;
 import com.umeng.comm.ui.presenter.impl.RecommendTopicPresenter;
 import com.umeng.comm.ui.presenter.impl.TopicFgPresenter;
+import com.uy.bbs.R;
 
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class TopicFragment extends RecommendTopicFragment {
 
     @Override
     protected int getFragmentLayout() {
-        return ResFinder.getLayout("umeng_comm_topic_search");
+        return R.layout.umeng_comm_topic_search;
     }
 
     @Override
