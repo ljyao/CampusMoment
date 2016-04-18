@@ -8,15 +8,15 @@ import android.view.View;
 import android.widget.AbsListView;
 
 
-public class MySwipeRefreshLayout extends android.support.v4.widget.SwipeRefreshLayout {
+public class SwipeRefreshLayout extends android.support.v4.widget.SwipeRefreshLayout {
     // 刷新判断依赖的View
     private View mStartDependView;
 
-    public MySwipeRefreshLayout(Context context) {
+    public SwipeRefreshLayout(Context context) {
         super(context);
     }
 
-    public MySwipeRefreshLayout(Context context, AttributeSet attrs) {
+    public SwipeRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

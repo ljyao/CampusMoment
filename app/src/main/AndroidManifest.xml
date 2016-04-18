@@ -103,6 +103,7 @@
         <activity android:name="community.activity.FollowedUserActivity_" />
         <activity android:name="community.activity.ForwardActivity_" />
         <activity android:name="choosephoto.activity.PhotoPreviewActivity_" />
+        <activity android:name="community.activity.FollowedTopicActivity_" />
         <!-- youmeng -->
         <!-- 发现的Activity -->
         <activity

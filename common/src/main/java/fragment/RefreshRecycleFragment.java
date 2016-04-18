@@ -2,7 +2,6 @@ package fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,13 +12,13 @@ import android.widget.RelativeLayout;
 import com.uy.common.R;
 
 import listener.RecycleScrollListener;
-import views.MySwipeRefreshLayout;
+import views.SwipeRefreshLayout;
 
 /**
  * Created by ljy on 15/12/7.
  */
 public abstract class RefreshRecycleFragment<T extends RecyclerView.Adapter> extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    protected MySwipeRefreshLayout refreshLayout;
+    protected SwipeRefreshLayout refreshLayout;
     protected RecyclerView listView;
     protected RelativeLayout emptyLayout;
     protected T adapter;
@@ -46,7 +45,7 @@ public abstract class RefreshRecycleFragment<T extends RecyclerView.Adapter> ext
                 }
             });
             emptyLayout = (RelativeLayout) viewGroup.findViewById(R.id.empty_view_holder);
-            refreshLayout = (MySwipeRefreshLayout) viewGroup.findViewById(R.id.id_refresh);
+            refreshLayout = (SwipeRefreshLayout) viewGroup.findViewById(R.id.id_refresh);
             refreshLayout.setColorSchemeResources(R.color.pull_to_refresh_color);
             refreshLayout.setOnRefreshListener(this);
             listView.setLayoutManager(getLayoutManager());

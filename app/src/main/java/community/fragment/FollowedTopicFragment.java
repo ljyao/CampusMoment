@@ -6,17 +6,16 @@ import com.umeng.comm.core.utils.ResFinder;
 import com.umeng.comm.ui.presenter.impl.FollowedTopicPresenter;
 import com.umeng.comm.ui.presenter.impl.RecommendTopicPresenter;
 
-import org.androidannotations.annotations.FragmentArg;
-
 /**
  * 用户已经关注的话题Fragment
  */
 public class FollowedTopicFragment extends TopicFragment {
-    @FragmentArg
+
     public String mUid;
 
     @Override
     protected RecommendTopicPresenter createPresenters() {
+        mUid = getArguments().getString("uid");
         return new FollowedTopicPresenter(mUid, this);
     }
 

@@ -141,6 +141,7 @@
         android:background="#eee" />
 
     <LinearLayout
+        android:id="@+id/follow_topic"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal">

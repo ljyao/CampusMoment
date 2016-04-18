@@ -65,8 +65,8 @@ public abstract class BaseFragment<T, P extends BaseFragmentPresenter<T>> extend
     protected P mPresenter;
 
     @Override
-    public final View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                   Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         CommonUtils.saveComponentImpl(getActivity());// 注意此处必须保存登录组件的信息
         mLayoutInflater = inflater;
         mRootView = mLayoutInflater.inflate(getFragmentLayout(), container, false);
