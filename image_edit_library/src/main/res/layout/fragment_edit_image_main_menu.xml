@@ -7,6 +7,7 @@
     android:paddingTop="5dp">
 
     <LinearLayout
+        android:id="@+id/btn_stickers"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -20,7 +21,6 @@
             android:padding="10dp" />
 
         <TextView
-            android:id="@+id/btn_stickers"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -30,6 +30,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/btn_fliter"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -42,7 +43,6 @@
             android:background="@drawable/image_photofilter" />
 
         <TextView
-            android:id="@+id/btn_fliter"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -52,6 +52,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/btn_crop"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -64,7 +65,6 @@
             android:background="@drawable/image_cut" />
 
         <TextView
-            android:id="@+id/btn_crop"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -75,6 +75,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/btn_rotate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -86,9 +87,7 @@
             android:layout_height="35dp"
             android:background="@drawable/image_edit_revolve" />
 
-
         <TextView
-            android:id="@+id/btn_rotate"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

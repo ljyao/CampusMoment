@@ -1,1 +1,1 @@
-include ':app', ':common', ':gpuimagelibrary', ':umeng_community_library', ':image_edit_library'
+include ':app', ':common', ':umeng_community_library', ':image_edit_library'

@@ -84,7 +84,7 @@ public class MainMenuFragment extends Fragment {
             if (v == stickerBtn) {
                 editImageActivity.mode = EditImageActivity.MODE_STICKERS;
                 editImageActivity.setCurrentItem(1);
-                View stickerView = editImageActivity.mStickerView;
+                View stickerView = editImageActivity.mStirckerFragment.getmStickerView();
                 if (stickerView != null) {
                     stickerView.setVisibility(View.VISIBLE);
                 }

@@ -16,12 +16,14 @@ import android.view.View;
 
 import com.uy.imageeditlibrary.R;
 
+import helper.common_util.ScreenUtils;
+
 
 public class StickerItem {
     private static final float MIN_SCALE = 0.15f;
     private static final int HELP_BOX_PAD = 25;
 
-    private static final int BUTTON_WIDTH = 25;
+    private static int BUTTON_WIDTH = 25;
     private static Bitmap deleteBit;
     private static Bitmap rotateBit;
     public Bitmap bitmap;
@@ -45,10 +47,12 @@ public class StickerItem {
 
     public StickerItem(Context context) {
 
+        BUTTON_WIDTH = ScreenUtils.dp2px(12, context);
         helpBoxPaint.setColor(Color.parseColor("#f2f2f2"));
         helpBoxPaint.setStyle(Style.STROKE);
         helpBoxPaint.setAntiAlias(true);
-        helpBoxPaint.setStrokeWidth(4);
+        int helpBoxWidth = ScreenUtils.dp2px(2, context);
+        helpBoxPaint.setStrokeWidth(helpBoxWidth);
 
         dstPaint = new Paint();
         dstPaint.setColor(Color.RED);
@@ -273,7 +277,7 @@ public class StickerItem {
         if (this.isDrawHelpTool) {// 绘制辅助工具线
             canvas.save();
             canvas.rotate(roatetAngle, helpBox.centerX(), helpBox.centerY());
-            canvas.drawRoundRect(helpBox, 20, 20, helpBoxPaint);
+            canvas.drawRoundRect(helpBox, 10, 10, helpBoxPaint);
             // 绘制工具按钮
             canvas.drawBitmap(deleteBit, helpToolsRect, deleteRect, null);
             canvas.drawBitmap(rotateBit, helpToolsRect, rotateRect, null);
