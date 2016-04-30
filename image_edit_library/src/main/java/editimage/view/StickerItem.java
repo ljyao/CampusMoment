@@ -17,9 +17,6 @@ import android.view.View;
 import com.uy.imageeditlibrary.R;
 
 
-/**
- * @author panyi
- */
 public class StickerItem {
     private static final float MIN_SCALE = 0.15f;
     private static final int HELP_BOX_PAD = 25;
@@ -48,7 +45,7 @@ public class StickerItem {
 
     public StickerItem(Context context) {
 
-        helpBoxPaint.setColor(Color.BLACK);
+        helpBoxPaint.setColor(Color.parseColor("#f2f2f2"));
         helpBoxPaint.setStyle(Style.STROKE);
         helpBoxPaint.setAntiAlias(true);
         helpBoxPaint.setStrokeWidth(4);
@@ -64,11 +61,11 @@ public class StickerItem {
         // 导入工具按钮位图
         if (deleteBit == null) {
             deleteBit = BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.sticker_delete);
+                    R.drawable.aviary_delete_knob);
         }// end if
         if (rotateBit == null) {
             rotateBit = BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.sticker_rotate);
+                    R.drawable.aviary_resize_knob);
         }// end if
     }
 
@@ -276,7 +273,7 @@ public class StickerItem {
         if (this.isDrawHelpTool) {// 绘制辅助工具线
             canvas.save();
             canvas.rotate(roatetAngle, helpBox.centerX(), helpBox.centerY());
-            canvas.drawRoundRect(helpBox, 10, 10, helpBoxPaint);
+            canvas.drawRoundRect(helpBox, 20, 20, helpBoxPaint);
             // 绘制工具按钮
             canvas.drawBitmap(deleteBit, helpToolsRect, deleteRect, null);
             canvas.drawBitmap(rotateBit, helpToolsRect, rotateRect, null);

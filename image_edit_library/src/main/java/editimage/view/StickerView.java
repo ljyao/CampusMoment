@@ -14,9 +14,6 @@ import java.util.LinkedHashMap;
 
 /**
  * 贴图操作控件
- * 
- * @author panyi
- * 
  */
 public class StickerView extends View {
 	private static int STATUS_IDLE = 0;
