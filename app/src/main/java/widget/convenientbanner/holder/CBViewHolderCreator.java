@@ -1,4 +1,4 @@
-package convenientbanner.holder;
+package widget.convenientbanner.holder;
 
 /**
  * @ClassName :  ViewHolderCreator

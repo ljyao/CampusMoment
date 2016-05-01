@@ -1,4 +1,4 @@
-package convenientbanner;
+package widget.convenientbanner;
 
 import android.content.Context;
 import android.view.animation.Interpolator;

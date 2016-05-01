@@ -1,4 +1,4 @@
-package convenientbanner.holder;
+package widget.convenientbanner.holder;
 
 import android.content.Context;
 import android.net.Uri;

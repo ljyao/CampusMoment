@@ -1,4 +1,4 @@
-package convenientbanner.listener;
+package widget.convenientbanner.listener;
 
 import android.support.v4.view.ViewPager;
 import android.widget.ImageView;

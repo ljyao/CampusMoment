@@ -1,4 +1,4 @@
-package convenientbanner.adapter;
+package widget.convenientbanner.adapter;
 
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
@@ -8,9 +8,9 @@ import com.uy.bbs.R;
 
 import java.util.List;
 
-import convenientbanner.holder.CBViewHolderCreator;
-import convenientbanner.holder.Holder;
-import convenientbanner.view.CBLoopViewPager;
+import widget.convenientbanner.holder.CBViewHolderCreator;
+import widget.convenientbanner.holder.Holder;
+import widget.convenientbanner.view.CBLoopViewPager;
 
 
 public class CBPageAdapter<T> extends PagerAdapter {

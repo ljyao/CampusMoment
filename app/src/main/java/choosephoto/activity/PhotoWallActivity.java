@@ -24,9 +24,9 @@ import choosephoto.adapter.Decoration;
 import choosephoto.adapter.PhotoWallAdapter;
 import choosephoto.util.ImageLoader;
 import editimage.EditImageActivity;
-import helper.AppConstants;
 import helper.common_util.FileUtils;
 import helper.common_util.ScreenUtils;
+import model.AppConstants;
 
 
 /**

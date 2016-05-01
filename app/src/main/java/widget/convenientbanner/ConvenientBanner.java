@@ -1,4 +1,4 @@
-package convenientbanner;
+package widget.convenientbanner;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -22,12 +22,12 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import convenientbanner.adapter.CBPageAdapter;
-import convenientbanner.holder.CBViewHolderCreator;
-import convenientbanner.listener.CBPageChangeListener;
-import convenientbanner.listener.OnItemClickListener;
-import convenientbanner.view.CBLoopViewPager;
 import helper.common_util.ScreenUtils;
+import widget.convenientbanner.adapter.CBPageAdapter;
+import widget.convenientbanner.holder.CBViewHolderCreator;
+import widget.convenientbanner.listener.CBPageChangeListener;
+import widget.convenientbanner.listener.OnItemClickListener;
+import widget.convenientbanner.view.CBLoopViewPager;
 
 /**
  * 页面翻转控件，极方便的广告栏

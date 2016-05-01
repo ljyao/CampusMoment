@@ -1,4 +1,4 @@
-package convenientbanner.holder;
+package widget.convenientbanner.holder;
 
 /**
  * @param <T> 任何你指定的对象

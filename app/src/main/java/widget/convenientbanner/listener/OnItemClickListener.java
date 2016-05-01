@@ -1,4 +1,4 @@
-package convenientbanner.listener;
+package widget.convenientbanner.listener;
 
 /**
  * Created by Sai on 15/11/13.

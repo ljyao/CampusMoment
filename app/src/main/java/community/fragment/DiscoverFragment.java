@@ -24,10 +24,10 @@ import community.activity.TopicActivity_;
 import community.providable.FeedPrvdr;
 import community.providable.NetLoaderListener;
 import community.providable.TopicPrvdr;
-import convenientbanner.ConvenientBanner;
-import convenientbanner.holder.CBViewHolderCreator;
-import convenientbanner.holder.ImageHolder;
-import convenientbanner.listener.OnItemClickListener;
+import widget.convenientbanner.ConvenientBanner;
+import widget.convenientbanner.holder.CBViewHolderCreator;
+import widget.convenientbanner.holder.ImageHolder;
+import widget.convenientbanner.listener.OnItemClickListener;
 
 /**
  * Created by ljy on 15/12/25.

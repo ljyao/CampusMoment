@@ -24,10 +24,10 @@ import org.androidannotations.annotations.ViewById;
 
 import choosephoto.activity.PhotoWallActivity;
 import community.providable.UserPrvdr;
-import helper.AppConstants;
 import helper.common_util.ImageUtils;
 import imagezoom.ImageViewTouch;
 import imagezoom.ImageViewTouchBase;
+import model.AppConstants;
 
 /**
  * Created by ljy on 15/12/29.
