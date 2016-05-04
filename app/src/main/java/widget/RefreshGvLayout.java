@@ -1,8 +1,9 @@
-package com.umeng.comm.ui.imagepicker.widgets;
+package widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.GridView;
+
 
 /**
  * GridView的下拉刷新布局组件

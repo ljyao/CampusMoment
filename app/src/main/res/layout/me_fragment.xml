@@ -122,6 +122,7 @@
         android:background="#f4f4f4" />
 
     <LinearLayout
+        android:id="@+id/me_albums"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal">

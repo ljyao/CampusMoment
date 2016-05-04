@@ -43,7 +43,7 @@
     <application
         android:name="com.uy.App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -94,7 +94,7 @@
         <activity
             android:name="editimage.EditImageActivity"
             android:theme="@style/NoActionBar" />
-        <activity android:name="community.activity.TopicActivity_" />
+        <activity android:name="community.activity.TopicDetailActivity_" />
         <activity android:name="community.activity.HotTopicActivity_" />
         <activity android:name="community.activity.LocationFeedActivity" />
         <activity android:name="community.activity.FeedListActivity_" />
@@ -104,6 +104,7 @@
         <activity android:name="community.activity.ForwardActivity_" />
         <activity android:name="choosephoto.activity.PhotoPreviewActivity_" />
         <activity android:name="community.activity.FollowedTopicActivity_" />
+        <activity android:name="community.activity.AlbumActivity_" />
         <!-- youmeng -->
         <!-- 发现的Activity -->
         <activity

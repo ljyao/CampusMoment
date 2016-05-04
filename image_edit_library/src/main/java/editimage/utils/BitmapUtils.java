@@ -98,22 +98,26 @@ public class BitmapUtils {
 
         if (height > reqHeight || width > reqWidth) {
             if (width > height) {
-                inSampleSize = (int) Math
-                        .floor(((float) height / reqHeight) + 0.5f); // Math.round((float)height
-                // /
-                // (float)reqHeight);
+                inSampleSize = (int) ((float) height / reqHeight);
             } else {
-                inSampleSize = (int) Math
-                        .floor(((float) width / reqWidth) + 0.5f); // Math.round((float)width
-                // /
-                // (float)reqWidth);
+                inSampleSize = (int) ((float) width / reqWidth);
             }
+            inSampleSize = inSampleSize / 2 * 2;
         }
-        // System.out.println("inSampleSize--->"+inSampleSize);
+        Log.i("inSampleSize--->", "inSampleSize");
 
         options.inSampleSize = inSampleSize;
         options.inJustDecodeBounds = false;
 
+        return BitmapFactory.decodeFile(filePath, options);
+    }
+
+    public static Bitmap getSampledBitmap(String filePath, int inSampleSize) {
+        Options options = new Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filePath, options);
+        options.inSampleSize = inSampleSize;
+        options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile(filePath, options);
     }
 

@@ -13,7 +13,8 @@ import com.umeng.comm.core.utils.ResFinder.ResType;
 import com.umeng.comm.ui.adapters.BackupAdapter;
 import com.umeng.comm.ui.adapters.viewholders.ActiveUserViewHolder;
 
-import community.activity.TopicActivity_;
+import community.activity.TopicDetailActivity_;
+
 
 /**
  * 推荐话题的Adapter
@@ -33,7 +34,6 @@ public class RecommendTopicAdapter extends BackupAdapter<Topic, ActiveUserViewHo
      * 推荐话题的显示样式跟推荐用户的样式相同
      *
      * @param context
-     * @param topics
      */
     public RecommendTopicAdapter(Context context) {
         super(context);
@@ -95,7 +95,7 @@ public class RecommendTopicAdapter extends BackupAdapter<Topic, ActiveUserViewHo
      * @param topic
      */
     private void gotoTopicDetailPage(Topic topic) {
-        TopicActivity_.intent(mContext).topic(topic).start();
+        TopicDetailActivity_.intent(mContext).topic(topic).start();
     }
 
     public void setFollowListener(FollowListener<Topic> listener) {

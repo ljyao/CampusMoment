@@ -26,6 +26,8 @@ public class PhotoPreviewActivity extends AppCompatActivity implements OnPageCha
     @ViewById(R.id.viewpager)
     public ViewPager mViewPager;
     @Extra
+    public String title = "";
+    @Extra
     protected ArrayList<String> photos;
     @Extra
     protected int current = 0;
@@ -56,9 +58,11 @@ public class PhotoPreviewActivity extends AppCompatActivity implements OnPageCha
 
     };
 
-
     @AfterViews
     public void initViews() {
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle(title);
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setCurrentItem(current);
         mViewPager.addOnPageChangeListener(this);

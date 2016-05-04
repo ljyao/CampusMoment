@@ -61,7 +61,6 @@ public abstract class RefreshRecycleFragment<T extends RecyclerView.Adapter> ext
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         listView.setAdapter(adapter);
-
     }
 
     abstract protected RecyclerView.LayoutManager getLayoutManager();

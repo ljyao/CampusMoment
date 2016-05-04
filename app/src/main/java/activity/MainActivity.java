@@ -1,6 +1,7 @@
 package activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
     @AfterViews
     public void initViews() {
+        mToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(mToolbar);
         chooseAction(FEED_FRAGMENT_ID);
         initFragment();
@@ -87,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Click(R.id.action_add_btn)
-    public void onClickAdd(View v) {
+    public void onClickAddLayout(View v) {
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.popup_bottom_in);
         anim.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Click({R.id.add_txt_feed, R.id.add_photo_feed, R.id.add_carmen_feed})
-    public void onCliceAdd(View v) {
+    public void onClickAdd(View v) {
         switch (v.getId()) {
             case R.id.add_txt_feed:
                 PostFeedActivity_.intent(this).start();

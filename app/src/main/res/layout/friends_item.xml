@@ -16,14 +16,26 @@
         android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@id/userhead_icon"
         android:layout_centerVertical="true"
         android:layout_gravity="center"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="4dp"
         android:layout_toRightOf="@id/userhead_icon"
         android:ellipsize="end"
         android:text="昵称1234"
         android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/user_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/user_name"
+        android:layout_below="@id/user_name"
+        android:layout_marginTop="5dp"
+        android:singleLine="true"
+        android:text="234"
+        android:textColor="#999"
+        android:textSize="15sp" />
 
     <ImageView
         android:id="@+id/follow_iv"

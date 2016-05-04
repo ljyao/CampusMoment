@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.uy.imageeditlibrary.R;
 
-import editimage.fragment.StirckerFragment;
+import editimage.fragment.StickerFragment;
 
 
 /**
@@ -30,10 +30,10 @@ public class StickerTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
             "stickers/shuzi", "stickers/biankuang", "stickers/zhiye"};
     public static final String[] stickerPathName = {"动物", "心情", "cos", "符号",
             "饰品", "春节", "文字", "数字", "边框", "职业"};
-    private StirckerFragment mStirckerFragment;
+    private StickerFragment mStirckerFragment;
     private ImageClick mImageClick = new ImageClick();
 
-    public StickerTypeAdapter(StirckerFragment fragment) {
+    public StickerTypeAdapter(StickerFragment fragment) {
         super();
         this.mStirckerFragment = fragment;
     }

@@ -22,6 +22,7 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import activity.UserDetailActivity_;
+import community.activity.AlbumActivity_;
 import community.activity.FollowedTopicActivity_;
 import community.activity.FollowedUserActivity_;
 import community.providable.NetLoaderListener;
@@ -109,7 +110,13 @@ public class MeFragment extends Fragment {
 
     @Click(R.id.follow_topic)
     public void onClickFollowTopic() {
-        FollowedTopicActivity_.intent(getContext()).uid(user.id).start();
+        FollowedTopicActivity_.intent(getContext()).user(user).start();
     }
+
+    @Click(R.id.me_albums)
+    public void onClickMeAlbums() {
+        AlbumActivity_.intent(getContext()).user(user).start();
+    }
+
 
 }

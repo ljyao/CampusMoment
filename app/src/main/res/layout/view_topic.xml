@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff">
+
+    <com.umeng.comm.ui.widgets.RoundImageView
+        android:id="@+id/topic_icon"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_margin="10dp"
+        android:src="@drawable/topic_icon" />
+
+    <TextView
+        android:id="@+id/topic_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/topic_icon"
+        android:layout_toRightOf="@id/topic_icon"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="#234324234234#"
+        android:textColor="@color/colorPrimary"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/topic_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/topic_name"
+        android:layout_below="@id/topic_name"
+        android:layout_marginTop="5dp"
+        android:singleLine="true"
+        android:text="234"
+        android:textColor="#999"
+        android:textSize="15sp" />
+
+</RelativeLayout>

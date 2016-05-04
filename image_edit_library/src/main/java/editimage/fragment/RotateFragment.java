@@ -60,13 +60,10 @@ public class RotateFragment extends Fragment {
             out.flush();
             out.close();
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        // System.out.println("保存文件--->" + f.getAbsolutePath());
     }
 
     @Override
@@ -119,8 +116,6 @@ public class RotateFragment extends Fragment {
 
     /**
      * 角度改变监听
-     *
-     * @author panyi
      */
     private final class RotateAngleChange implements OnSeekBarChangeListener {
         @Override
@@ -156,7 +151,6 @@ public class RotateFragment extends Fragment {
     /**
      * 保存图片线程
      *
-     * @author panyi
      */
     private final class SaveRotateImageTask extends
             AsyncTask<Bitmap, Void, Bitmap> {
@@ -187,7 +181,7 @@ public class RotateFragment extends Fragment {
             RectF imageRect = mRotatePanel.getImageNewRect();
             Bitmap originBit = params[0];
             Bitmap result = Bitmap.createBitmap((int) imageRect.width(),
-                    (int) imageRect.height(), Bitmap.Config.ARGB_4444);
+                    (int) imageRect.height(), Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(result);
             int w = originBit.getWidth() >> 1;
             int h = originBit.getHeight() >> 1;

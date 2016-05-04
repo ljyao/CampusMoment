@@ -2,7 +2,7 @@ package editimage;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ViewFlipper;
 
-import com.jni.bitmap_operations.JniBitmapHolder;
 import com.uy.imageeditlibrary.R;
 import com.uy.util.Worker;
 
@@ -22,9 +21,11 @@ import editimage.fragment.CropFragment;
 import editimage.fragment.FliterListFragment;
 import editimage.fragment.MainMenuFragment;
 import editimage.fragment.RotateFragment;
-import editimage.fragment.StirckerFragment;
+import editimage.fragment.StickerFragment;
+import editimage.model.ImageScaleType;
 import editimage.utils.BitmapUtils;
 import editimage.view.CropImageView;
+import editimage.view.ImageEditContainer;
 import editimage.view.RotateImageView;
 import editimage.view.StickerView;
 import helper.common_util.ImageUtils;
@@ -73,11 +74,11 @@ public class EditImageActivity extends BaseActivity {
     public StickerView mStickerView;// 贴图层View
     public CropImageView mCropPanel;// 剪切操作控件
     public RotateImageView mRotatePanel;// 旋转操作控件
-    public StirckerFragment mStirckerFragment;// 贴图Fragment
+    public StickerFragment mStirckerFragment;// 贴图Fragment
     public FliterListFragment mFliterListFragment;// 滤镜FliterListFragment
     public RotateFragment mRotateFragment;// 图片旋转Fragment
+    public View progressBar;
     private int imageWidth, imageHeight;// 展示图片控件 宽 高
-    private LoadImageTask mLoadImageTask;
     private EditImageActivity mContext;
     private View backBtn;
     private View applyBtn;// 应用按钮
@@ -86,6 +87,8 @@ public class EditImageActivity extends BaseActivity {
     private CropFragment mCropFragment;// 图片剪裁Fragment
     private FrameLayout menuFrameLayout;
     private Fragment currentFragment;
+    private ImageEditContainer imageEditContainer;
+    private View saveImageLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -137,11 +140,13 @@ public class EditImageActivity extends BaseActivity {
 
         menuFrameLayout = (FrameLayout) findViewById(R.id.bottom_menu);
         mMainMenuFragment = MainMenuFragment.newInstance(this);
-        mStirckerFragment = StirckerFragment.newInstance(this);
+        mStirckerFragment = StickerFragment.newInstance(this);
         mFliterListFragment = FliterListFragment.newInstance(this);
         mCropFragment = CropFragment.newInstance(this);
         mRotateFragment = RotateFragment.newInstance(this);
-
+        saveImageLayout = findViewById(R.id.save_image_layout);
+        progressBar = findViewById(R.id.progressbar);
+        imageEditContainer = (ImageEditContainer) findViewById(R.id.image_edit_container);
         setCurrentItem(mode);
     }
 
@@ -150,12 +155,21 @@ public class EditImageActivity extends BaseActivity {
      *
      * @param filepath
      */
-    public void loadImage(String filepath) {
-        if (mLoadImageTask != null) {
-            mLoadImageTask.cancel(true);
-        }
-        mLoadImageTask = new LoadImageTask();
-        mLoadImageTask.execute(filepath);
+    public void loadImage(final String filepath) {
+        progressBar.setVisibility(View.VISIBLE);
+        Worker.postExecuteTask(new Runnable() {
+            @Override
+            public void run() {
+                BitmapUtils.BitmapSize size = BitmapUtils.getBitmapSize(filepath);
+                double width = size.width;
+                double height = size.height;
+                Bitmap bmp = BitmapFactory.decodeFile(filepath);
+                if (width > 4000 || height > 4000) {
+                    bmp = BitmapUtils.getSampledBitmap(filepath, 2);
+                }
+                setEditBitmap(bmp);
+            }
+        });
     }
 
     public void loadImageFromCache(final String key) {
@@ -164,43 +178,34 @@ public class EditImageActivity extends BaseActivity {
     }
 
     public void setEditBitmap(final Bitmap bmp) {
-
-        Worker.postExecuteTask(new Runnable() {
+        Worker.postMain(new Runnable() {
             @Override
             public void run() {
-                Bitmap newBmp = bmp;
-                double width = bmp.getWidth();
-                double height = bmp.getHeight();
-                if (width > 4000 || height > 4000) {
-                    double scale = width / height;
-                    double newWidth, newHeight;
-                    if (width > 4000) {
-                        newWidth = 4000;
-                        newHeight = newWidth / scale;
-                    } else {
-                        newHeight = 4000;
-                        newWidth = newHeight * scale;
-                    }
-                    JniBitmapHolder jniBitmapHolder = new JniBitmapHolder(bmp);
-                    jniBitmapHolder.scaleBitmap((int) newWidth, (int) newHeight, JniBitmapHolder.ScaleMethod.BilinearInterpolation);
-                    newBmp = jniBitmapHolder.getBitmapAndFree();
+                progressBar.setVisibility(View.GONE);
+                if (mainBitmap != null) {
+                    mainBitmap.recycle();
+                    mainBitmap = null;
+                    System.gc();
                 }
-                final Bitmap finalNewBmp = newBmp;
-                Worker.postMain(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mainBitmap != null) {
-                            mainBitmap.recycle();
-                            mainBitmap = null;
-                            System.gc();
-                        }
-                        mainBitmap = finalNewBmp;
-                        mainImage.setImageBitmap(mainBitmap);
-                        mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
-                    }
-                });
+                mainBitmap = bmp;
+                mainImage.setImageBitmap(mainBitmap);
+                float scale = (float) bmp.getWidth() / (float) bmp.getHeight();
+                ImageScaleType scaleType;
+                if (scale <= (3f / 4f)) {
+                    scaleType = ImageScaleType.higher;
+                } else if (scale >= (4f / 3f)) {
+                    scaleType = ImageScaleType.wider;
+                } else {
+                    scaleType = ImageScaleType.Wrap;
+                    scaleType.scale = scale;
+                }
+                imageEditContainer.setScaleType(scaleType);
+                mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
             }
+
+
         });
+
     }
 
     /**
@@ -254,19 +259,13 @@ public class EditImageActivity extends BaseActivity {
         mainImage.setImageBitmap(mainBitmap);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mLoadImageTask != null) {
-            mLoadImageTask.cancel(true);
-        }
-    }
 
     public void setViewPageHeight(int mode) {
         ViewGroup.LayoutParams layoutParams = menuFrameLayout.getLayoutParams();
         if (mode == MODE_FILTER) {
             layoutParams.height = ScreenUtils.dp2px(120, this);
             menuFrameLayout.setLayoutParams(layoutParams);
+            mFliterListFragment.refreshAdapter();
         } else {
             layoutParams.height = ScreenUtils.dp2px(65, this);
             menuFrameLayout.setLayoutParams(layoutParams);
@@ -303,18 +302,9 @@ public class EditImageActivity extends BaseActivity {
         currentFragment = nextFragment;
     }
 
-    private final class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            return BitmapUtils.loadImageByPath(params[0], imageWidth,
-                    imageHeight);
-        }
 
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            super.onPostExecute(result);
-            setEditBitmap(result);
-        }
+    public interface OnSaveImageCallBack {
+        void onSaved(Bitmap resultBmp);
     }
 
     /**

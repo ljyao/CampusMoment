@@ -43,7 +43,7 @@ public class PhotoPreview extends LinearLayout {
     }
 
     public void loadImage(String path) {
-        ImageLoader.getInstance().displayImage("file:///" + path, mImageView);
+        ImageLoader.getInstance().displayImage(path, mImageView);
     }
 
     @Override

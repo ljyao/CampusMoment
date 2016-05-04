@@ -79,11 +79,6 @@ public class StickerView extends View {
 		}// end for each
 	}
 
-	@Override
-	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		super.onSizeChanged(w, h, oldw, oldh);
-		// System.out.println(w + "   " + h + "    " + oldw + "   " + oldh);
-	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -179,4 +174,4 @@ public class StickerView extends View {
 		bank.clear();
 		this.invalidate();
 	}
-}// end class
+}

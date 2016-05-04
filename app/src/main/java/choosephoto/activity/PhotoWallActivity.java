@@ -86,7 +86,12 @@ public class PhotoWallActivity extends AppCompatActivity {
         preViewBtN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PhotoPreviewActivity_.intent(PhotoWallActivity.this).photos(getSelectImagePaths()).start();
+                ArrayList<String> preViewPhotos = new ArrayList<>();
+                ArrayList<String> selectPhotos = getSelectImagePaths();
+                for (String path : selectPhotos) {
+                    preViewPhotos.add("file:///" + path);
+                }
+                PhotoPreviewActivity_.intent(PhotoWallActivity.this).photos(preViewPhotos).start();
             }
         });
         confirmPhoto = (TextView) findViewById(R.id.confirm_photo);

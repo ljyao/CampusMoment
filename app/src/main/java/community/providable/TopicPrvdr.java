@@ -5,7 +5,6 @@ import com.umeng.comm.core.beans.Topic;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.TopicResponse;
 import com.umeng.comm.core.nets.uitls.NetworkUtils;
-import com.umeng.comm.core.utils.CommonUtils;
 import com.uy.App;
 
 import java.util.List;
@@ -30,17 +29,30 @@ public class TopicPrvdr {
 
             @Override
             public void onComplete(final TopicResponse response) {
-                // 根据response进行Toast
                 if (NetworkUtils.handleResponseAll(response)) {
-                    //  如果是网络错误，其结果可能快于DB查询
-                    if (CommonUtils.isNetworkErr(response.errCode)) {
-                    }
                     return;
                 }
                 listener.onComplete(true, response.result);
                 mNextPageUrl = response.result.get(0).nextPage;
             }
         });
+    }
+
+    public void loadFollowedTopics(String mUid, final NetLoaderListener<List<Topic>> listener) {
+        mCommunitySDK.fetchFollowedTopics(mUid,
+                new Listeners.SimpleFetchListener<TopicResponse>() {
+
+                    @Override
+                    public void onComplete(final TopicResponse response) {
+                        if (NetworkUtils.handleResponseAll(response)) {
+                            listener.onComplete(false, null);
+                            return;
+                        }
+                        listener.onComplete(true, response.result);
+                        mNextPageUrl = response.result.get(0).nextPage;
+                    }
+
+                });
     }
 
     public void loadRecommendedTopics(final NetLoaderListener<List<Topic>> listener) {

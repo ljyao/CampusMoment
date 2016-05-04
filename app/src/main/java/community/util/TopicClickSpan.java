@@ -7,7 +7,8 @@ import android.view.View;
 import com.umeng.comm.core.beans.Topic;
 import com.umeng.comm.ui.utils.textspan.AbsClickSpan;
 
-import community.activity.TopicActivity_;
+import community.activity.TopicDetailActivity_;
+
 
 public class TopicClickSpan extends AbsClickSpan {
 
@@ -21,6 +22,6 @@ public class TopicClickSpan extends AbsClickSpan {
 
     @Override
     protected void doAfterLogin(View v) {
-        TopicActivity_.intent(mContext).topic(mTopic).start();
+        TopicDetailActivity_.intent(mContext).topic(mTopic).start();
     }
 }

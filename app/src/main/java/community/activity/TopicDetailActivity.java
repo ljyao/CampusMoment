@@ -20,8 +20,8 @@ import community.providable.TopicInfoPrvdr;
 /**
  * Created by shine on 16-2-18.
  */
-@EActivity(R.layout.activity_topic)
-public class TopicActivity extends AppCompatActivity {
+@EActivity(R.layout.activity_topic_detail)
+public class TopicDetailActivity extends AppCompatActivity {
     @Extra
     protected Topic topic;
     private FeedFragment fragment;

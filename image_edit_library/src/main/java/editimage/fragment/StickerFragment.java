@@ -26,15 +26,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 
-import editimage.BaseActivity;
 import editimage.EditImageActivity;
 import editimage.adapter.StickerAdapter;
 import editimage.adapter.StickerTypeAdapter;
-import editimage.model.StickerBean;
 import editimage.utils.Matrix3;
 import editimage.view.StickerItem;
 import editimage.view.StickerView;
@@ -42,8 +38,8 @@ import editimage.view.StickerView;
 /**
  * 贴图分类fragment
  */
-public class StirckerFragment extends Fragment {
-    public static final String TAG = StirckerFragment.class.getName();
+public class StickerFragment extends Fragment {
+    public static final String TAG = StickerFragment.class.getName();
     public static final String STICKER_FOLDER = "stickers";
 
     private View mainView;
@@ -56,20 +52,15 @@ public class StirckerFragment extends Fragment {
     private StickerView mStickerView;// 贴图显示控件
     private StickerAdapter mStickerAdapter;// 贴图列表适配器
 
-    private LoadStickersTask mLoadStickersTask;
-    private List<StickerBean> stickerBeanList = new ArrayList<StickerBean>();
 
-    public static StirckerFragment newInstance(EditImageActivity activity) {
-        StirckerFragment fragment = new StirckerFragment();
+    public static StickerFragment newInstance(EditImageActivity activity) {
+        StickerFragment fragment = new StickerFragment();
         fragment.activity = activity;
         return fragment;
     }
 
     /**
      * 保存Bitmap图片到指定文件
-     *
-     * @param bm
-     * @param name
      */
     public static void saveBitmap(Bitmap bm, String filePath) {
         File f = new File(filePath);
@@ -105,27 +96,22 @@ public class StirckerFragment extends Fragment {
         flipper.setInAnimation(activity, R.anim.in_bottom_to_top);
         flipper.setOutAnimation(activity, R.anim.out_bottom_to_top);
 
-        //
         backToMenu = mainView.findViewById(R.id.back_to_main);
         typeList = (RecyclerView) mainView
                 .findViewById(R.id.stickers_type_list);
         typeList.setHasFixedSize(true);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(activity);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         typeList.setLayoutManager(mLayoutManager);
         typeList.setAdapter(new StickerTypeAdapter(this));
         backToType = mainView.findViewById(R.id.back_to_type);// back按钮
 
         stickerList = (RecyclerView) mainView.findViewById(R.id.stickers_list);
-        // stickerList.setHasFixedSize(true);
-        LinearLayoutManager stickerListLayoutManager = new LinearLayoutManager(
-                activity);
+        LinearLayoutManager stickerListLayoutManager = new LinearLayoutManager(getContext());
         stickerListLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         stickerList.setLayoutManager(stickerListLayoutManager);
         mStickerAdapter = new StickerAdapter(this);
         stickerList.setAdapter(mStickerAdapter);
-
-        //loadStickersData();
 
         return mainView;
     }
@@ -143,22 +129,6 @@ public class StirckerFragment extends Fragment {
         });
     }
 
-    //导入贴图数据
-    private void loadStickersData() {
-        if (mLoadStickersTask != null) {
-            mLoadStickersTask.cancel(true);
-        }
-        mLoadStickersTask = new LoadStickersTask();
-        mLoadStickersTask.execute(1);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mLoadStickersTask != null) {
-            mLoadStickersTask.cancel(true);
-        }
-    }
 
     /**
      * 跳转至贴图详情列表
@@ -196,6 +166,7 @@ public class StirckerFragment extends Fragment {
      */
     public void selectedStickerItem(String path) {
         mStickerView.addBitImage(getImageFromAssetsFile(path));
+        backToMain();
     }
 
     public StickerView getmStickerView() {
@@ -209,65 +180,19 @@ public class StirckerFragment extends Fragment {
     public void backToMain() {
         activity.mode = EditImageActivity.MODE_NONE;
         activity.setCurrentItem(0);
-        mStickerView.setVisibility(View.GONE);
-        activity.bannerFlipper.showPrevious();
+        mStickerView.setVisibility(View.VISIBLE);
     }
 
     /**
      * 保存贴图层 合成一张图片
      */
     public void saveStickers() {
+        System.gc();
         // System.out.println("保存 合成图片");
         SaveStickersTask task = new SaveStickersTask();
         task.execute(activity.mainBitmap);
     }
 
-    /**
-     * 导入贴图数据
-     */
-    private final class LoadStickersTask extends AsyncTask<Integer, Void, Void> {
-        private Dialog loadDialog;
-
-        public LoadStickersTask() {
-            super();
-            loadDialog = BaseActivity.getLoadingDialog(getActivity(), "正在载入贴图数据...", false);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            loadDialog.show();
-        }
-
-        @Override
-        protected Void doInBackground(Integer... params) {
-            stickerBeanList.clear();
-            AssetManager assetManager = getActivity().getAssets();
-            try {
-                String[] lists = assetManager.list(STICKER_FOLDER);
-                for (String parentPath : lists) {
-
-                }//end for each
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            loadDialog.dismiss();
-
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-            loadDialog.dismiss();
-        }
-    }//end inner class
 
     /**
      * 返回主菜单页面
@@ -315,14 +240,14 @@ public class StirckerFragment extends Fragment {
         @Override
         protected void onCancelled() {
             super.onCancelled();
-            dialog.dismiss();
+            activity.progressBar.setVisibility(View.GONE);
         }
 
         @TargetApi(Build.VERSION_CODES.HONEYCOMB)
         @Override
         protected void onCancelled(Bitmap result) {
             super.onCancelled(result);
-            dialog.dismiss();
+            activity.progressBar.setVisibility(View.GONE);
         }
 
         @Override
@@ -330,15 +255,13 @@ public class StirckerFragment extends Fragment {
             super.onPostExecute(result);
             mStickerView.clear();
             activity.changeMainBitmap(result);
-            dialog.dismiss();
+            activity.progressBar.setVisibility(View.GONE);
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = BaseActivity.getLoadingDialog(getActivity(), "图片合成保存中...",
-                    false);
-            dialog.show();
+            activity.progressBar.setVisibility(View.VISIBLE);
         }
     }// end inner class
 

@@ -88,7 +88,6 @@ public class MainMenuFragment extends Fragment {
                 if (stickerView != null) {
                     stickerView.setVisibility(View.VISIBLE);
                 }
-                editImageActivity.bannerFlipper.showNext();
             } else if (v == fliterBtn) {
                 editImageActivity.mode = EditImageActivity.MODE_FILTER;
                 editImageActivity.setCurrentItem(2);

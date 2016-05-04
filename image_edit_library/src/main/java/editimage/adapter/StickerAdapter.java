@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import editimage.fragment.StirckerFragment;
+import editimage.fragment.StickerFragment;
 
 
 /**
@@ -28,13 +28,13 @@ public class StickerAdapter extends RecyclerView.Adapter<ViewHolder> {
             .cacheInMemory(true).showImageOnLoading(R.drawable.yd_image_tx)
             .build();// 下载图片显示
 
-    private StirckerFragment mStirckerFragment;
+    private StickerFragment mStickerFragment;
     private ImageClick mImageClick = new ImageClick();
-    private List<String> pathList = new ArrayList<String>();// 图片路径列表
+    private List<String> pathList = new ArrayList<>();// 图片路径列表
 
-    public StickerAdapter(StirckerFragment fragment) {
+    public StickerAdapter(StickerFragment fragment) {
         super();
-        this.mStirckerFragment = fragment;
+        this.mStickerFragment = fragment;
     }
 
     @Override
@@ -70,7 +70,7 @@ public class StickerAdapter extends RecyclerView.Adapter<ViewHolder> {
     public void addStickerImages(String folderPath) {
         pathList.clear();
         try {
-            String[] files = mStirckerFragment.getActivity().getAssets()
+            String[] files = mStickerFragment.getActivity().getAssets()
                     .list(folderPath);
             for (String name : files) {
                 pathList.add(folderPath + File.separator + name);
@@ -98,7 +98,7 @@ public class StickerAdapter extends RecyclerView.Adapter<ViewHolder> {
         public void onClick(View v) {
             String data = (String) v.getTag();
             //System.out.println("data---->" + data);
-            mStirckerFragment.selectedStickerItem(data);
+            mStickerFragment.selectedStickerItem(data);
         }
     }// end inner class
 

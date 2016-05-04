@@ -38,7 +38,6 @@ public class AlbumsPrvdr {
             public void onComplete(AlbumResponse albumResponse) {
                 mNextPageUrl = albumResponse.nextPageUrl;
                 listener.onComplete(true, parseImageItem(albumResponse));
-
             }
         });
     }

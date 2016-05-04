@@ -132,8 +132,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="3dp"
             android:background="@drawable/community_location"
             android:contentDescription="@string/umeng_comm_new_post" />
 
@@ -155,6 +155,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="4dp"
+            android:layout_marginRight="3dp"
             android:layout_marginTop="8dp"
             android:layout_toLeftOf="@id/umeng_comm_distance"
             android:layout_toRightOf="@id/umeng_comm_msg_location"

@@ -1,17 +1,16 @@
 package community.activity;
 
-import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.umeng.comm.core.beans.CommUser;
+import com.umeng.comm.ui.fragments.FollowedTopicFragment;
 import com.uy.bbs.R;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
-
-import community.fragment.FollowedTopicFragment;
 
 
 /**
@@ -20,18 +19,14 @@ import community.fragment.FollowedTopicFragment;
 @EActivity(R.layout.activity_followed_topic)
 public class FollowedTopicActivity extends AppCompatActivity {
     @Extra
-    public String uid;
+    public CommUser user;
     private FollowedTopicFragment fragment;
 
     @AfterViews
     public void initView() {
-        setTitle("话题");
-
+        setTitle("我的话题");
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        fragment = new FollowedTopicFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("uid", uid);
-        fragment.setArguments(bundle);
+        fragment = FollowedTopicFragment.newFollowedTopicFragment(user.id);
         ft.add(R.id.fragment, fragment);
         ft.setTransition(FragmentTransaction.TRANSIT_NONE);
         ft.commit();

@@ -20,7 +20,7 @@ import java.util.List;
 
 import community.activity.FeedListActivity_;
 import community.activity.HotTopicActivity_;
-import community.activity.TopicActivity_;
+import community.activity.TopicDetailActivity_;
 import community.providable.FeedPrvdr;
 import community.providable.NetLoaderListener;
 import community.providable.TopicPrvdr;
@@ -55,7 +55,7 @@ public class DiscoverFragment extends Fragment {
                     Topic topic = (Topic) v.getTag();
                     if (topic == null)
                         return;
-                    TopicActivity_.intent(getActivity()).topic(topic).start();
+                    TopicDetailActivity_.intent(getActivity()).topic(topic).start();
                 }
             } catch (Exception e) {
             }
@@ -106,7 +106,7 @@ public class DiscoverFragment extends Fragment {
                     .setOnItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(int position) {
-                            TopicActivity_.intent(getActivity()).topic(topicBanners.get(position)).start();
+                            TopicDetailActivity_.intent(getActivity()).topic(topicBanners.get(position)).start();
                         }
                     })
                     .setCanLoop(topicImages.size() > 1 ? true : false);

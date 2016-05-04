@@ -20,12 +20,15 @@ import adapter.ViewWrapper;
 
 @EViewGroup(R.layout.friends_item)
 public class UserView extends RelativeLayout implements ViewWrapper.Binder<CommUser> {
+    private static final String DIVIDER = " / ";
     @ViewById(R.id.userhead_icon)
     public SimpleDraweeView mImageView;
     @ViewById(R.id.user_name)
     public TextView mTextView;
     @ViewById(R.id.follow_iv)
     public ImageView followIv;
+    @ViewById(R.id.user_msg)
+    public TextView userMsg;
     private CommUser user;
 
     public UserView(Context context, AttributeSet attrs) {
@@ -50,6 +53,15 @@ public class UserView extends RelativeLayout implements ViewWrapper.Binder<CommU
         } else {
             followIv.setBackgroundResource(R.drawable.card_icon_addattention);
         }
+        userMsg.setText(buildMsgFansStr());
+    }
+
+    protected String buildMsgFansStr() {
+        StringBuilder builder = new StringBuilder("微博：");
+        builder.append(user.feedCount);
+        builder.append(DIVIDER).append("粉丝");
+        builder.append(user.fansCount);
+        return builder.toString();
     }
 
     @Click({R.id.userhead_icon, R.id.user_name})

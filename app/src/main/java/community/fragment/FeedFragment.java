@@ -58,6 +58,7 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
             startActivity(intent);
         }
     };
+    private boolean isHideRefreshLayout = false;
 
     public FeedFragment() {
 
@@ -65,6 +66,9 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
 
     @AfterViews
     public void initView() {
+        if (isHideRefreshLayout) {
+            refreshLayout.setVisibility(View.GONE);
+        }
         if (feedType == null)
             feedType = FeedPrvdr.FeedType.FollowFeed;
         feedPrvdr = new FeedPrvdr(this.feedType);
@@ -135,6 +139,14 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+    }
+
+
+    public void hideRefresh() {
+        isHideRefreshLayout = true;
+        if (isHideRefreshLayout && refreshLayout != null) {
+            refreshLayout.setVisibility(View.GONE);
+        }
     }
 
     public interface FeedListListener {

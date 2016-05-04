@@ -6,7 +6,7 @@
     <FrameLayout
         android:id="@+id/banner"
         android:layout_width="fill_parent"
-        android:layout_height="45dp"
+        android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:background="#03A9F4">
 
@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/btn_back_selector" />
+            android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha" />
 
         <TextView
             android:id="@+id/title"
@@ -57,46 +57,71 @@
         </ViewFlipper>
     </FrameLayout>
 
-
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/work_space"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:layout_below="@id/banner"
         android:layout_marginBottom="65dp"
         android:background="#f2f2f2">
 
-        <imagezoom.ImageViewTouch
-            android:id="@+id/main_image"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:background="#fff"
-            android:scaleType="centerCrop" />
+        <editimage.view.ImageEditContainer
+            android:id="@+id/image_edit_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true">
 
-        <editimage.view.StickerView
-            android:id="@+id/sticker_panel"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center"
-            android:visibility="gone" />
+            <RelativeLayout
+                android:id="@+id/save_image_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <editimage.view.CropImageView
-            android:id="@+id/crop_panel"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center"
-            android:visibility="gone" />
+                <imagezoom.ImageViewTouch
+                    android:id="@+id/main_image"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:background="#fff"
+                    android:scaleType="centerCrop" />
 
-        <editimage.view.RotateImageView
-            android:id="@+id/rotate_panel"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center"
-            android:visibility="gone" />
-    </FrameLayout>
+                <editimage.view.StickerView
+                    android:id="@+id/sticker_panel"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+                <editimage.view.CropImageView
+                    android:id="@+id/crop_panel"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+                <editimage.view.RotateImageView
+                    android:id="@+id/rotate_panel"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/progressbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#83000000"
+                android:visibility="gone">
+
+                <ProgressBar
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    android:indeterminate="true" />
+            </RelativeLayout>
+
+        </editimage.view.ImageEditContainer>
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/bottom_menu"

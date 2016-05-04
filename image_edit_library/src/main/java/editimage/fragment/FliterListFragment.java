@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import editimage.BaseActivity;
 import editimage.EditImageActivity;
 import editimage.adapter.FliterAdapter;
 import editimage.fliter.FliterType;
@@ -151,6 +150,12 @@ public class FliterListFragment extends Fragment {
         hlistView.setAdapter(adapter);
     }
 
+    public void refreshAdapter() {
+        if (adapter == null)
+            return;
+        adapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onDestroy() {
         if (fliterBit != null && (!fliterBit.isRecycled())) {
@@ -240,20 +245,19 @@ public class FliterListFragment extends Fragment {
         @Override
         protected void onCancelled() {
             super.onCancelled();
-            dialog.dismiss();
+            activity.progressBar.setVisibility(View.GONE);
         }
 
         @TargetApi(Build.VERSION_CODES.HONEYCOMB)
         @Override
         protected void onCancelled(Bitmap result) {
             super.onCancelled(result);
-            dialog.dismiss();
+            activity.progressBar.setVisibility(View.GONE);
         }
 
         @Override
         protected void onPostExecute(Bitmap result) {
             super.onPostExecute(result);
-            dialog.dismiss();
             if (result == null)
                 return;
             if (fliterBit != null && (!fliterBit.isRecycled())) {
@@ -262,14 +266,13 @@ public class FliterListFragment extends Fragment {
             fliterBit = result;
             activity.mainImage.setImageBitmap(fliterBit);
             currentBitmap = fliterBit;
+            activity.progressBar.setVisibility(View.GONE);
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = BaseActivity.getLoadingDialog(getActivity(), "图片处理中...",
-                    false);
-            dialog.show();
+            activity.progressBar.setVisibility(View.VISIBLE);
         }
     }
 

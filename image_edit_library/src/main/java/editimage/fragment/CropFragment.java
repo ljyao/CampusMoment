@@ -45,16 +45,8 @@ public class CropFragment extends Fragment {
     private static List<RatioItem> dataList = new ArrayList<>();
 
     static {
-        // init data
-        dataList.add(new RatioItem("任意", -1f));
         dataList.add(new RatioItem("1:1", 1f));
-        dataList.add(new RatioItem("1:2", 1 / 2f));
-        dataList.add(new RatioItem("1:3", 1 / 3f));
-        dataList.add(new RatioItem("2:3", 2 / 3f));
         dataList.add(new RatioItem("3:4", 3 / 4f));
-        dataList.add(new RatioItem("2:1", 2f));
-        dataList.add(new RatioItem("3:1", 3f));
-        dataList.add(new RatioItem("3:2", 3 / 2f));
         dataList.add(new RatioItem("4:3", 4 / 3f));
     }
 
