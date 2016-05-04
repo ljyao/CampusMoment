@@ -1,6 +1,7 @@
 package community.views;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -17,6 +18,8 @@ import org.androidannotations.annotations.ViewById;
 
 import activity.UserDetailActivity_;
 import adapter.ViewWrapper;
+import community.fragment.FollowedUserFragment;
+import helper.common_util.AlertDialogUtils;
 
 @EViewGroup(R.layout.friends_item)
 public class UserView extends RelativeLayout implements ViewWrapper.Binder<CommUser> {
@@ -30,6 +33,7 @@ public class UserView extends RelativeLayout implements ViewWrapper.Binder<CommU
     @ViewById(R.id.user_msg)
     public TextView userMsg;
     private CommUser user;
+    private FollowedUserFragment.OnClickFollowListener followListener;
 
     public UserView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -64,8 +68,28 @@ public class UserView extends RelativeLayout implements ViewWrapper.Binder<CommU
         return builder.toString();
     }
 
+    @Click(R.id.follow_iv)
+    public void onClickFollow() {
+        if (user.isFollowed) {
+            AlertDialogUtils.builder(getContext()).setContent("取消关注该用户?")
+                    .setOnPositiveClickListener(new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            followListener.OnClickUnFollow(user);
+                            AlertDialogUtils.dismiss();
+                        }
+                    }).show();
+        } else {
+            followListener.OnClickFollow(user);
+        }
+    }
+
     @Click({R.id.userhead_icon, R.id.user_name})
     public void onClickUser() {
         UserDetailActivity_.intent(getContext()).user(user).start();
+    }
+
+    public void setFollowListener(FollowedUserFragment.OnClickFollowListener followListener) {
+        this.followListener = followListener;
     }
 }

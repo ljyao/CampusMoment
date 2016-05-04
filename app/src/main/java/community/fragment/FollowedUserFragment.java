@@ -1,6 +1,7 @@
 
 package community.fragment;
 
+import android.app.ProgressDialog;
 import android.graphics.Rect;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import java.util.List;
 import community.adapter.UserAdapter;
 import community.providable.FollowedsAndFansPrvdr;
 import community.providable.NetLoaderListener;
+import community.providable.UserPrvdr;
 import fragment.RefreshRecycleFragment;
 import helper.common_util.ScreenUtils;
 
@@ -36,14 +38,32 @@ public class FollowedUserFragment extends RefreshRecycleFragment<UserAdapter> {
     public String mUserId;
     @FragmentArg
     public UserListType type;
-    /**
-     * 已关注好友的适配器
-     */
-    protected UserAdapter mAdapter;
-    FollowedsAndFansPrvdr userPrvr;
+
+    private FollowedsAndFansPrvdr followedsAndFansPrvdr;
+    private UserPrvdr userPrvdr = new UserPrvdr();
     private boolean isfirstPage = true;
     private LinearLayoutManager layoutManager;
+    private ProgressDialog progressDialog;
+    private NetLoaderListener<Boolean> followUserCallBack = new NetLoaderListener<Boolean>() {
+        @Override
+        public void onComplete(boolean statue, Boolean result) {
+            adapter.notifyDataSetChanged();
+            progressDialog.dismiss();
+        }
+    };
+    private OnClickFollowListener followListener = new OnClickFollowListener() {
+        @Override
+        public void OnClickFollow(CommUser user) {
+            progressDialog.show();
+            userPrvdr.followUser(user, followUserCallBack);
+        }
 
+        @Override
+        public void OnClickUnFollow(CommUser user) {
+            progressDialog.show();
+            userPrvdr.cancelFollowUser(user, followUserCallBack);
+        }
+    };
     private NetLoaderListener<List<CommUser>> listener = new NetLoaderListener<List<CommUser>>() {
         @Override
         public void onComplete(boolean statue, List<CommUser> result) {
@@ -60,8 +80,11 @@ public class FollowedUserFragment extends RefreshRecycleFragment<UserAdapter> {
 
     @AfterViews
     public void initViews() {
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("操作中...");
         adapter = new UserAdapter();
-        userPrvr = new FollowedsAndFansPrvdr(mUserId, listener);
+        adapter.setFollowListener(followListener);
+        followedsAndFansPrvdr = new FollowedsAndFansPrvdr(mUserId, listener);
         listView.setItemAnimator(new DefaultItemAnimator());
         listView.addItemDecoration(new Decoration());
         refreshList();
@@ -82,16 +105,16 @@ public class FollowedUserFragment extends RefreshRecycleFragment<UserAdapter> {
     @Override
     protected void onRefreshing() {
         if (type == UserListType.followed) {
-            userPrvr.getFolloweds();
+            followedsAndFansPrvdr.getFolloweds();
         } else {
-            userPrvr.getFans();
+            followedsAndFansPrvdr.getFans();
         }
     }
 
     @Override
     protected void onLoadMore() {
         isfirstPage = false;
-        userPrvr.loadMoreData();
+        followedsAndFansPrvdr.loadMoreData();
     }
 
     private void setRefreshState(final boolean state) {
@@ -106,6 +129,12 @@ public class FollowedUserFragment extends RefreshRecycleFragment<UserAdapter> {
     public enum UserListType {
         followed,
         fans
+    }
+
+    public interface OnClickFollowListener {
+        void OnClickFollow(CommUser user);
+
+        void OnClickUnFollow(CommUser user);
     }
 
     static class Decoration extends RecyclerView.ItemDecoration {

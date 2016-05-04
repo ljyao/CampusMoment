@@ -51,7 +51,7 @@
             android:background="#eee" />
 
         <LinearLayout
-            android:id="@+id/action_bar"
+            android:id="@+id/user_bar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="#fff"
@@ -61,10 +61,21 @@
                 android:id="@+id/user_topic"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:layout_marginLeft="80dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="话题"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/user_album"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="相册"
+                android:textColor="#000"
                 android:textSize="16sp" />
 
             <TextView
@@ -74,16 +85,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="微博"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/user_album"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginRight="80dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="相册"
+                android:textColor="#000"
                 android:textSize="16sp" />
 
             <TextView
@@ -93,16 +95,17 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="关注"
+                android:textColor="#000"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/user_fans"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:layout_marginRight="80dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="粉丝"
+                android:textColor="#000"
                 android:textSize="16sp" />
         </LinearLayout>
 

@@ -129,7 +129,7 @@ public class EditUserHeaderActivity extends AppCompatActivity {
     private void changeStatue(boolean statue) {
         isEdit = statue;
         if (statue) {
-            choosePhoto.setImageResource(R.drawable.camera_edit_check);
+            choosePhoto.setImageResource(R.drawable.confirm);
             choosePhotoTv.setText("确认");
             userHeader.setVisibility(View.GONE);
             editViewTouch.setVisibility(View.VISIBLE);

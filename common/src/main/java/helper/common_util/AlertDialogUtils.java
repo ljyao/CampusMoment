@@ -9,15 +9,19 @@ import android.view.View;
  * Created by ljy on 15/12/11.
  */
 public class AlertDialogUtils {
+    private static AlertDialog alertDialog = null;
+
     public static Builder builder(Context context) {
         Builder builder = new Builder(context);
         return builder;
     }
 
-    public static class Builder {
-        private AlertDialog alertDialog = null;
-        private Context mContext;
+    public static void dismiss() {
+        alertDialog.dismiss();
+    }
 
+    public static class Builder {
+        private Context mContext;
         private String title = "";
         private String content = "";
 
