@@ -25,6 +25,26 @@ public class TopicDetailActivity extends AppCompatActivity {
     @Extra
     protected Topic topic;
     private FeedFragment fragment;
+    private TopicInfoPrvdr topicInfoPrvdr;
+    private OnClickFollowTopicListener followTopicListener = new OnClickFollowTopicListener() {
+        @Override
+        public void onFollowTopic(Topic topic) {
+            TopicDetailActivity.this.topic = topic;
+            topicInfoPrvdr.followTopic(topic, followTopicCallBack);
+        }
+
+        @Override
+        public void onUnFollowTopic(Topic topic) {
+            TopicDetailActivity.this.topic = topic;
+            topicInfoPrvdr.cancelFollowTopic(topic, followTopicCallBack);
+        }
+    };
+    private NetLoaderListener<Boolean> followTopicCallBack = new NetLoaderListener<Boolean>() {
+        @Override
+        public void onComplete(boolean statue, Boolean result) {
+            fragment.setTopic(topic, followTopicListener);
+        }
+    };
 
     @AfterViews
     public void initView() {
@@ -40,12 +60,12 @@ public class TopicDetailActivity extends AppCompatActivity {
     }
 
     public void getTopicInfo(String topicId) {
-        TopicInfoPrvdr topicInfoPrvdr = new TopicInfoPrvdr();
+        topicInfoPrvdr = new TopicInfoPrvdr();
         topicInfoPrvdr.fetchTopicWithId(topicId, new NetLoaderListener<Topic>() {
             @Override
             public void onComplete(boolean statue, Topic result) {
                 topic = result;
-                fragment.setTopic(topic);
+                fragment.setTopic(topic, followTopicListener);
             }
         });
     }
@@ -58,5 +78,12 @@ public class TopicDetailActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public interface OnClickFollowTopicListener {
+        void onFollowTopic(Topic topic);
+
+        void onUnFollowTopic(Topic topic);
+
     }
 }

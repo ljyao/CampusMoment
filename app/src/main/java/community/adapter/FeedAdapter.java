@@ -9,6 +9,7 @@ import com.umeng.comm.core.beans.Topic;
 
 import java.util.List;
 
+import community.activity.TopicDetailActivity;
 import community.fragment.FeedFragment;
 import community.providable.FeedPrvdr;
 import community.views.FeedItemView;
@@ -26,6 +27,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
     private Topic topic;
     private FeedPrvdr.FeedType feedType;
     private List<FeedItem> items;
+    private TopicDetailActivity.OnClickFollowTopicListener followTopicListener;
 
     public FeedAdapter(FeedPrvdr.FeedType mFeedType) {
         feedType = mFeedType;
@@ -37,7 +39,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         View itemView = null;
         switch (viewType) {
             case HEADVIEW:
-                itemView = TopicInfoView_.build(parent.getContext(), null);
+                TopicInfoView view = TopicInfoView_.build(parent.getContext(), null);
+                view.setFollowTopicListener(followTopicListener);
+                itemView = view;
                 break;
             case FEED:
                 FeedItemView feedView = FeedItemView_.build(parent.getContext(), null);
@@ -60,7 +64,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
     public void onBindViewHolder(FeedViewHolder viewHolder, int position) {
         if (feedType == FeedPrvdr.FeedType.TopicFeed) {
             if (position == 0) {
-                viewHolder.setData(topic);
+                viewHolder.setData(topic, followTopicListener);
             } else {
                 viewHolder.setData(items.get(position - 1));
             }
@@ -104,8 +108,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
         }
     }
 
-    public void setTopic(Topic topic) {
+    public void setTopic(Topic topic, TopicDetailActivity.OnClickFollowTopicListener followTopicListener) {
         this.topic = topic;
+        this.followTopicListener = followTopicListener;
     }
 
     static public class FeedViewHolder extends RecyclerView.ViewHolder {
@@ -130,7 +135,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
             }
         }
 
-        public void setData(Topic topic) {
+        public void setData(Topic topic, TopicDetailActivity.OnClickFollowTopicListener followTopicListener) {
             topicInfo.bind(topic);
         }
     }

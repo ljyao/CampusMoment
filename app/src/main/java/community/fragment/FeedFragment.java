@@ -21,6 +21,7 @@ import org.androidannotations.annotations.FragmentArg;
 import java.util.List;
 
 import community.activity.FeedDetailActivity;
+import community.activity.TopicDetailActivity;
 import community.adapter.FeedAdapter;
 import community.providable.FeedPrvdr;
 import community.providable.NetLoaderListener;
@@ -59,6 +60,7 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
         }
     };
     private boolean isHideRefreshLayout = false;
+    private TopicDetailActivity.OnClickFollowTopicListener followTopicListener;
 
     public FeedFragment() {
 
@@ -75,7 +77,7 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
         adapter = new FeedAdapter(feedType);
         if (feedType == FeedPrvdr.FeedType.TopicFeed) {
             feedPrvdr.setTopicId(topic.id);
-            adapter.setTopic(topic);
+            adapter.setTopic(topic, followTopicListener);
         } else if (feedType == FeedPrvdr.FeedType.LocationFeed) {
             feedPrvdr.setLocation(location);
         } else if (feedType == FeedPrvdr.FeedType.UserFeed) {
@@ -131,9 +133,10 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
         }, 500);
     }
 
-    public void setTopic(Topic topic) {
+    public void setTopic(Topic topic, TopicDetailActivity.OnClickFollowTopicListener followTopicListener) {
         this.topic = topic;
-        adapter.setTopic(topic);
+        this.followTopicListener = followTopicListener;
+        adapter.setTopic(topic, followTopicListener);
         adapter.notifyItemChanged(0);
     }
 
