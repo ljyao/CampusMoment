@@ -59,6 +59,7 @@ import com.uy.bbs.R;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
@@ -93,7 +94,7 @@ public class PostFeedActivity extends BaseFragmentActivity implements
     /**
      * 选择的图片的GridView
      */
-    @ViewById(R.id.umeng_comm_prev_images_gv)
+    @ViewById(R.id.prev_images_gv)
     public GridView mGridView;
     /**
      * 我的位置TextView
@@ -124,6 +125,10 @@ public class PostFeedActivity extends BaseFragmentActivity implements
     public ProgressBar mLocProgressBar;
     @ViewById(R.id.umeng_comm_topic_tip)
     public TopicTipView mTopicTipView;
+    @ViewById(R.id.post_title_tv)
+    public TextView postTitleTv;
+    @Extra
+    public String title;
     /**
      * 位置
      */
@@ -176,9 +181,11 @@ public class PostFeedActivity extends BaseFragmentActivity implements
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-
+        if (!TextUtils.isEmpty(title)) {
+            postTitleTv.setText(title);
+        }
         setContentView(R.layout.activity_post_feed_layout);
-        setFragmentContainerId(ResFinder.getId("umeng_comm_select_layout"));
+        setFragmentContainerId(R.id.umeng_comm_select_layout);
         initViews();
         initLocationLayout();
         initPresenter();
@@ -481,12 +488,12 @@ public class PostFeedActivity extends BaseFragmentActivity implements
         this.finish();
     }
 
-    @Click(R.id.umeng_comm_post_ok_btn)
+    @Click(R.id.post_ok_btn)
     public void onClickPostFeed(View v) {
         postFeed(prepareFeed());
     }
 
-    @Click(R.id.umeng_comm_post_back_btn)
+    @Click(R.id.post_back_btn)
     public void onClickBack(View v) {
         dealBackLogic();
     }

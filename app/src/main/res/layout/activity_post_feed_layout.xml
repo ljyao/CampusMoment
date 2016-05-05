@@ -21,7 +21,7 @@
             android:paddingRight="5dp">
 
             <ImageView
-                android:id="@+id/umeng_comm_post_back_btn"
+                android:id="@+id/post_back_btn"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_alignParentLeft="true"
@@ -31,7 +31,7 @@
                 android:contentDescription="@string/umeng_comm_new_post"></ImageView>
 
             <TextView
-                android:id="@+id/umeng_comm_post_tv"
+                android:id="@+id/post_title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -42,7 +42,7 @@
                 android:textSize="18sp" />
 
             <ImageButton
-                android:id="@+id/umeng_comm_post_ok_btn"
+                android:id="@+id/post_ok_btn"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_alignParentRight="true"
@@ -80,7 +80,7 @@
             android:textColor="@color/umeng_comm_text_share_content" />
 
         <GridView
-            android:id="@+id/umeng_comm_prev_images_gv"
+            android:id="@+id/prev_images_gv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/umeng_comm_post_msg_edittext"
@@ -184,7 +184,7 @@
             android:layout_width="fill_parent"
             android:layout_height="48dp"
             android:layout_below="@id/umeng_community_loc_layout"
-            android:background="#f0f0f0"
+            android:background="#eee"
             android:baselineAligned="false"
             android:gravity="center"
             android:orientation="horizontal"

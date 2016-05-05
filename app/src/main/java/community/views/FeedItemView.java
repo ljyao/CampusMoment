@@ -70,21 +70,21 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
     public ImageView mFeedTypeImgView;
     @ViewById(R.id.user_portrait_img_btn)
     public SimpleDraweeView mProfileImgView;
-    @ViewById(R.id.umeng_comm_dialog_btn)
+    @ViewById(R.id.dialog_btn)
     public ImageView mMoreBtn;
-    @ViewById(R.id.umeng_comm_msg_user_name)
+    @ViewById(R.id.msg_user_name)
     public TextView mUserNameTv;
-    @ViewById(R.id.umeng_comm_msg_text)
+    @ViewById(R.id.msg_text)
     public TextView mFeedTextTv;
-    @ViewById(R.id.umeng_comm_msg_location)
+    @ViewById(R.id.msg_location)
     public ImageView mLocationImgView;
-    @ViewById(R.id.umeng_comm_msg_location_text)
+    @ViewById(R.id.msg_location_text)
     public TextView mLocationTv;
     @ViewById(R.id.forward_image_gv_layout)
     public RelativeLayout mForwardLayout;
-    @ViewById(R.id.umeng_comm_forard_text_tv)
+    @ViewById(R.id.forard_text_tv)
     public TextView mForwardTextTv;
-    @ViewById(R.id.umeng_comm_msg_images_gv_viewstub)
+    @ViewById(R.id.images_gv_viewstub)
     public ViewStub mImageGvViewStub;
     public WrapperGridView mImageGv;
     @ViewById(R.id.feed_action_layout)
@@ -95,7 +95,7 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
     public TextView mLikeCountTextView;
     @ViewById(R.id.umeng_comm_forward_tv)
     public TextView mForwardCountTextView;
-    @ViewById(R.id.umeng_comm_comment_tv)
+    @ViewById(R.id.comment_tv)
     public TextView mCommentCountTextView;
     @ViewById(R.id.umeng_comm_distance)
     public TextView mDistanceTextView;
@@ -558,18 +558,11 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
         mButtomLayout.setVisibility(GONE);
     }
 
-    public void setOnItemViewClickListener(final int position, final Listeners.OnItemViewClickListener<FeedItem> listener) {
-        mItemViewClickListener = listener;
-        mCommentCountTextView.setOnClickListener(new Listeners.LoginOnViewClickListener() {
+    @Click(R.id.comment_tv)
+    public void onClickComment() {
+        clickAnima(mCommentCountTextView);
+        feedListListener.onCommentClickListener(mFeedItem);
 
-            @Override
-            protected void doAfterLogin(View v) {
-                clickAnima(mCommentCountTextView);
-                if (mItemViewClickListener != null) {
-                    mItemViewClickListener.onItemClick(position, mFeedItem);
-                }
-            }
-        });
     }
 
     public void setOnUpdateListener(Listeners.OnResultListener listener) {
@@ -609,7 +602,7 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
         UserDetailActivity_.intent(getContext()).user(mFeedItem.creator).start();
     }
 
-    @Click(R.id.umeng_comm_dialog_btn)
+    @Click(R.id.dialog_btn)
     public void onclickMoreBar() {
         if (isShowFavouriteView) {
             if (mFeedItem.category == FeedItem.CATEGORY.FAVORITES) {

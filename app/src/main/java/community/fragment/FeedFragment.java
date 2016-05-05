@@ -47,6 +47,16 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
 
     private FeedListListener feedListListener = new FeedListListener() {
         @Override
+        public void onCommentClickListener(FeedItem mFeedItem) {
+            //先进入feed详情页面，再弹出评论编辑键盘
+            Intent intent = new Intent(getActivity(), FeedDetailActivity.class);
+            intent.putExtra(Constants.TAG_FEED, mFeedItem);
+            intent.putExtra(Constants.TAG_IS_COMMENT, true);
+            intent.putExtra(Constants.TAG_IS_SCROLL, true);
+            getActivity().startActivity(intent);
+        }
+
+        @Override
         public void onShowFeedDetail(FeedItem feedItem) {
 
             if (feedItem != null && feedItem.status >= FeedItem.STATUS_SPAM
@@ -153,6 +163,7 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
     }
 
     public interface FeedListListener {
+        void onCommentClickListener(FeedItem mFeedItem);
         void onShowFeedDetail(FeedItem mFeedItem);
     }
 

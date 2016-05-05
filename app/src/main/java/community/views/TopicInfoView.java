@@ -50,9 +50,9 @@ public class TopicInfoView extends RelativeLayout {
         } else {
             topicIcon.setBackgroundResource(R.drawable.topic_icon);
         }
-        feedsNum.setText(topic.feedCount + "");
-        fansNum.setText(topic.fansCount + "");
-        photosNum.setText(topic.imageItems.size() + "");
+        feedsNum.setText(String.valueOf(topic.feedCount));
+        fansNum.setText(String.valueOf(topic.fansCount));
+        photosNum.setText(topic.imageItems.size());
         if (topic.isFocused) {
             followBtn.setText("已关注");
             followBtn.setBackgroundColor(getResources().getColor(R.color.followed_bg));
