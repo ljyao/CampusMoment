@@ -99,7 +99,7 @@ public class MainMenuFragment extends Fragment {
             } else if (v == cropBtn) {
                 editImageActivity.mode = EditImageActivity.MODE_CROP;
                 editImageActivity.setCurrentItem(3);
-                editImageActivity.mCropPanel.setVisibility(View.VISIBLE);
+                editImageActivity.mStickerView.setVisibility(View.GONE);
                 editImageActivity.mainImage.setImageBitmap(editImageActivity.mainBitmap);
                 editImageActivity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
                 editImageActivity.mainImage.setScaleEnabled(false);// 禁用缩放

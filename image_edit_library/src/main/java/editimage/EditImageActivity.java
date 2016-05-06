@@ -78,6 +78,7 @@ public class EditImageActivity extends BaseActivity {
     public FliterListFragment mFliterListFragment;// 滤镜FliterListFragment
     public RotateFragment mRotateFragment;// 图片旋转Fragment
     public View progressBar;
+    public Bitmap preBitmap;
     private int imageWidth, imageHeight;// 展示图片控件 宽 高
     private EditImageActivity mContext;
     private View backBtn;
@@ -89,6 +90,7 @@ public class EditImageActivity extends BaseActivity {
     private Fragment currentFragment;
     private ImageEditContainer imageEditContainer;
     private View saveImageLayout;
+    private ImageScaleType scaleType;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -167,6 +169,7 @@ public class EditImageActivity extends BaseActivity {
                 if (width > 4000 || height > 4000) {
                     bmp = BitmapUtils.getSampledBitmap(filepath, 2);
                 }
+                preBitmap = bmp;
                 setEditBitmap(bmp);
             }
         });
@@ -190,7 +193,6 @@ public class EditImageActivity extends BaseActivity {
                 mainBitmap = bmp;
                 mainImage.setImageBitmap(mainBitmap);
                 float scale = (float) bmp.getWidth() / (float) bmp.getHeight();
-                ImageScaleType scaleType;
                 if (scale <= (3f / 4f)) {
                     scaleType = ImageScaleType.higher;
                 } else if (scale >= (4f / 3f)) {
@@ -200,7 +202,7 @@ public class EditImageActivity extends BaseActivity {
                     scaleType.scale = scale;
                 }
                 imageEditContainer.setScaleType(scaleType);
-                mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
+                mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_IF_BIGGER);
             }
 
 
@@ -302,6 +304,14 @@ public class EditImageActivity extends BaseActivity {
         currentFragment = nextFragment;
     }
 
+    public ImageScaleType getImageScaleType() {
+        return scaleType;
+    }
+
+    public void setImageScaleType(ImageScaleType scaleType) {
+        this.scaleType = scaleType;
+        imageEditContainer.setScaleType(scaleType);
+    }
 
     public interface OnSaveImageCallBack {
         void onSaved(Bitmap resultBmp);

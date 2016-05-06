@@ -48,8 +48,8 @@ public class FliterListFragment extends Fragment {
         public void onClickItem(FliterType type) {
             int position = type.ordinal();
             if (position == 0) {// 原始图片效果
-                activity.mainImage.setImageBitmap(activity.mainBitmap);
-                currentBitmap = activity.mainBitmap;
+                currentBitmap = activity.preBitmap;
+                activity.mainImage.setImageBitmap(currentBitmap);
                 return;
             }
             // 滤镜处理

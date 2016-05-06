@@ -159,7 +159,7 @@
         <activity
             android:name="community.activity.FeedDetailActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateUnchanged|adjustPan" />
 
         <!-- 设置页面activity -->
         <activity android:name="com.umeng.comm.ui.activities.SettingActivity" />

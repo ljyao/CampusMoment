@@ -89,15 +89,15 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
     public WrapperGridView mImageGv;
     @ViewById(R.id.feed_action_layout)
     public LinearLayout mButtomLayout;
-    @ViewById(R.id.umeng_comm_msg_time_tv)
+    @ViewById(R.id.msg_time_tv)
     public TextView mTimeTv;
-    @ViewById(R.id.umeng_comm_like_tv)
+    @ViewById(R.id.like_tv)
     public TextView mLikeCountTextView;
-    @ViewById(R.id.umeng_comm_forward_tv)
+    @ViewById(R.id.forward_tv)
     public TextView mForwardCountTextView;
     @ViewById(R.id.comment_tv)
     public TextView mCommentCountTextView;
-    @ViewById(R.id.umeng_comm_distance)
+    @ViewById(R.id.distance)
     public TextView mDistanceTextView;
     @ViewById(R.id.location_layout)
     public RelativeLayout locationLayout;
@@ -144,6 +144,15 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
             public void onClick(View v) {
                 if (!isFromFeedDetailePage && !isReceivedComment)
                     feedListListener.onShowFeedDetail(mFeedItem);
+                if (isReceivedComment) {
+                    Intent intent = new Intent(getContext(), FeedDetailActivity.class);
+                    mFeedItem.extraData.clear();
+                    FeedItem feedItem = getForwardDetailFeed();
+                    if (feedItem == null)
+                        return;
+                    intent.putExtra(Constants.FEED, feedItem);
+                    getContext().startActivity(intent);
+                }
             }
         });
 

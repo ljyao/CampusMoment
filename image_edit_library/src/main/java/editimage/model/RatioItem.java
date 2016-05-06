@@ -1,14 +1,15 @@
 package editimage.model;
 
+
 public class RatioItem {
 	private String text;
-	private Float ratio;
+	private ImageScaleType scaleType;
 	private int index;
 
-	public RatioItem(String text, Float ratio) {
+	public RatioItem(ImageScaleType scaleType) {
 		super();
-		this.text = text;
-		this.ratio = ratio;
+		text = scaleType.scaleName;
+		this.scaleType = scaleType;
 	}
 
 	public String getText() {
@@ -19,15 +20,6 @@ public class RatioItem {
 		this.text = text;
 	}
 
-	public Float getRatio() {
-		return ratio;
-	}
-
-	public void setRatio(Float ratio) {
-		this.ratio = ratio;
-	}
-	
-
 	public int getIndex() {
 		return index;
 	}
@@ -36,4 +28,11 @@ public class RatioItem {
 		this.index = index;
 	}
 
+	public ImageScaleType getScaleType() {
+		return scaleType;
+	}
+
+	public void setScaleType(ImageScaleType scaleType) {
+		this.scaleType = scaleType;
+	}
 }// end class

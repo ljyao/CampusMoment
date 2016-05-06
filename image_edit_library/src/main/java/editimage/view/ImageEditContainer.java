@@ -27,4 +27,7 @@ public class ImageEditContainer extends RelativeLayout {
         layoutParams.height = height;
         setLayoutParams(layoutParams);
     }
+
+    public void getScaleType() {
+    }
 }

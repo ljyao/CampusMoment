@@ -7,10 +7,12 @@ public enum ImageScaleType {
     wider("4:3"),
     higher("3:4"),
     square("1:1"),
-    Wrap("1:1");
+    Wrap("自适应");
     public float scale;
+    public String scaleName;
 
     ImageScaleType(String scaleStr) {
+        scaleName = scaleStr;
         switch (scaleStr) {
             case "4:3":
                 scale = 4f / 3f;
@@ -20,6 +22,9 @@ public enum ImageScaleType {
                 break;
             case "1:1":
                 scale = 1;
+                break;
+            case "自适应":
+                scale = -1;
                 break;
         }
     }

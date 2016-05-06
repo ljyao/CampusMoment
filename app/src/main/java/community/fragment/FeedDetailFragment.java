@@ -37,6 +37,7 @@ import com.uy.bbs.R;
 
 import java.util.List;
 
+import community.activity.ForwardActivity_;
 import community.adapter.FeedCommentAdapter;
 import community.views.FeedItemView;
 import community.views.LikeView;
@@ -366,7 +367,8 @@ public class FeedDetailFragment extends CommentEditFragment<List<FeedItem>, Feed
 
             @Override
             protected void doAfterLogin(View v) {
-                mPresenter.gotoForwardActivity(mFeedItem);
+                ForwardActivity_.intent(getContext()).feeditem(mFeedItem).title("转发").start();
+
             }
         });
         mCommentActionLayout = mViewFinder.findViewById(ResFinder
