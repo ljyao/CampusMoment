@@ -105,7 +105,7 @@ public class CropFragment extends Fragment {
      * 返回主菜单
      */
     public void backToMain() {
-        activity.mode = EditImageActivity.MODE_NONE;
+        activity.currentMode = EditImageActivity.MODE_NONE;
         mCropPanel.setVisibility(View.GONE);
         activity.mainImage.setScaleEnabled(true);// 恢复缩放功能
         activity.setCurrentItem(0);

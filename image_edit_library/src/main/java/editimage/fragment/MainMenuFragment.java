@@ -1,6 +1,6 @@
 package editimage.fragment;
 
-import android.graphics.RectF;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,10 +8,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
+import com.jni.bitmap_operations.JniBitmapHolder;
 import com.uy.imageeditlibrary.R;
+import com.uy.util.Worker;
 
 import editimage.EditImageActivity;
-import imagezoom.ImageViewTouchBase;
 
 
 /**
@@ -26,6 +27,7 @@ public class MainMenuFragment extends Fragment {
     private View fliterBtn;// 滤镜按钮
     private View cropBtn;// 剪裁按钮
     private View rotateBtn;// 旋转按钮
+    private int angle = 0;
 
     public static MainMenuFragment newInstance(EditImageActivity activity) {
         MainMenuFragment fragment = new MainMenuFragment();
@@ -78,52 +80,48 @@ public class MainMenuFragment extends Fragment {
         stickerBtn.setSelected(true);
     }
 
+    public void backToMain() {
+        editImageActivity.currentMode = EditImageActivity.MODE_NONE;
+        editImageActivity.setCurrentItem(0);
+        editImageActivity.mainImage.setVisibility(View.VISIBLE);
+        editImageActivity.mStickerView.setVisibility(View.VISIBLE);
+        editImageActivity.mainImage.setVisibility(View.VISIBLE);
+        editImageActivity.bannerFlipper.showPrevious();
+    }
+
     private final class MenuClick implements OnClickListener {
         @Override
         public void onClick(View v) {
+            int mode = EditImageActivity.MODE_NONE;
             if (v == stickerBtn) {
-                editImageActivity.mode = EditImageActivity.MODE_STICKERS;
-                editImageActivity.setCurrentItem(1);
-                View stickerView = editImageActivity.mStickerView;
-                if (stickerView != null) {
-                    stickerView.setVisibility(View.VISIBLE);
-                }
+                mode = EditImageActivity.MODE_STICKERS;
+                editImageActivity.setCurrentMode(mode);
             } else if (v == fliterBtn) {
-                editImageActivity.mode = EditImageActivity.MODE_FILTER;
-                editImageActivity.setCurrentItem(2);
-                editImageActivity.mFliterListFragment.setCurrentBitmap(editImageActivity.mainBitmap);
-                editImageActivity.mainImage.setImageBitmap(editImageActivity.mainBitmap);
-                editImageActivity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
-                editImageActivity.mainImage.setScaleEnabled(false);
-                editImageActivity.bannerFlipper.showNext();
+                mode = EditImageActivity.MODE_FILTER;
+                editImageActivity.setCurrentMode(mode);
             } else if (v == cropBtn) {
-                editImageActivity.mode = EditImageActivity.MODE_CROP;
-                editImageActivity.setCurrentItem(3);
-                editImageActivity.mStickerView.setVisibility(View.GONE);
-                editImageActivity.mainImage.setImageBitmap(editImageActivity.mainBitmap);
-                editImageActivity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
-                editImageActivity.mainImage.setScaleEnabled(false);// 禁用缩放
-                //
-                RectF r = editImageActivity.mainImage.getBitmapRect();
-                editImageActivity.mCropPanel.setCropRect(r);
-                // System.out.println(r.left + "    " + r.top);
-                editImageActivity.bannerFlipper.showNext();
+                mode = EditImageActivity.MODE_CROP;
+                editImageActivity.setCurrentMode(mode);
             } else if (v == rotateBtn) {
-                editImageActivity.mode = EditImageActivity.MODE_ROTATE;
-                editImageActivity.setCurrentItem(4);
-                editImageActivity.mainImage.setImageBitmap(editImageActivity.mainBitmap);
-                editImageActivity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
-                editImageActivity.mainImage.setVisibility(View.GONE);
+                mode = EditImageActivity.MODE_ROTATE;
+                editImageActivity.setCurrentMode(mode);
+                angle += 90;
+                angle = angle % 360;
+                editImageActivity.progressBar.setVisibility(View.VISIBLE);
+                Worker.postExecuteTask(new Runnable() {
+                    @Override
+                    public void run() {
+                        JniBitmapHolder jniBitmapHolder = new JniBitmapHolder();
+                        jniBitmapHolder.storeBitmap(editImageActivity.mainBitmap);
+                        jniBitmapHolder.rotateBitmapCw90();
+                        Bitmap newBmp = jniBitmapHolder.getBitmapAndFree();
+                        editImageActivity.setEditBitmap(newBmp);
+                    }
+                });
 
-                editImageActivity.mRotatePanel.addBit(editImageActivity.mainBitmap,
-                        editImageActivity.mainImage.getBitmapRect());
-                editImageActivity.mRotateFragment.mSeekBar.setProgress(0);
-                editImageActivity.mRotatePanel.reset();
-                editImageActivity.mRotatePanel.setVisibility(View.VISIBLE);
-                editImageActivity.bannerFlipper.showNext();
             }
+
         }
     }
-
 
 }

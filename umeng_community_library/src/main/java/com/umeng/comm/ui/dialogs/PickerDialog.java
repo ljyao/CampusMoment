@@ -41,7 +41,7 @@ import com.umeng.comm.core.utils.ResFinder;
 import com.umeng.comm.ui.adapters.PickerAdapter;
 import com.umeng.comm.ui.imagepicker.widgets.RefreshLayout;
 import com.umeng.comm.ui.imagepicker.widgets.RefreshLvLayout;
-
+import com.umeng_community_library.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,7 +114,7 @@ public abstract class PickerDialog<E> extends Dialog implements OnClickListener 
      * @return the dialog's content view
      */
     protected View createContentView() {
-        int layout = ResFinder.getLayout("umeng_comm_at_friends_layout");
+        int layout = R.layout.umeng_comm_at_friends_layout;
         int listViewResId = ResFinder.getId("umeng_comm_friend_listview");
         int searchTvResId = ResFinder.getId("search_tv");
         int searchlasteTvResId = ResFinder.getId("search_lastes_btn");

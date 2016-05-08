@@ -178,7 +178,7 @@ public class StickerFragment extends Fragment {
     }
 
     public void backToMain() {
-        activity.mode = EditImageActivity.MODE_NONE;
+        activity.currentMode = EditImageActivity.MODE_NONE;
         activity.setCurrentItem(0);
         mStickerView.setVisibility(View.VISIBLE);
     }

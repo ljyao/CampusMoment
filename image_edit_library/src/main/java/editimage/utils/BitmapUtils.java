@@ -24,6 +24,7 @@ import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.os.Environment;
@@ -328,6 +329,33 @@ public class BitmapUtils {
         view.buildDrawingCache();
         Bitmap bitmap = view.getDrawingCache();
         return bitmap;
+    }
+
+    public static Bitmap rotateImage(Bitmap bm, final int orientationDegree) {
+        Matrix m = new Matrix();
+        m.setRotate(orientationDegree, (float) bm.getWidth() / 2, (float) bm.getHeight() / 2);
+        float targetX, targetY;
+        if (orientationDegree == 90) {
+            targetX = bm.getHeight();
+            targetY = 0;
+        } else {
+            targetX = bm.getHeight();
+            targetY = bm.getWidth();
+        }
+
+        final float[] values = new float[9];
+        m.getValues(values);
+
+        float x1 = values[Matrix.MTRANS_X];
+        float y1 = values[Matrix.MTRANS_Y];
+
+        m.postTranslate(targetX - x1, targetY - y1);
+
+        Bitmap newBmp = Bitmap.createBitmap(bm.getHeight(), bm.getWidth(), Bitmap.Config.ARGB_8888);
+        Paint paint = new Paint();
+        Canvas canvas = new Canvas(newBmp);
+        canvas.drawBitmap(bm, m, paint);
+        return newBmp;
     }
 
     public void printscreen_share(View v, Activity context) {

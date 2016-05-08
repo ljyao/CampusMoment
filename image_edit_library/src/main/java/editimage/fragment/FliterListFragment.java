@@ -114,7 +114,7 @@ public class FliterListFragment extends Fragment {
         currentBitmap = activity.mainBitmap;
         fliterBit = null;
         activity.mainImage.setImageBitmap(activity.mainBitmap);// 返回原图
-        activity.mode = EditImageActivity.MODE_NONE;
+        activity.currentMode = EditImageActivity.MODE_NONE;
         activity.setCurrentItem(0);
         activity.mainImage.setScaleEnabled(true);
         activity.bannerFlipper.showPrevious();
@@ -124,16 +124,17 @@ public class FliterListFragment extends Fragment {
      * 保存滤镜处理后的图片
      */
     public void saveFilterImage() {
-        // System.out.println("保存滤镜处理后的图片");
         if (currentBitmap == activity.mainBitmap) {// 原始图片
-            // System.out.println("原始图片");
             backToMain();
             return;
-        } else {// 经滤镜处理后的图片
-            // System.out.println("滤镜图片");
-            SaveImageTask saveTask = new SaveImageTask();
-            saveTask.execute(fliterBit);
-        }// end if
+        } else {
+            if (activity.mainBitmap != null
+                    && !activity.mainBitmap.isRecycled()) {
+                activity.mainBitmap.recycle();
+            }
+            activity.mainBitmap = fliterBit;
+            backToMain();
+        }
     }
 
     /**
@@ -175,52 +176,6 @@ public class FliterListFragment extends Fragment {
     public interface FliterItemListener {
         void onClickItem(FliterType type);
     }
-
-    /**
-     * 保存滤镜处理图片任务
-     */
-    private final class SaveImageTask extends AsyncTask<Bitmap, Void, Boolean> {
-        private Dialog dialog;
-
-        @Override
-        protected Boolean doInBackground(Bitmap... params) {
-            return saveBitmap(params[0], activity.saveFilePath);
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-            dialog.dismiss();
-        }
-
-        @Override
-        protected void onCancelled(Boolean result) {
-            super.onCancelled(result);
-            dialog.dismiss();
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            super.onPostExecute(result);
-            dialog.dismiss();
-            if (result) {// 保存图片成功
-                if (activity.mainBitmap != null
-                        && !activity.mainBitmap.isRecycled()) {
-                    activity.mainBitmap.recycle();
-                }
-                activity.mainBitmap = fliterBit;
-                backToMain();
-            }// end if
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dialog = EditImageActivity.getLoadingDialog(getActivity(),
-                    "图片保存中...", false);
-            dialog.show();
-        }
-    }// end inner class
 
     /**
      * 图片滤镜处理任务

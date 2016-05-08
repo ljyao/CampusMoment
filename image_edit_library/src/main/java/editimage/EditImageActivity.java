@@ -20,13 +20,11 @@ import com.uy.util.Worker;
 import editimage.fragment.CropFragment;
 import editimage.fragment.FliterListFragment;
 import editimage.fragment.MainMenuFragment;
-import editimage.fragment.RotateFragment;
 import editimage.fragment.StickerFragment;
 import editimage.model.ImageScaleType;
 import editimage.utils.BitmapUtils;
 import editimage.view.CropImageView;
 import editimage.view.ImageEditContainer;
-import editimage.view.RotateImageView;
 import editimage.view.StickerView;
 import helper.common_util.ImageUtils;
 import helper.common_util.ScreenUtils;
@@ -36,7 +34,7 @@ import imagezoom.ImageViewTouchBase;
 
 /**
  * 图片编辑 主页面
- * <p/>
+ * <p>
  * 包含 1.贴图 2.滤镜 3.剪裁 4.底图旋转 功能
  */
 public class EditImageActivity extends BaseActivity {
@@ -67,16 +65,14 @@ public class EditImageActivity extends BaseActivity {
 
     public String filePath;// 需要编辑图片路径
     public String saveFilePath;// 生成的新图片路径
-    public int mode = MODE_NONE;// 当前操作模式
+    public int currentMode = MODE_NONE;// 当前操作模式
     public Bitmap mainBitmap;// 底层显示Bitmap
     public ImageViewTouch mainImage;
     public ViewFlipper bannerFlipper;
     public StickerView mStickerView;// 贴图层View
     public CropImageView mCropPanel;// 剪切操作控件
-    public RotateImageView mRotatePanel;// 旋转操作控件
     public StickerFragment mStirckerFragment;// 贴图Fragment
     public FliterListFragment mFliterListFragment;// 滤镜FliterListFragment
-    public RotateFragment mRotateFragment;// 图片旋转Fragment
     public View progressBar;
     public Bitmap preBitmap;
     private int imageWidth, imageHeight;// 展示图片控件 宽 高
@@ -138,18 +134,16 @@ public class EditImageActivity extends BaseActivity {
 
         mStickerView = (StickerView) findViewById(R.id.sticker_panel);
         mCropPanel = (CropImageView) findViewById(R.id.crop_panel);
-        mRotatePanel = (RotateImageView) findViewById(R.id.rotate_panel);
 
         menuFrameLayout = (FrameLayout) findViewById(R.id.bottom_menu);
         mMainMenuFragment = MainMenuFragment.newInstance(this);
         mStirckerFragment = StickerFragment.newInstance(this);
         mFliterListFragment = FliterListFragment.newInstance(this);
         mCropFragment = CropFragment.newInstance(this);
-        mRotateFragment = RotateFragment.newInstance(this);
         saveImageLayout = findViewById(R.id.save_image_layout);
         progressBar = findViewById(R.id.progressbar);
         imageEditContainer = (ImageEditContainer) findViewById(R.id.image_edit_container);
-        setCurrentItem(mode);
+        setCurrentItem(currentMode);
     }
 
     /**
@@ -202,7 +196,7 @@ public class EditImageActivity extends BaseActivity {
                     scaleType.scale = scale;
                 }
                 imageEditContainer.setScaleType(scaleType);
-                mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_IF_BIGGER);
+                mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
             }
 
 
@@ -216,7 +210,7 @@ public class EditImageActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            switch (mode) {
+            switch (currentMode) {
                 case MODE_STICKERS:
                     mStirckerFragment.backToMain();
                     return true;
@@ -227,7 +221,6 @@ public class EditImageActivity extends BaseActivity {
                     mCropFragment.backToMain();
                     return true;
                 case MODE_ROTATE:// 旋转图片保存
-                    mRotateFragment.backToMain();
                     return true;
             }// end switch
 
@@ -286,8 +279,6 @@ public class EditImageActivity extends BaseActivity {
             nextFragment = mFliterListFragment;// 滤镜
         else if (index == 3)
             nextFragment = mCropFragment;// 剪裁
-        else if (index == 4)
-            nextFragment = mRotateFragment;// 旋转
         else
             nextFragment = mMainMenuFragment;
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -313,6 +304,42 @@ public class EditImageActivity extends BaseActivity {
         imageEditContainer.setScaleType(scaleType);
     }
 
+    public void setCurrentMode(int mode) {
+        if (this.currentMode == mode)
+            return;
+        this.currentMode = mode;
+        if (mode == MODE_STICKERS) {
+            setCurrentItem(1);
+            if (mStickerView != null) {
+                mStickerView.setVisibility(View.VISIBLE);
+            }
+        } else if (mode == MODE_FILTER) {
+            setCurrentItem(2);
+            mFliterListFragment.setCurrentBitmap(mainBitmap);
+            mainImage.setImageBitmap(mainBitmap);
+            mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
+            mainImage.setScaleEnabled(false);
+            bannerFlipper.showNext();
+        } else if (mode == MODE_CROP) {
+            setCurrentItem(3);
+            mStickerView.setVisibility(View.GONE);
+            mainImage.setImageBitmap(mainBitmap);
+            mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
+            mainImage.setScaleEnabled(false);// 禁用缩放
+            bannerFlipper.showNext();
+        } else if (mode == MODE_ROTATE) {
+            mainImage.setImageBitmap(mainBitmap);
+            mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
+            mStickerView.setVisibility(View.GONE);
+            bannerFlipper.showNext();
+        } else if (mode == MODE_NONE) {
+            setCurrentItem(0);
+            mainImage.setVisibility(View.VISIBLE);
+            mStickerView.setVisibility(View.VISIBLE);
+            bannerFlipper.showPrevious();
+        }
+    }
+
     public interface OnSaveImageCallBack {
         void onSaved(Bitmap resultBmp);
     }
@@ -323,7 +350,7 @@ public class EditImageActivity extends BaseActivity {
     private final class ApplyBtnClick implements OnClickListener {
         @Override
         public void onClick(View v) {
-            switch (mode) {
+            switch (currentMode) {
                 case MODE_STICKERS:
                     mStirckerFragment.saveStickers();// 保存贴图
                     break;
@@ -334,7 +361,6 @@ public class EditImageActivity extends BaseActivity {
                     mCropFragment.saveCropImage();
                     break;
                 case MODE_ROTATE:// 旋转图片保存
-                    mRotateFragment.saveRotateImage();
                     break;
                 default:
                     break;
