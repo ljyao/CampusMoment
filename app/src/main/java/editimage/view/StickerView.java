@@ -173,4 +173,10 @@ public class StickerView extends View {
         bank.clear();
         this.invalidate();
     }
+
+    public void hideHelpTool() {
+        if (currentItem != null)
+            currentItem.isDrawHelpTool = false;
+        this.invalidate();
+    }
 }

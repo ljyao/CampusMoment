@@ -47,6 +47,10 @@ public class TimeUtils {
         return getTime(timeInMillis, DEFAULT_DATE_FORMAT);
     }
 
+    public static String getTime() {
+        return getTime(System.currentTimeMillis(), DEFAULT_DATE_FORMAT);
+    }
+
     /**
      * get current time in milliseconds
      *

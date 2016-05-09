@@ -22,10 +22,17 @@ public class ImageUtils {
         bitmapCache.put(key, bitmap);
     }
 
-    public static void saveBItmapToStorage(final Context context, final Bitmap bitmap, String dirName, final String name) {
-        File imgFile = new File(FileUtils.getImageStorageDir(context) + "/" + dirName + "/" + name);
-        FileUtils fileUtils = new FileUtils();
-        fileUtils.createBitmapFile(imgFile, bitmap);
+    public static String saveBItmapToStorage(final Context context, final Bitmap bitmap) {
+        String name = TimeUtils.getTime() + ".jpg";
+        String path = FileUtils.getImageStorageDir(context) + "/" + name;
+        final File imgFile = new File(path);
+        Worker.postExecuteTask(new Runnable() {
+            @Override
+            public void run() {
+                FileUtils.createBitmapFile(imgFile, bitmap);
+            }
+        });
+        return path;
     }
 
 

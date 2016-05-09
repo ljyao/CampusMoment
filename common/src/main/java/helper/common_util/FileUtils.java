@@ -11,7 +11,7 @@ import java.io.FileOutputStream;
 
 public class FileUtils {
 
-    private static final String IMAGE_DIR = "/ImageCache";
+    private static final String IMAGE_DIR = "/Picture";
     private static final String APP_DIR = "/CampusMonment";
 
     public static Bitmap convertViewToBitmap(View view) {
@@ -86,16 +86,41 @@ public class FileUtils {
 
     public static String getImageStorageDir(Context context) {
         try {
-            String dirPath = getStorageRoot(context) + APP_DIR + IMAGE_DIR;
-            File cacheDir = new File(dirPath);
-            if (!cacheDir.exists()) {
-                cacheDir.mkdir();
+            String dirPath = getStorageRoot(context) + APP_DIR;
+            File appDir = new File(dirPath);
+            if (!appDir.exists()) {
+                appDir.mkdir();
             }
-            return cacheDir.getAbsolutePath();
+            String imgPath = dirPath + IMAGE_DIR;
+            File imgDir = new File(imgPath);
+            if (!imgDir.exists()) {
+                imgDir.mkdir();
+            }
+            return imgDir.getAbsolutePath();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static boolean createBitmapFile(File imgFile, Bitmap bitmap) {
+        FileOutputStream out = null;
+        try {
+            if (imgFile.exists()) {
+                imgFile.delete();
+            } else {
+                imgFile.createNewFile();
+            }
+            imgFile.createNewFile();
+            out = new FileOutputStream(imgFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public String createBitmapFile(String name, Bitmap bitmap, Context context) {
@@ -108,24 +133,6 @@ public class FileUtils {
         File imgFile = new File(cacheDir, name);
         createBitmapFile(imgFile, bitmap);
         return imgFile.getAbsolutePath();
-    }
-
-    public boolean createBitmapFile(File imgFile, Bitmap bitmap) {
-        FileOutputStream out = null;
-        try {
-            if (imgFile.exists()) {
-                imgFile.delete();
-            }
-            imgFile.createNewFile();
-            out = new FileOutputStream(imgFile);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
     }
 
 }

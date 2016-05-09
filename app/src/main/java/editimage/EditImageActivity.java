@@ -388,6 +388,10 @@ public class EditImageActivity extends BaseActivity {
     private final class SaveBtnClick implements OnClickListener {
         @Override
         public void onClick(View v) {
+            progressBar.setVisibility(View.GONE);
+            mStickerView.hideHelpTool();
+            Bitmap resultBitmap = ImageUtils.getBitmapFromView(imageEditContainer);
+            ImageUtils.saveBItmapToStorage(EditImageActivity.this, resultBitmap);
             Intent returnIntent = new Intent();
             returnIntent.putExtra("save_file_path", saveFilePath);
             mContext.setResult(RESULT_OK, returnIntent);
