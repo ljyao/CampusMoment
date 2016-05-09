@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:drawable="@drawable/camera_edit_cut_highlighted" android:state_pressed="true" />
-    <item android:drawable="@drawable/camera_edit_cut_highlighted" android:state_enabled="false" />
+    <item android:drawable="@drawable/camera_edit_cut_highlighted" android:state_selected="true" />
     <item android:drawable="@drawable/camera_edit_cut" />
 
 </selector>

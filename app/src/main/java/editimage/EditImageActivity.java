@@ -34,7 +34,7 @@ import imagezoom.ImageViewTouchBase;
 
 /**
  * 图片编辑 主页面
- * <p>
+ * <p/>
  * 包含 1.贴图 2.滤镜 3.剪裁 4.底图旋转 功能
  */
 public class EditImageActivity extends BaseActivity {
@@ -171,6 +171,7 @@ public class EditImageActivity extends BaseActivity {
 
     public void loadImageFromCache(final String key) {
         Bitmap bitmap = ImageUtils.RemoveBitmap(key);
+        preBitmap = bitmap;
         setEditBitmap(bitmap);
     }
 
@@ -179,11 +180,6 @@ public class EditImageActivity extends BaseActivity {
             @Override
             public void run() {
                 progressBar.setVisibility(View.GONE);
-                if (mainBitmap != null) {
-                    mainBitmap.recycle();
-                    mainBitmap = null;
-                    System.gc();
-                }
                 mainBitmap = bmp;
                 mainImage.setImageBitmap(mainBitmap);
                 float scale = (float) bmp.getWidth() / (float) bmp.getHeight();
@@ -210,6 +206,7 @@ public class EditImageActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            mMainMenuFragment.setNoSelected();
             switch (currentMode) {
                 case MODE_STICKERS:
                     mStirckerFragment.backToMain();
@@ -221,12 +218,23 @@ public class EditImageActivity extends BaseActivity {
                     mCropFragment.backToMain();
                     return true;
                 case MODE_ROTATE:// 旋转图片保存
+                    setEditBitmap(preBitmap);
+                    backToMain();
                     return true;
             }// end switch
 
             forceReturnBack();
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void backToMain() {
+        currentMode = EditImageActivity.MODE_NONE;
+        mainImage.setScaleEnabled(true);// 恢复缩放功能
+        setCurrentItem(0);
+        mCropPanel.setRatioCropRect(mainImage.getBitmapRect(), -1);
+        bannerFlipper.showPrevious();
+        mStickerView.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -304,9 +312,12 @@ public class EditImageActivity extends BaseActivity {
         imageEditContainer.setScaleType(scaleType);
     }
 
-    public void setCurrentMode(int mode) {
+    public boolean setCurrentMode(int mode) {
         if (this.currentMode == mode)
-            return;
+            return false;
+        if (currentMode == MODE_ROTATE || currentMode == MODE_CROP) {
+            bannerFlipper.showPrevious();
+        }
         this.currentMode = mode;
         if (mode == MODE_STICKERS) {
             setCurrentItem(1);
@@ -321,7 +332,6 @@ public class EditImageActivity extends BaseActivity {
             mainImage.setScaleEnabled(false);
             bannerFlipper.showNext();
         } else if (mode == MODE_CROP) {
-            setCurrentItem(3);
             mStickerView.setVisibility(View.GONE);
             mainImage.setImageBitmap(mainBitmap);
             mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
@@ -337,7 +347,9 @@ public class EditImageActivity extends BaseActivity {
             mainImage.setVisibility(View.VISIBLE);
             mStickerView.setVisibility(View.VISIBLE);
             bannerFlipper.showPrevious();
+            return true;
         }
+        return false;
     }
 
     public interface OnSaveImageCallBack {
@@ -350,6 +362,7 @@ public class EditImageActivity extends BaseActivity {
     private final class ApplyBtnClick implements OnClickListener {
         @Override
         public void onClick(View v) {
+            mMainMenuFragment.setNoSelected();
             switch (currentMode) {
                 case MODE_STICKERS:
                     mStirckerFragment.saveStickers();// 保存贴图
@@ -361,6 +374,7 @@ public class EditImageActivity extends BaseActivity {
                     mCropFragment.saveCropImage();
                     break;
                 case MODE_ROTATE:// 旋转图片保存
+                    backToMain();
                     break;
                 default:
                     break;

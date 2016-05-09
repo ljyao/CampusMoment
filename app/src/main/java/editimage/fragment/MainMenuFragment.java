@@ -12,7 +12,10 @@ import com.jni.bitmap_operations.JniBitmapHolder;
 import com.uy.imageeditlibrary.R;
 import com.uy.util.Worker;
 
+import java.util.List;
+
 import editimage.EditImageActivity;
+import editimage.model.ImageScaleType;
 
 
 /**
@@ -28,6 +31,7 @@ public class MainMenuFragment extends Fragment {
     private View cropBtn;// 剪裁按钮
     private View rotateBtn;// 旋转按钮
     private int angle = 0;
+    private int scaleTypeIndex = 0;
 
     public static MainMenuFragment newInstance(EditImageActivity activity) {
         MainMenuFragment fragment = new MainMenuFragment();
@@ -62,10 +66,7 @@ public class MainMenuFragment extends Fragment {
     }
 
     public void changeChooseStatus(int mode) {
-        stickerBtn.setSelected(false);
-        fliterBtn.setSelected(false);
-        cropBtn.setSelected(false);
-        rotateBtn.setSelected(false);
+        setNoSelected();
         switch (mode) {
             case EditImageActivity.MODE_STICKERS:
                 stickerBtn.setSelected(true);
@@ -80,6 +81,13 @@ public class MainMenuFragment extends Fragment {
         stickerBtn.setSelected(true);
     }
 
+    public void setNoSelected() {
+        stickerBtn.setSelected(false);
+        fliterBtn.setSelected(false);
+        cropBtn.setSelected(false);
+        rotateBtn.setSelected(false);
+    }
+
     public void backToMain() {
         editImageActivity.currentMode = EditImageActivity.MODE_NONE;
         editImageActivity.setCurrentItem(0);
@@ -92,7 +100,9 @@ public class MainMenuFragment extends Fragment {
     private final class MenuClick implements OnClickListener {
         @Override
         public void onClick(View v) {
-            int mode = EditImageActivity.MODE_NONE;
+            setNoSelected();
+            v.setSelected(true);
+            int mode;
             if (v == stickerBtn) {
                 mode = EditImageActivity.MODE_STICKERS;
                 editImageActivity.setCurrentMode(mode);
@@ -102,6 +112,12 @@ public class MainMenuFragment extends Fragment {
             } else if (v == cropBtn) {
                 mode = EditImageActivity.MODE_CROP;
                 editImageActivity.setCurrentMode(mode);
+                List<ImageScaleType> types = ImageScaleType.getImageScaleTypes();
+                scaleTypeIndex = types.indexOf(editImageActivity.getImageScaleType());
+                scaleTypeIndex++;
+                int typeCount = types.size();
+                scaleTypeIndex = scaleTypeIndex % typeCount;
+                editImageActivity.setImageScaleType(types.get(scaleTypeIndex));
             } else if (v == rotateBtn) {
                 mode = EditImageActivity.MODE_ROTATE;
                 editImageActivity.setCurrentMode(mode);
@@ -112,9 +128,10 @@ public class MainMenuFragment extends Fragment {
                     @Override
                     public void run() {
                         JniBitmapHolder jniBitmapHolder = new JniBitmapHolder();
-                        jniBitmapHolder.storeBitmap(editImageActivity.mainBitmap);
+                        jniBitmapHolder.storeBitmap(editImageActivity.preBitmap);
                         jniBitmapHolder.rotateBitmapCw90();
                         Bitmap newBmp = jniBitmapHolder.getBitmapAndFree();
+                        editImageActivity.preBitmap = newBmp;
                         editImageActivity.setEditBitmap(newBmp);
                     }
                 });
