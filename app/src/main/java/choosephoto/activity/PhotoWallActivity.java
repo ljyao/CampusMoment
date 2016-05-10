@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +35,7 @@ public class PhotoWallActivity extends AppCompatActivity {
 
     private static final int EDIT_PHOTO = 0;
     private static Activity mContext;
+    protected ArrayList<String> imagesSelected;
     private ArrayList<String> list;
     private RecyclerView mPhotoWall;
     private PhotoWallAdapter adapter;
@@ -74,6 +74,7 @@ public class PhotoWallActivity extends AppCompatActivity {
         setTitle(getResources().getString(R.string.latest_image));
         Intent intent = getIntent();
         boolean singleChoose = intent.getBooleanExtra("SingleChoose", false);
+        imagesSelected = (ArrayList<String>) intent.getSerializableExtra("imagesSelected");
         mPhotoWall = (RecyclerView) findViewById(R.id.photo_wall_grid);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         mPhotoWall.setLayoutManager(layoutManager);
@@ -81,13 +82,14 @@ public class PhotoWallActivity extends AppCompatActivity {
         mPhotoWall.addItemDecoration(new Decoration(ScreenUtils.dp2px(1, PhotoWallActivity.this)));
         list = ImageLoader.getLatestImagePaths(this, 100);
         adapter = new PhotoWallAdapter(this, list, singleChoose);
+        adapter.addImagesSelected(imagesSelected);
         mPhotoWall.setAdapter(adapter);
         preViewBtN = (TextView) findViewById(R.id.preview_btn);
         preViewBtN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ArrayList<String> preViewPhotos = new ArrayList<>();
-                ArrayList<String> selectPhotos = getSelectImagePaths();
+                ArrayList<String> selectPhotos = adapter.getSelectImagePaths();
                 for (String path : selectPhotos) {
                     preViewPhotos.add("file:///" + path);
                 }
@@ -98,7 +100,7 @@ public class PhotoWallActivity extends AppCompatActivity {
         confirmPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<String> paths = getSelectImagePaths();
+                ArrayList<String> paths = adapter.getSelectImagePaths();
                 if (paths == null || paths.size() == 0) {
                     return;
                 }
@@ -182,8 +184,6 @@ public class PhotoWallActivity extends AppCompatActivity {
      */
     private void updateView(int code, String folderPath) {
         list.clear();
-        adapter.clearSelectionMap();
-
         if (code == 100) { // 某个相册
             int lastSeparator = folderPath.lastIndexOf(File.separator);
             String folderName = folderPath.substring(lastSeparator + 1);
@@ -193,31 +193,13 @@ public class PhotoWallActivity extends AppCompatActivity {
             setTitle(R.string.latest_image);
             list.addAll(ImageLoader.getLatestImagePaths(this, 100));
         }
-
-        adapter.notifyDataSetChanged();
+        adapter.updateData(list);
         if (list.size() > 0) {
             // 滚动至顶部
             mPhotoWall.smoothScrollToPosition(0);
         }
     }
 
-
-    // 获取已选择的图片路径
-    private ArrayList<String> getSelectImagePaths() {
-        SparseBooleanArray map = adapter.getSelectionMap();
-        if (map.size() == 0) {
-            return null;
-        }
-
-        ArrayList<String> selectedImageList = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            if (map.get(i)) {
-                selectedImageList.add(list.get(i));
-            }
-        }
-
-        return selectedImageList;
-    }
 
     // 从相册页面跳转至此页
     @Override

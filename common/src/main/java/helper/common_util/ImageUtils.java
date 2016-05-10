@@ -1,11 +1,13 @@
 package helper.common_util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -30,11 +32,19 @@ public class ImageUtils {
             @Override
             public void run() {
                 FileUtils.createBitmapFile(imgFile, bitmap);
+                updateImageToMediaLibrary(context, imgFile);
             }
         });
         return path;
     }
 
+    public static void updateImageToMediaLibrary(Context context, File imgFile) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri contentUri = Uri.fromFile(imgFile);
+        mediaScanIntent.setData(contentUri);
+        // 发布广播,更新媒体库
+        context.sendBroadcast(mediaScanIntent);
+    }
 
     public static Bitmap getBitmap(String key) {
         return bitmapCache.get(key);

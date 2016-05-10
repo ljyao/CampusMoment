@@ -1,6 +1,5 @@
 package editimage;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -17,6 +16,10 @@ import android.widget.ViewFlipper;
 import com.uy.imageeditlibrary.R;
 import com.uy.util.Worker;
 
+import java.io.File;
+import java.util.ArrayList;
+
+import community.activity.PostFeedActivity_;
 import editimage.fragment.CropFragment;
 import editimage.fragment.FliterListFragment;
 import editimage.fragment.MainMenuFragment;
@@ -352,6 +355,23 @@ public class EditImageActivity extends BaseActivity {
         return false;
     }
 
+    private void postFeed(final String path) {
+        File imgFile = new File(path);
+        if (imgFile.length() == 0) {
+            Worker.postMain(new Runnable() {
+                @Override
+                public void run() {
+                    postFeed(path);
+                }
+            }, 500);
+            return;
+        }
+        ArrayList<String> images = new ArrayList<>();
+        images.add(path);
+        PostFeedActivity_.intent(mContext).imagesSelected(images).start();
+        finish();
+    }
+
     public interface OnSaveImageCallBack {
         void onSaved(Bitmap resultBmp);
     }
@@ -391,11 +411,9 @@ public class EditImageActivity extends BaseActivity {
             progressBar.setVisibility(View.GONE);
             mStickerView.hideHelpTool();
             Bitmap resultBitmap = ImageUtils.getBitmapFromView(imageEditContainer);
-            ImageUtils.saveBItmapToStorage(EditImageActivity.this, resultBitmap);
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra("save_file_path", saveFilePath);
-            mContext.setResult(RESULT_OK, returnIntent);
-            mContext.finish();
+            progressBar.setVisibility(View.VISIBLE);
+            String path = ImageUtils.saveBItmapToStorage(EditImageActivity.this, resultBitmap);
+            postFeed(path);
         }
     }
 }

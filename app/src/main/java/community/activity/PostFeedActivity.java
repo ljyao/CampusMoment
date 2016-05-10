@@ -3,11 +3,13 @@ package community.activity;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -17,10 +19,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.FrameLayout;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -43,7 +42,6 @@ import com.umeng.comm.core.utils.Log;
 import com.umeng.comm.core.utils.ResFinder;
 import com.umeng.comm.core.utils.ToastMsg;
 import com.umeng.comm.ui.activities.BaseFragmentActivity;
-import com.umeng.comm.ui.adapters.ImageSelectedAdapter;
 import com.umeng.comm.ui.dialogs.AtFriendDialog;
 import com.umeng.comm.ui.dialogs.LocationPickerDlg;
 import com.umeng.comm.ui.fragments.TopicPickerFragment;
@@ -65,6 +63,8 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 
+import choosephoto.adapter.ImageSelectedAdapter;
+
 /**
  * 发布feed的Activity
  */
@@ -76,11 +76,6 @@ public class PostFeedActivity extends BaseFragmentActivity implements
     private static final String CHAR_AT = "@";
     private static final String EDIT_CONTENT_KEY = "edit_content_key";
     /**
-     * 保存已经选择的图片的路径
-     */
-    // protected List<String> mImageSelectedAdapter.getDataSource() = new
-    // ArrayList<String>();
-    /**
      * 内容编辑框，最多300字
      */
     @ViewById(R.id.umeng_comm_post_msg_edittext)
@@ -88,14 +83,14 @@ public class PostFeedActivity extends BaseFragmentActivity implements
     @ViewById(R.id.umeng_comm_select_layout)
     public FrameLayout mFragmentLatout;
     /**
-     * 通过拍照获取到的图片地址
-     */
-    // private String mNewImagePath;
-    /**
      * 选择的图片的GridView
      */
     @ViewById(R.id.prev_images_gv)
-    public GridView mGridView;
+    public RecyclerView mGridView;
+    /**
+     * 通过拍照获取到的图片地址
+     */
+    // private String mNewImagePath;
     /**
      * 我的位置TextView
      */
@@ -129,6 +124,11 @@ public class PostFeedActivity extends BaseFragmentActivity implements
     public TextView postTitleTv;
     @Extra
     public String title;
+    /**
+     * 保存已经选择的图片的路径
+     */
+    @Extra
+    protected ArrayList<String> imagesSelected;
     /**
      * 位置
      */
@@ -619,18 +619,19 @@ public class PostFeedActivity extends BaseFragmentActivity implements
      * 已选择图片显示的Adapter
      */
     private void initSelectedImageAdapter() {
-        mImageSelectedAdapter = new ImageSelectedAdapter(PostFeedActivity.this);
-        mImageSelectedAdapter.getDataSource().add(0, Constants.ADD_IMAGE_PATH_SAMPLE);
-        // 设置选择item时得背景为透明
-        mGridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
+        ArrayList<String> list = new ArrayList<>();
+        list.add(0, Constants.ADD_IMAGE_PATH_SAMPLE);
+        if (imagesSelected != null && imagesSelected.size() > 0) {
+            list.addAll(imagesSelected);
+        }
+        mImageSelectedAdapter = new ImageSelectedAdapter(this, list);
+        mGridView.setLayoutManager(new GridLayoutManager(this, 4, LinearLayoutManager.VERTICAL, false));
+        mGridView.setItemAnimator(new DefaultItemAnimator());
         mGridView.setAdapter(mImageSelectedAdapter);
-        mGridView.setOnItemClickListener(new OnItemClickListener() {
-
+        mImageSelectedAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                                    long id) {
-                String clickImageUrl = mImageSelectedAdapter.getItem(position);
-                boolean isAddImage = Constants.ADD_IMAGE_PATH_SAMPLE.equals(clickImageUrl);
+            public void onItemClick(String path) {
+                boolean isAddImage = Constants.ADD_IMAGE_PATH_SAMPLE.equals(path);
                 if (isAddImage) { // 如果触发的是添加图片事件，则显示选择图片的Fragment
                     pickImages();
                 }
@@ -779,7 +780,7 @@ public class PostFeedActivity extends BaseFragmentActivity implements
 
     private void updateImageList(List<String> selectedList) {
         appendAddImageIfLessThanNine(selectedList);
-        mImageSelectedAdapter.updateListViewData(selectedList);
+        mImageSelectedAdapter.updateData(selectedList);
     }
 
     /**
@@ -819,9 +820,13 @@ public class PostFeedActivity extends BaseFragmentActivity implements
 
     @Override
     public void canNotPostFeed() {
-        if (mImageSelectedAdapter.getCount() < 9) {
+        if (mImageSelectedAdapter.getItemCount() < 9) {
             mImageSelectedAdapter.addToFirst(Constants.ADD_IMAGE_PATH_SAMPLE);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(String path);
     }
 
 }

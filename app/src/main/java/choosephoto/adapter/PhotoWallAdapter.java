@@ -23,23 +23,16 @@ public class PhotoWallAdapter extends RecyclerView.Adapter {
     private ImageLoader loader;
     private SparseBooleanArray selectionMap;
     private boolean singleChoose;
-
-    public PhotoWallAdapter(Context context, ArrayList<String> imagePathList) {
-        this.context = context;
-        this.imagePathList = imagePathList;
-
-        loader = ImageLoader.getInstance(context);
-        selectionMap = new SparseBooleanArray();
-    }
+    private ArrayList<String> imagesSelected;
 
     public PhotoWallAdapter(Context context, ArrayList<String> imagePathList, boolean singleChoose) {
         this.context = context;
         this.imagePathList = imagePathList;
-
         loader = ImageLoader.getInstance(context);
+        imagesSelected = new ArrayList<>();
         selectionMap = new SparseBooleanArray();
-        this.singleChoose = singleChoose;
     }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -116,6 +109,44 @@ public class PhotoWallAdapter extends RecyclerView.Adapter {
 
     public void setSingleChoose(boolean singleChoose) {
         this.singleChoose = singleChoose;
+    }
+
+    public void addImagesSelected(ArrayList<String> imagesSelected) {
+        if (imagesSelected == null || imagesSelected.size() == 0)
+            return;
+        this.imagesSelected = imagesSelected;
+        for (String path : imagesSelected) {
+            int key = imagePathList.indexOf(path);
+            if (key >= 0)
+                selectionMap.put(key, true);
+        }
+    }
+
+    public void updateData(ArrayList<String> list) {
+        if (list == null || list.size() == 0) {
+            selectionMap.clear();
+            return;
+        }
+        imagesSelected = getSelectImagePaths();
+        selectionMap.clear();
+        imagePathList = list;
+        addImagesSelected(imagesSelected);
+        notifyDataSetChanged();
+    }
+
+    // 获取已选择的图片路径
+    public ArrayList<String> getSelectImagePaths() {
+        if (selectionMap.size() == 0) {
+            return null;
+        }
+        ArrayList<String> selectedImageList = new ArrayList<>();
+        for (int i = 0; i < imagePathList.size(); i++) {
+            if (selectionMap.get(i)) {
+                selectedImageList.add(imagePathList.get(i));
+            }
+        }
+        imagesSelected.addAll(selectedImageList);
+        return imagesSelected;
     }
 
     private static class PhotoViewHolder extends RecyclerView.ViewHolder {

@@ -79,19 +79,16 @@
             android:scrollbars="vertical"
             android:textColor="@color/umeng_comm_text_share_content" />
 
-        <GridView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/prev_images_gv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/umeng_comm_post_msg_edittext"
             android:layout_marginBottom="3dp"
-            android:horizontalSpacing="5dp"
-            android:numColumns="4"
             android:paddingBottom="2dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:paddingTop="2dp"
-            android:verticalSpacing="5dp"></GridView>
+            android:paddingTop="2dp" />
 
         <!-- 转发视图 -->
 
