@@ -155,6 +155,7 @@ public class PhotoWallActivity extends AppCompatActivity {
      * 点击返回时，跳转至相册页面
      */
     private void backAction() {
+        adapter.getSelectImagePaths();
         Intent intent = new Intent(this, PhotoAlbumActivity.class);
         // 传递“最近照片”分类信息
         if (firstIn) {
@@ -183,7 +184,7 @@ public class PhotoWallActivity extends AppCompatActivity {
      * 根据图片所属文件夹路径，刷新页面
      */
     private void updateView(int code, String folderPath) {
-        list.clear();
+        ArrayList<String> list = new ArrayList<>();
         if (code == 100) { // 某个相册
             int lastSeparator = folderPath.lastIndexOf(File.separator);
             String folderName = folderPath.substring(lastSeparator + 1);

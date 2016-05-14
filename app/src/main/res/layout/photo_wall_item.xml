@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <choosephoto.Views.WrapHeightImageView
+    <choosephoto.views.WrapHeightImageView
         android:id="@+id/photo_wall_item_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

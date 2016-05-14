@@ -180,8 +180,8 @@
     <string name="umeng_comm_recommend_nearby">附近内容</string>
     <string name="umeng_comm_realtime">实时内容</string>
     <string name="umeng_comm_recommend_topic">话题推荐</string>
-    <string name="umeng_comm_topic_tip_male">大哥啊，添加个话题吧！</string>
-    <string name="umeng_comm_topic_tip_female">大妹砸，添加个话题吧！</string>
+    <string name="umeng_comm_topic_tip_male">同学，添加个话题吧！</string>
+    <string name="umeng_comm_topic_tip_female">同学，添加个话题吧！</string>
     <string name="umeng_comm_find">发现</string>
     <string name="umeng_comm_recommend">推荐</string>
     <string name="umeng_comm_other">其它</string>

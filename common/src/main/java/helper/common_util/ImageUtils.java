@@ -24,15 +24,21 @@ public class ImageUtils {
         bitmapCache.put(key, bitmap);
     }
 
-    public static String saveBItmapToStorage(final Context context, final Bitmap bitmap) {
+    public static String saveBitmapToStorage(final Context context, final Bitmap bitmap, final OnSaveBitmapListener listener) {
         String name = TimeUtils.getTime() + ".jpg";
-        String path = FileUtils.getImageStorageDir(context) + "/" + name;
+        final String path = FileUtils.getImageStorageDir(context) + "/" + name;
         final File imgFile = new File(path);
         Worker.postExecuteTask(new Runnable() {
             @Override
             public void run() {
                 FileUtils.createBitmapFile(imgFile, bitmap);
                 updateImageToMediaLibrary(context, imgFile);
+                Worker.postMain(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.onComplete(path);
+                    }
+                });
             }
         });
         return path;
@@ -123,5 +129,9 @@ public class ImageUtils {
     public static Bitmap drawableToBitamp(Drawable drawable) {
         BitmapDrawable bd = (BitmapDrawable) drawable;
         return bd.getBitmap();
+    }
+
+    public interface OnSaveBitmapListener {
+        void onComplete(String path);
     }
 }

@@ -18,8 +18,8 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 
-import choosephoto.Views.PhotoPreview;
-import choosephoto.Views.PhotoPreview_;
+import choosephoto.views.PhotoPreview;
+import choosephoto.views.PhotoPreview_;
 
 @EActivity(R.layout.activity_photopreview)
 public class PhotoPreviewActivity extends AppCompatActivity implements OnPageChangeListener {

@@ -104,7 +104,7 @@ public class FeedPostPresenter extends BasePresenter {
             return;
         }
         if (!hasContent(feedItem)) {
-            ToastMsg.showShortMsgByResName("umeng_comm_not_network");
+            ToastMsg.showShortMsgByResName("umeng_comm_no_content");
             mActivityView.canNotPostFeed();
             return;
         }
@@ -311,6 +311,13 @@ public class FeedPostPresenter extends BasePresenter {
         // 图片上传组件
         ImageUploader mImageUploader = ImageUploaderManager.getInstance().getCurrentSDK();
         List<ImageItem> uploadedImageItems = new ArrayList<ImageItem>();
+        SimpleFetchListener<FeedItemResponse> postFeedListener = new SimpleFetchListener<FeedItemResponse>() {
+
+            @Override
+            public void onComplete(FeedItemResponse response) {
+                postFeedResponse(response, response.result);
+            }
+        };
 
         public PostFeedTask(FeedItem feedItem) {
             mFeedItem = feedItem;
@@ -355,13 +362,5 @@ public class FeedPostPresenter extends BasePresenter {
                         "umeng_comm_send_failed"), mFeedItem.text);
             }
         }
-
-        SimpleFetchListener<FeedItemResponse> postFeedListener = new SimpleFetchListener<FeedItemResponse>() {
-
-            @Override
-            public void onComplete(FeedItemResponse response) {
-                postFeedResponse(response, response.result);
-            }
-        };
     }
 }

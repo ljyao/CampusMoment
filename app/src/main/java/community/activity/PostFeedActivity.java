@@ -411,7 +411,7 @@ public class PostFeedActivity extends BaseFragmentActivity implements
 
         for (String url : mImageSelectedAdapter.getDataSource()) {
             // 图片地址
-            mNewFeed.imageUrls.add(new ImageItem("", "", url));
+            mNewFeed.imageUrls.add(new ImageItem("", "", "file:///" + url));
         }
 
         // 话题
@@ -529,11 +529,8 @@ public class PostFeedActivity extends BaseFragmentActivity implements
     }
 
     private void pickImages() {
-        ImagePickerManager
-                .getInstance()
-                .getCurrentSDK()
-                .jumpToPickImagesPage(this,
-                        (ArrayList<String>) mImageSelectedAdapter.getDataSource());
+        ArrayList<String> imageSelected = (ArrayList<String>) mImageSelectedAdapter.getDataSource();
+        //  PhotoWallActivity.intent(this).photos(imageSelected).current().start();
     }
 
     protected void postFeed(FeedItem feedItem) {
@@ -632,7 +629,7 @@ public class PostFeedActivity extends BaseFragmentActivity implements
             @Override
             public void onItemClick(String path) {
                 boolean isAddImage = Constants.ADD_IMAGE_PATH_SAMPLE.equals(path);
-                if (isAddImage) { // 如果触发的是添加图片事件，则显示选择图片的Fragment
+                if (isAddImage) {
                     pickImages();
                 }
             }

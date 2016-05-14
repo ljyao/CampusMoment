@@ -13,23 +13,23 @@ import com.uy.bbs.R;
 import com.uy.util.CompressType;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import choosephoto.Views.WrapHeightImageView;
 import choosephoto.util.ImageLoader;
+import choosephoto.views.WrapHeightImageView;
 
 public class PhotoWallAdapter extends RecyclerView.Adapter {
+    private final ArrayList<String> imagesSelected = new ArrayList<>();
     private Context context;
     private ArrayList<String> imagePathList = null;
     private ImageLoader loader;
     private SparseBooleanArray selectionMap;
     private boolean singleChoose;
-    private ArrayList<String> imagesSelected;
 
     public PhotoWallAdapter(Context context, ArrayList<String> imagePathList, boolean singleChoose) {
         this.context = context;
         this.imagePathList = imagePathList;
         loader = ImageLoader.getInstance(context);
-        imagesSelected = new ArrayList<>();
         selectionMap = new SparseBooleanArray();
     }
 
@@ -111,12 +111,21 @@ public class PhotoWallAdapter extends RecyclerView.Adapter {
         this.singleChoose = singleChoose;
     }
 
-    public void addImagesSelected(ArrayList<String> imagesSelected) {
-        if (imagesSelected == null || imagesSelected.size() == 0)
+    public void addImagesSelected(ArrayList<String> images) {
+        if (images == null || images.size() == 0)
             return;
-        this.imagesSelected = imagesSelected;
+        imagesSelected.addAll(images);
+        removeEqualItem(imagesSelected);
         for (String path : imagesSelected) {
             int key = imagePathList.indexOf(path);
+            if (key >= 0)
+                selectionMap.put(key, true);
+        }
+    }
+
+    private void removeEqualItem(List<String> list) {
+        for (String path : list) {
+            int key = list.indexOf(path);
             if (key >= 0)
                 selectionMap.put(key, true);
         }
@@ -127,10 +136,13 @@ public class PhotoWallAdapter extends RecyclerView.Adapter {
             selectionMap.clear();
             return;
         }
-        imagesSelected = getSelectImagePaths();
-        selectionMap.clear();
         imagePathList = list;
-        addImagesSelected(imagesSelected);
+        selectionMap.clear();
+        for (String path : imagesSelected) {
+            int key = imagePathList.indexOf(path);
+            if (key >= 0)
+                selectionMap.put(key, true);
+        }
         notifyDataSetChanged();
     }
 
@@ -139,13 +151,14 @@ public class PhotoWallAdapter extends RecyclerView.Adapter {
         if (selectionMap.size() == 0) {
             return null;
         }
-        ArrayList<String> selectedImageList = new ArrayList<>();
+        ArrayList<String> images = new ArrayList<>();
         for (int i = 0; i < imagePathList.size(); i++) {
             if (selectionMap.get(i)) {
-                selectedImageList.add(imagePathList.get(i));
+                images.add(imagePathList.get(i));
             }
         }
-        imagesSelected.addAll(selectedImageList);
+        imagesSelected.addAll(images);
+        removeEqualItem(imagesSelected);
         return imagesSelected;
     }
 

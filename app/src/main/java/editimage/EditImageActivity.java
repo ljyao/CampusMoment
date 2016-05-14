@@ -357,15 +357,6 @@ public class EditImageActivity extends BaseActivity {
 
     private void postFeed(final String path) {
         File imgFile = new File(path);
-        if (imgFile.length() == 0) {
-            Worker.postMain(new Runnable() {
-                @Override
-                public void run() {
-                    postFeed(path);
-                }
-            }, 500);
-            return;
-        }
         ArrayList<String> images = new ArrayList<>();
         images.add(path);
         PostFeedActivity_.intent(mContext).imagesSelected(images).start();
@@ -412,8 +403,12 @@ public class EditImageActivity extends BaseActivity {
             mStickerView.hideHelpTool();
             Bitmap resultBitmap = ImageUtils.getBitmapFromView(imageEditContainer);
             progressBar.setVisibility(View.VISIBLE);
-            String path = ImageUtils.saveBItmapToStorage(EditImageActivity.this, resultBitmap);
-            postFeed(path);
+            ImageUtils.saveBitmapToStorage(EditImageActivity.this, resultBitmap, new ImageUtils.OnSaveBitmapListener() {
+                @Override
+                public void onComplete(String path) {
+                    postFeed(path);
+                }
+            });
         }
     }
 }

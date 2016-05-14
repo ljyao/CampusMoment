@@ -1,4 +1,4 @@
-package choosephoto.Views;
+package choosephoto.views;
 
 import android.content.Context;
 import android.graphics.Bitmap;
