@@ -27,7 +27,6 @@ package com.umeng.comm.ui.presenter.impl;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Location;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -331,7 +330,7 @@ public class FeedPostPresenter extends BasePresenter {
         private List<String> getImagePathList(List<ImageItem> imageItems) {
             List<String> imagesList = new ArrayList<String>(imageItems.size());
             for (ImageItem item : imageItems) {
-                imagesList.add(Uri.parse(item.originImageUrl).getPath());
+                imagesList.add(item.originImageUrl);
             }
             return imagesList;
         }

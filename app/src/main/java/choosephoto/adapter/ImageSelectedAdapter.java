@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.umeng.comm.core.constants.Constants;
 import com.uy.bbs.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import community.activity.PostFeedActivity;
@@ -88,6 +89,11 @@ public class ImageSelectedAdapter extends RecyclerView.Adapter<ImageSelectedView
 
     public void addToFirst(String addImagePathSample) {
         list.add(0, addImagePathSample);
+    }
+
+    public void append(ArrayList<String> images) {
+        list.addAll(images);
+        notifyDataSetChanged();
     }
 
     public interface ImageSelectedListener {

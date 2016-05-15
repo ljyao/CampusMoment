@@ -63,6 +63,8 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 
+import camera.CameraActivity_;
+import choosephoto.activity.PhotoWallActivity;
 import choosephoto.adapter.ImageSelectedAdapter;
 
 /**
@@ -207,6 +209,19 @@ public class PostFeedActivity extends BaseFragmentActivity implements
         }
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Bundle extras_ = intent.getExtras();
+        if (extras_ != null) {
+            if (extras_.containsKey("imagesSelected")) {
+                ArrayList<String> images = extras_.getStringArrayList("imagesSelected");
+                mImageSelectedAdapter.append(images);
+            }
+        }
+
+    }
+
     private void initPresenter() {
         mPostPresenter = new FeedPostPresenter(this, new ContentChecker(mSelecteTopics,
                 mSelectFriends));
@@ -223,13 +238,12 @@ public class PostFeedActivity extends BaseFragmentActivity implements
     }
 
     private boolean isCharsOverflow(String extraText) {
-        return false;
-//        int extraTextLen = 0;
-//        if (!TextUtils.isEmpty(extraText)) {
-//            extraTextLen = extraText.length();
-//        }
-//        int len = mEditText.getText().length();
-//        return len + extraTextLen >= CommConfig.getConfig().mFeedLen;
+        int extraTextLen = 0;
+        if (!TextUtils.isEmpty(extraText)) {
+            extraTextLen = extraText.length();
+        }
+        int len = mEditText.getText().length();
+        return len + extraTextLen >= CommConfig.getConfig().mFeedLen;
     }
 
     /**
@@ -411,7 +425,7 @@ public class PostFeedActivity extends BaseFragmentActivity implements
 
         for (String url : mImageSelectedAdapter.getDataSource()) {
             // 图片地址
-            mNewFeed.imageUrls.add(new ImageItem("", "", "file:///" + url));
+            mNewFeed.imageUrls.add(new ImageItem("", "", url));
         }
 
         // 话题
@@ -500,7 +514,7 @@ public class PostFeedActivity extends BaseFragmentActivity implements
 
     @Click(R.id.umeng_comm_take_photo_btn)
     public void onClickTakePhoto(View v) {
-        mTakePhotoPresenter.takePhoto();
+        CameraActivity_.intent(this).start();
         changeButtonStatus(false, false);
     }
 
@@ -529,8 +543,12 @@ public class PostFeedActivity extends BaseFragmentActivity implements
     }
 
     private void pickImages() {
-        ArrayList<String> imageSelected = (ArrayList<String>) mImageSelectedAdapter.getDataSource();
-        //  PhotoWallActivity.intent(this).photos(imageSelected).current().start();
+        ArrayList<String> imageSelected = new ArrayList<>();
+        imageSelected.addAll(mImageSelectedAdapter.getDataSource());
+        imageSelected.remove(Constants.ADD_IMAGE_PATH_SAMPLE);
+        Intent intent = new Intent(this, PhotoWallActivity.class);
+        intent.putExtra("imagesSelected", imageSelected);
+        startActivity(intent);
     }
 
     protected void postFeed(FeedItem feedItem) {

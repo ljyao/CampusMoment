@@ -25,7 +25,7 @@ public class ImageUtils {
     }
 
     public static String saveBitmapToStorage(final Context context, final Bitmap bitmap, final OnSaveBitmapListener listener) {
-        String name = TimeUtils.getTime() + ".jpg";
+        String name = System.currentTimeMillis() + ".jpg";
         final String path = FileUtils.getImageStorageDir(context) + "/" + name;
         final File imgFile = new File(path);
         Worker.postExecuteTask(new Runnable() {

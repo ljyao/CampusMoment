@@ -73,8 +73,7 @@ public class PhotoWallActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(getResources().getString(R.string.latest_image));
         Intent intent = getIntent();
-        boolean singleChoose = intent.getBooleanExtra("SingleChoose", false);
-        imagesSelected = (ArrayList<String>) intent.getSerializableExtra("imagesSelected");
+        boolean singleChoose = intent.getBooleanExtra("SingleChoose", true);
         mPhotoWall = (RecyclerView) findViewById(R.id.photo_wall_grid);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         mPhotoWall.setLayoutManager(layoutManager);
@@ -82,6 +81,7 @@ public class PhotoWallActivity extends AppCompatActivity {
         mPhotoWall.addItemDecoration(new Decoration(ScreenUtils.dp2px(1, PhotoWallActivity.this)));
         list = ImageLoader.getLatestImagePaths(this, 100);
         adapter = new PhotoWallAdapter(this, list, singleChoose);
+        imagesSelected = (ArrayList<String>) intent.getSerializableExtra("imagesSelected");
         adapter.addImagesSelected(imagesSelected);
         mPhotoWall.setAdapter(adapter);
         preViewBtN = (TextView) findViewById(R.id.preview_btn);

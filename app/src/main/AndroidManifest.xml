@@ -98,7 +98,9 @@
         <activity android:name="community.activity.HotTopicActivity_" />
         <activity android:name="community.activity.LocationFeedActivity" />
         <activity android:name="community.activity.FeedListActivity_" />
-        <activity android:name="community.activity.PostFeedActivity_" />
+        <activity
+            android:name="community.activity.PostFeedActivity_"
+            android:launchMode="singleInstance" />
         <activity android:name="community.activity.LikeUsersActivity" />
         <activity android:name="community.activity.FollowedUserActivity_" />
         <activity android:name="community.activity.ForwardActivity_" />
