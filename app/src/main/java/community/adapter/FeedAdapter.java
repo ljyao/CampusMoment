@@ -45,9 +45,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                 break;
             case FEED:
                 FeedItemView feedView = FeedItemView_.build(parent.getContext(), null);
-                if (feedType == FeedPrvdr.FeedType.ReceivedComments) {
-                    feedView.isReceivedComment = true;
-                }
                 feedView.setListener(feedListListener);
                 itemView = feedView;
                 break;

@@ -118,7 +118,14 @@ public class CameraActivity extends Activity {
             @Override
             public void onClick(View v) {
                 try {
-                    cameraInst.takePicture(null, null, new MyPictureCallback());
+                    cameraInst.takePicture(null, null, new Camera.PictureCallback() {
+                        @Override
+                        public void onPictureTaken(byte[] data, Camera camera) {
+                            bundle = new Bundle();
+                            bundle.putByteArray("bytes", data);
+                            new SavePicTask(data).execute();
+                        }
+                    });
                 } catch (Throwable t) {
                     t.printStackTrace();
                     Toast.makeText(CameraActivity.this, "拍照失败，请重试！", Toast.LENGTH_LONG).show();
@@ -418,13 +425,6 @@ public class CameraActivity extends Activity {
             }
         });
 
-        StringBuilder previewResolutionSb = new StringBuilder();
-        for (Camera.Size supportedPreviewResolution : supportedPreviewResolutions) {
-            previewResolutionSb.append(supportedPreviewResolution.width).append('x').append(supportedPreviewResolution.height)
-                    .append(' ');
-        }
-        Log.v(TAG, "Supported preview resolutions: " + previewResolutionSb);
-
 
         // 移除不符合条件的分辨率
         double screenAspectRatio = (double) ScreenUtils.getScreenW(this)
@@ -696,16 +696,7 @@ public class CameraActivity extends Activity {
         super.onDestroy();
         CameraManager.getInst().removeActivity(this);
     }
-    private final class MyPictureCallback implements Camera.PictureCallback {
 
-        @Override
-        public void onPictureTaken(byte[] data, Camera camera) {
-            bundle = new Bundle();
-            bundle.putByteArray("bytes", data); //将图片字节数据保存在bundle当中，实现数据交换
-            new SavePicTask(data).execute();
-            //camera.startPreview(); // 拍完照后，重新开始预览
-        }
-    }
 
     private class SavePicTask extends AsyncTask<Void, Void, Bitmap> {
         private byte[] data;
@@ -725,7 +716,6 @@ public class CameraActivity extends Activity {
         protected Bitmap doInBackground(Void... params) {
             try {
                 return saveToBitmap(data);
-
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;

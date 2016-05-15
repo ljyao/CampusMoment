@@ -133,11 +133,6 @@ public class DiscoverFragment extends Fragment {
                 .feedType(FeedPrvdr.FeedType.HotestFeed).start();
     }
 
-    @Click(R.id.real_time_feed)
-    public void onClickRealTimeFeed() {
-        FeedListActivity_.intent(this).title("最新微博")
-                .feedType(FeedPrvdr.FeedType.RealTimeFeed).start();
-    }
     @Override
     public void onPause() {
         super.onPause();

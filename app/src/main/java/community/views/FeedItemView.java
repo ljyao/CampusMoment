@@ -1,6 +1,5 @@
 package community.views;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,14 +21,11 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.comm.core.beans.FeedItem;
-import com.umeng.comm.core.beans.ImageItem;
-import com.umeng.comm.core.beans.ShareContent;
 import com.umeng.comm.core.constants.Constants;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.db.ctrl.impl.DatabaseAPI;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.SimpleResponse;
-import com.umeng.comm.core.sdkmanager.ShareSDKManager;
 import com.umeng.comm.core.utils.ResFinder;
 import com.umeng.comm.core.utils.TimeUtils;
 import com.umeng.comm.core.utils.ToastMsg;
@@ -48,7 +44,6 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.Date;
-import java.util.List;
 
 import activity.UserDetailActivity_;
 import adapter.ViewWrapper;
@@ -102,14 +97,13 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
     @ViewById(R.id.location_layout)
     public RelativeLayout locationLayout;
 
-    public boolean isReceivedComment = false;
     protected FeedItem mFeedItem;
     FeedContentPresenter mPresenter;
     LikePresenter mLikePresenter;
     Listeners.OnItemViewClickListener<FeedItem> mItemViewClickListener;
     private FeedFragment.FeedListListener feedListListener;
     private boolean isShowFavouriteView = false;
-    private boolean isFromFeedDetailePage = false;
+    private boolean isFromFeedDetailPage = false;
     private String mContainerClzName;
     private boolean mIsShowDistance = false;
     /**
@@ -142,17 +136,8 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isFromFeedDetailePage && !isReceivedComment)
+                if (isFromFeedDetailPage)
                     feedListListener.onShowFeedDetail(mFeedItem);
-                if (isReceivedComment) {
-                    Intent intent = new Intent(getContext(), FeedDetailActivity.class);
-                    mFeedItem.extraData.clear();
-                    FeedItem feedItem = getForwardDetailFeed();
-                    if (feedItem == null)
-                        return;
-                    intent.putExtra(Constants.FEED, feedItem);
-                    getContext().startActivity(intent);
-                }
             }
         });
 
@@ -249,25 +234,6 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
         targetView.startAnimation(scaleAnimation);
     }
 
-
-    private void shareToSns(Activity activity) {
-        ShareContent shareItem = new ShareContent();
-        shareItem.mText = mFeedItem.text;
-        List<ImageItem> imageItems = mFeedItem.imageUrls;
-        if (mFeedItem.sourceFeed != null) {
-            imageItems = mFeedItem.sourceFeed.imageUrls;
-        }
-        if (imageItems.size() > 0) {
-            shareItem.mImageItem = imageItems.get(0);
-        }
-        shareItem.mTargetUrl = mFeedItem.shareLink;
-        if (TextUtils.isEmpty(shareItem.mTargetUrl) && mFeedItem.sourceFeed != null) {
-            shareItem.mTargetUrl = mFeedItem.sourceFeed.shareLink;
-        }
-        shareItem.mFeedId = mFeedItem.id;
-        shareItem.mTitle = mFeedItem.text;
-        ShareSDKManager.getInstance().getCurrentSDK().share(activity, shareItem);
-    }
 
     /**
      * 填充消息流ListView每项的数据
@@ -400,7 +366,6 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
     /**
      * 设置转发feed的视图的可见性
      */
-    @SuppressWarnings("deprecation")
     private void setForwardViewVisibility(FeedItem item) {
         // 显示转发视图
         mForwardLayout.setVisibility(View.VISIBLE);
@@ -509,7 +474,7 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
                     ToastMsg.showShortMsgByResName("umeng_comm_feed_spam_deleted");
                     return;
                 } else {
-                    if (!isFromFeedDetailePage && !isReceivedComment) {
+                    if (isFromFeedDetailPage) {
                         feedListListener.onShowFeedDetail(mFeedItem);
                     }
                 }
@@ -632,7 +597,7 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
      */
     public void setShowFavouriteView(boolean isShow) {
         isShowFavouriteView = isShow;
-        isFromFeedDetailePage = true;
+        isFromFeedDetailPage = true;
     }
 
     /**

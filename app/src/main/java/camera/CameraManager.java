@@ -39,12 +39,7 @@ public class CameraManager {
         intent.putExtra("key", key);
         intent.putExtra("isFromCache", true);
         activity.startActivity(intent);
-        /*Uri uri = photo.getImageUri().startsWith("file:") ? Uri.parse(photo
-                .getImageUri()) : Uri.parse("file://" + photo.getImageUri());
-        Intent i = new Intent(activity, CropPhotoActivity_.class);
-        i.setData(uri);
-        //TODO稍后添加
-        activity.startActivityForResult(i, AppConstants.REQUEST_CROP);*/
+        activity.finish();
 
     }
 

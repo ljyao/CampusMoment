@@ -22,6 +22,19 @@ public class MessageFragment extends Fragment {
         FeedListActivity_.intent(this).title("我的评论")
                 .feedType(FeedPrvdr.FeedType.ReceivedComments).start();
     }
+
+    @Click(R.id.at_me_rl)
+    public void onclickAtMe() {
+        FeedListActivity_.intent(this).title("@我的")
+                .feedType(FeedPrvdr.FeedType.AtFeeds).start();
+    }
+
+    @Click(R.id.like_me_rl)
+    public void onclickLikeMe() {
+        FeedListActivity_.intent(this).title("赞我的")
+                .feedType(FeedPrvdr.FeedType.LikedMe).start();
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
     }

@@ -11,10 +11,12 @@ import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.nets.responses.FeedCommentResponse;
 import com.umeng.comm.core.nets.responses.FeedsResponse;
+import com.umeng.comm.core.nets.responses.LikeMeResponse;
 import com.umeng.comm.core.nets.uitls.NetworkUtils;
 import com.uy.App;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -66,10 +68,22 @@ public class FeedPrvdr {
         }
     };
 
-
     public FeedPrvdr(FeedType feedType) {
         mFeedType = feedType;
         mCommunitySDK = App.getCommunitySDK();
+    }
+
+    private List<FeedItem> removeEmptyData(List<FeedItem> result) {
+        Iterator<FeedItem> iterator = result.iterator();
+        while (iterator.hasNext()) {
+            FeedItem item = iterator.next();
+            if (item.sourceFeed == null) {
+                iterator.remove();
+            } else {
+                item.text = "赞了这条消息";
+            }
+        }
+        return result;
     }
 
     public void getFirstPageData(NetLoaderListener<List<FeedItem>> listener) {
@@ -98,7 +112,38 @@ public class FeedPrvdr {
                 getHotestFeeds();
             case RealTimeFeed:
                 getRealTimeFeed();
+            case AtFeeds:
+                getAtFeeds();
+                break;
+            case LikedMe:
+                getLikeMe();
+                break;
         }
+    }
+
+    private void getLikeMe() {
+        mCommunitySDK.fetchLikedRecords(CommConfig.getConfig().loginedUser.id,
+                new Listeners.SimpleFetchListener<LikeMeResponse>() {
+
+                    @Override
+                    public void onStart() {
+
+                    }
+
+                    @Override
+                    public void onComplete(LikeMeResponse response) {
+                        if (NetworkUtils.handleResponseAll(response)) {
+                            feedFragmentListener.onComplete(false, null);
+                            return;
+                        }
+                        mNextPageUrl = response.nextPageUrl;
+                        feedFragmentListener.onComplete(true, removeEmptyData(response.result));
+                    }
+                });
+    }
+
+    private void getAtFeeds() {
+        mCommunitySDK.fetchBeAtFeeds(0, fetchListener);
     }
 
     private void getRealTimeFeed() {
@@ -164,7 +209,9 @@ public class FeedPrvdr {
         LocationFeed,
         HotestFeed,
         RealTimeFeed,
-        ReceivedComments
+        ReceivedComments,
+        AtFeeds,
+        LikedMe
     }
 
 }
