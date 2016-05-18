@@ -31,21 +31,47 @@ apt {
         // logFile '/var/log/aa.log'
     }
 }
+//设置编译android项目的参数
 android {
+    //签名配置
+    signingConfigs {
+        config {
+            keyAlias '校园微社区'
+            keyPassword '123456'
+            storeFile file('E:/CampusMoment/keystore.jks')
+            storePassword '123456'
+        }
+    }
+    //使用apache 网络库
+    useLibrary 'org.apache.http.legacy'
+    //编译sdk版本为23
     compileSdkVersion 23
+    //编译工具版本
     buildToolsVersion '23.0.3'
     defaultConfig {
+        //应用id，包名
         applicationId 'com.uy.bbs'
-        minSdkVersion 15
+        //最小兼容android版本，14位android4.0
+        minSdkVersion 14
+        //适配android版本，21为android5.0
         targetSdkVersion 21
+        //代码版本
         versionCode 1
         versionName "1.0"
+        //多dex支持
         multiDexEnabled true
     }
+    //编译类型
     buildTypes {
+        //release分支，版本发布
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        //debug分支，用来调试
+        debug {
+            signingConfig signingConfigs.config
         }
     }
     productFlavors {
@@ -61,19 +87,32 @@ android {
         exclude 'META-INF/ASL2.0'
     }
 }
-
+//依赖包的定义。支持maven，本地库，也支持单文件
 dependencies {
+    //依赖本地libs文件下的库
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    //androidannotations注解编译插件
     apt "org.androidannotations:androidannotations:$AAVersion"
+    //androidannotations注解依赖库
     compile "org.androidannotations:androidannotations-api:$AAVersion"
+    //fresco图片加载框架
     compile 'com.facebook.fresco:fresco:0.9.0'
+    //v7兼容包
     compile 'com.android.support:appcompat-v7:23.3.0'
+    //v4兼容包
     compile 'com.android.support:support-v4:23.3.0'
+    //recyclerview依赖库
     compile 'com.android.support:recyclerview-v7:23.3.0'
+    //dex方法数超64k解决库
     compile 'com.android.support:multidex:1.0.1'
+    //material design依赖库
     compile 'com.android.support:design:23.3.0'
+    //cardview依赖库
     compile 'com.android.support:cardview-v7:23.3.0'
+    //友盟依赖库
     compile project(':umeng_community_library')
-    compile 'com.j256.ormlite:ormlite-android:4.48'
+    //横滑listview
     compile 'it.sephiroth.android.library.horizontallistview:hlistview:1.3.1'
+    //图片编辑库
     compile project(':image_edit_library')
 }

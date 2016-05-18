@@ -106,8 +106,10 @@ public class FollowedUserFragment extends RefreshRecycleFragment<UserAdapter> {
     protected void onRefreshing() {
         if (type == UserListType.followed) {
             followedsAndFansPrvdr.getFolloweds();
-        } else {
+        } else if (type == UserListType.fans) {
             followedsAndFansPrvdr.getFans();
+        } else if (type == UserListType.Recommended) {
+            followedsAndFansPrvdr.getRecommendedUsers();
         }
     }
 
@@ -128,7 +130,8 @@ public class FollowedUserFragment extends RefreshRecycleFragment<UserAdapter> {
 
     public enum UserListType {
         followed,
-        fans
+        fans,
+        Recommended
     }
 
     public interface OnClickFollowListener {

@@ -22,12 +22,21 @@ public class LoginPrvdr extends AbsLoginImpl {
     private String userId;
     private UMLoginListener loginCallBack;
     private CommUser loginedUser;
+    private Context context;
+    private String password;
 
-    public void login(Context context, String userId, @Nullable UMLoginListener listener) {
+    public void login(Context context, String userId, String password, @Nullable UMLoginListener listener) {
         dialog = new ProgressDialog(context);
         dialog.setMessage(context.getResources().getString(R.string.logining));
         this.userId = userId;
         this.loginCallBack = listener;
+        this.password = password;
+        loginToUM(context, userId);
+        this.context = context;
+
+    }
+
+    public void loginToUM(Context context, String userId) {
 
         loginedUser = new CommUser(userId); // 用户id
         loginedUser.name = userId; // 用户昵称
@@ -42,14 +51,14 @@ public class LoginPrvdr extends AbsLoginImpl {
             }
 
             @Override
-            public void onComplete(int i, CommUser commUser) {
-                loginedUser = commUser;
+            public void onComplete(int i, CommUser user) {
+                loginedUser = user;
                 if (loginCallBack != null) {
                     loginCallBack.onLoginSuccess(loginedUser);
                 }
+
             }
         });
-
     }
 
     @Override
@@ -57,6 +66,7 @@ public class LoginPrvdr extends AbsLoginImpl {
         // 登录完成回调给社区SDK，200代表登录成功
         loginListener.onComplete(200, loginedUser);
     }
+
 
     public static abstract class UMLoginListener {
         public abstract void onLoginSuccess(CommUser commUser);

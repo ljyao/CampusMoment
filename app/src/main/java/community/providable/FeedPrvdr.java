@@ -1,5 +1,6 @@
 package community.providable;
 
+import android.content.Context;
 import android.location.Location;
 import android.text.TextUtils;
 
@@ -13,6 +14,8 @@ import com.umeng.comm.core.nets.responses.FeedCommentResponse;
 import com.umeng.comm.core.nets.responses.FeedsResponse;
 import com.umeng.comm.core.nets.responses.LikeMeResponse;
 import com.umeng.comm.core.nets.uitls.NetworkUtils;
+import com.umeng.comm.core.sdkmanager.LocationSDKManager;
+import com.umeng.comm.core.utils.ToastMsg;
 import com.uy.App;
 
 import java.io.Serializable;
@@ -102,8 +105,8 @@ public class FeedPrvdr {
             case UserFeed:
                 getUserFeed(userId);
                 break;
-            case LocationFeed:
-                getLocationFeed(location);
+            case NearFeed:
+                getLocationFeed(App.getApp());
                 break;
             case ReceivedComments:
                 getReceivedComments();
@@ -158,8 +161,19 @@ public class FeedPrvdr {
         mCommunitySDK.fetchReceivedComments(0, mCommentListener);
     }
 
-    private void getLocationFeed(Location mLocation) {
-        mCommunitySDK.fetchNearByFeed(mLocation, fetchListener);
+    private void getLocationFeed(Context mContext) {
+        LocationSDKManager.getInstance().getCurrentSDK()
+                .requestLocation(mContext, new Listeners.SimpleFetchListener<Location>() {
+
+                    @Override
+                    public void onComplete(Location location) {
+                        if (location == null) {
+                            ToastMsg.showShortMsgByResName("umeng_comm_request_location_failed");
+                            return;
+                        }
+                        mCommunitySDK.fetchNearByFeed(location, fetchListener);
+                    }
+                });
     }
 
     private void getUserFeed(String id) {

@@ -52,10 +52,14 @@
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="55560482e0f55a3d55000a1e" />
+        <!-- 高德地图 -->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="1a715d9bacfac9b8498ca47c3dae80d4" />
         <!-- 友盟推送的app secret, 如果不使用友盟推送可以删除 -->
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="	5ec1261638fd311faf3c5fbdc80a9e4f" />
+            android:value="5ec1261638fd311faf3c5fbdc80a9e4f" />
 
         <activity
             android:name="activity.MainActivity_"
@@ -107,6 +111,7 @@
         <activity android:name="choosephoto.activity.PhotoPreviewActivity_" />
         <activity android:name="community.activity.FollowedTopicActivity_" />
         <activity android:name="community.activity.AlbumActivity_" />
+        <activity android:name="activity.DeanLogin_" />
         <!-- youmeng -->
         <!-- 发现的Activity -->
         <activity

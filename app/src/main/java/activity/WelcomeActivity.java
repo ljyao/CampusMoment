@@ -33,7 +33,7 @@ public class WelcomeActivity extends Activity {
         if (status) {
             intent = new Intent(this, MainActivity_.class);
             LoginPrvdr loginPrvdr = new LoginPrvdr();
-            loginPrvdr.login(this, userId, null);
+            loginPrvdr.loginToUM(this, userId);
         } else {
             intent = new Intent(this, LoginActivity.class);
         }

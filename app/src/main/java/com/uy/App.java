@@ -8,6 +8,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.impl.CommunityFactory;
+import com.umeng.comm.core.sdkmanager.LocationSDKManager;
+import com.umeng.community.location.DefaultLocationImpl;
 
 /**
  * Created by nice on 15/11/20.
@@ -31,6 +33,7 @@ public class App extends MultiDexApplication {
         try {
             appContext = this;
             Fresco.initialize(this);
+            LocationSDKManager.getInstance().addAndUse(new DefaultLocationImpl());
             ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
             //创建CommUser前必须先初始化CommunitySDK
             communitySDK = CommunityFactory.getCommSDK(this);

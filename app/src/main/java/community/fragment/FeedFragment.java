@@ -12,6 +12,7 @@ import com.umeng.comm.core.beans.FeedItem;
 import com.umeng.comm.core.beans.Topic;
 import com.umeng.comm.core.constants.Constants;
 import com.umeng.comm.core.utils.ToastMsg;
+import com.umeng.comm.ui.imagepicker.util.BroadcastUtils;
 import com.uy.util.Worker;
 
 import org.androidannotations.annotations.AfterViews;
@@ -71,6 +72,15 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
     };
     private boolean isHideRefreshLayout = false;
     private TopicDetailActivity.OnClickFollowTopicListener followTopicListener;
+    private BroadcastUtils.DefalutReceiver mReceiver = new BroadcastUtils.DefalutReceiver() {
+        public void onReceiveFeed(android.content.Intent intent) {
+            FeedItem feedItem = getFeed(intent);
+            if (feedItem == null) {
+                return;
+            }
+            refreshFeed();
+        }
+    };
 
     public FeedFragment() {
 
@@ -78,6 +88,7 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
 
     @AfterViews
     public void initView() {
+        BroadcastUtils.registerFeedBroadcast(getActivity(), mReceiver);
         if (isHideRefreshLayout) {
             refreshLayout.setVisibility(View.GONE);
         }
@@ -153,7 +164,6 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
     @Override
     public void onSaveInstanceState(Bundle outState) {
     }
-
 
     public void hideRefresh() {
         isHideRefreshLayout = true;

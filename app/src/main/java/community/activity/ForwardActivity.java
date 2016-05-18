@@ -16,6 +16,7 @@ import com.umeng.comm.core.utils.Log;
 import com.umeng.comm.core.utils.ResFinder;
 import com.umeng.comm.ui.utils.FeedViewRender;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 
@@ -98,7 +99,7 @@ public class ForwardActivity extends PostFeedActivity {
         mEditText.setSelection(0);
     }
 
-    @Override
+    @AfterViews
     protected void initViews() {
         super.initViews();
 

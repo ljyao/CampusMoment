@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import community.activity.FeedListActivity_;
+import community.activity.FollowedUserActivity_;
 import community.activity.HotTopicActivity_;
 import community.activity.TopicDetailActivity_;
 import community.providable.FeedPrvdr;
@@ -131,6 +132,18 @@ public class DiscoverFragment extends Fragment {
     public void onClickHotFeed() {
         FeedListActivity_.intent(this).title("热门微博")
                 .feedType(FeedPrvdr.FeedType.HotestFeed).start();
+    }
+
+    @Click(R.id.near_feed)
+    public void onClickNearFeed() {
+        FeedListActivity_.intent(this).title("周边")
+                .feedType(FeedPrvdr.FeedType.NearFeed).start();
+    }
+
+    @Click(R.id.recommended_user)
+    public void onClickRecommendedUser() {
+        FollowedUserActivity_.intent(this)
+                .type(FollowedUserFragment.UserListType.Recommended).start();
     }
 
     @Override

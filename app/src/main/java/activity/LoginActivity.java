@@ -3,9 +3,7 @@ package activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.comm.core.beans.CommUser;
 import com.uy.bbs.R;
 
@@ -24,43 +21,25 @@ import helper.common_util.SharePrefUtils;
 public class LoginActivity extends AppCompatActivity {
 
     public View mLoginFormView;
-    public SimpleDraweeView userHeader;
-    // UI references.
     private EditText mUserId;
     private EditText mPasswordView;
     private SharePrefUtils sharePrefUtils;
+    private TextView registerTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setTitle("登录");
         sharePrefUtils = new SharePrefUtils("user", LoginActivity.this);
-        userHeader = (SimpleDraweeView) findViewById(R.id.use_header);
-       /* // 获取CommunitySDK实例, 参数1为Context类型
-        CommunitySDK mCommSDK = App.getCommunitySDK();
-        // 打开微社区的接口, 参数1为Context类型
-        mCommSDK.openCommunity(this);
-        LoginSDKManager.getInstance().addAndUse(new LoginPrvdr());*/
-
-        // Set up the login form.
-        mUserId = (EditText) findViewById(R.id.userid);
-        mUserId.addTextChangedListener(new TextWatcher() {
+        registerTv = (TextView) findViewById(R.id.register);
+        registerTv.setOnClickListener(new OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+            public void onClick(View v) {
+                DeanLogin_.intent(LoginActivity.this).start();
             }
         });
-
+        mUserId = (EditText) findViewById(R.id.userid);
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -123,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void login(final String userId, final String password) {
         LoginPrvdr loginPrvdr = new LoginPrvdr();
-        loginPrvdr.login(this, userId, new LoginPrvdr.UMLoginListener() {
+        loginPrvdr.login(this, userId, password, new LoginPrvdr.UMLoginListener() {
             @Override
             public void onLoginSuccess(CommUser commUser) {
                 sharePrefUtils.putBoolean("loginStatus", true);
@@ -136,6 +115,9 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onLoginFail(int stCode) {
+                mPasswordView.setError("密码错误");
+                mPasswordView.requestFocus();
+                mPasswordView.setText("");
             }
         });
     }

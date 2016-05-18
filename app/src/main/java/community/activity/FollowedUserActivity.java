@@ -30,8 +30,10 @@ public class FollowedUserActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (type == FollowedUserFragment.UserListType.followed)
             setTitle("关注");
-        else
+        else if (type == FollowedUserFragment.UserListType.fans)
             setTitle("粉丝");
+        else if (type == FollowedUserFragment.UserListType.Recommended)
+            setTitle("推荐好友");
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         fragment = FollowedUserFragment_.builder().mUserId(userId).type(type).build();

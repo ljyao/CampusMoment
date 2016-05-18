@@ -62,4 +62,7 @@ public class FollowedsAndFansPrvdr {
         mCommunitySDK.fetchFans(mUid, fetchListener);
     }
 
+    public void getRecommendedUsers() {
+        mCommunitySDK.fetchRecommendedUsers(fetchListener);
+    }
 }

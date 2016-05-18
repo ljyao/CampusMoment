@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,23 +13,13 @@
         android:id="@+id/login_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="100dp">
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/use_header"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/user_header_icon"
-            fresco:failureImage="@drawable/user_header_icon"
-            fresco:roundAsCircle="true" />
 
         <LinearLayout
             android:id="@+id/email_login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/use_header"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="20dp">
@@ -70,15 +59,36 @@
 
             <Button
                 android:id="@+id/sign_in_button"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/sign_in_shape"
                 android:text="@string/action_sign_in"
                 android:textColor="@color/white"
-                android:textSize="23sp"
-                android:textStyle="bold" />
-
+                android:textSize="21sp" />
         </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="忘记密码"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="注册"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp" />
     </RelativeLayout>
 </RelativeLayout>

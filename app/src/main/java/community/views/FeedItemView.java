@@ -136,7 +136,7 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isFromFeedDetailPage)
+                if (!isFromFeedDetailPage)
                     feedListListener.onShowFeedDetail(mFeedItem);
             }
         });
@@ -474,7 +474,7 @@ public class FeedItemView extends RelativeLayout implements ViewWrapper.Binder<F
                     ToastMsg.showShortMsgByResName("umeng_comm_feed_spam_deleted");
                     return;
                 } else {
-                    if (isFromFeedDetailPage) {
+                    if (!isFromFeedDetailPage) {
                         feedListListener.onShowFeedDetail(mFeedItem);
                     }
                 }

@@ -54,7 +54,9 @@ import com.umeng.comm.ui.utils.FeedViewRender;
 import com.umeng.comm.ui.widgets.FeedEditText;
 import com.umeng.comm.ui.widgets.TopicTipView;
 import com.uy.bbs.R;
+import com.uy.util.Worker;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
@@ -183,13 +185,9 @@ public class PostFeedActivity extends BaseFragmentActivity implements
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        if (!TextUtils.isEmpty(title)) {
-            postTitleTv.setText(title);
-        }
         setContentView(R.layout.activity_post_feed_layout);
         setFragmentContainerId(R.id.umeng_comm_select_layout);
-        initViews();
-        initLocationLayout();
+
         initPresenter();
         Bundle extraBundle = getIntent().getExtras();
         if (extraBundle == null) {
@@ -249,8 +247,11 @@ public class PostFeedActivity extends BaseFragmentActivity implements
     /**
      * 初始化相关View
      */
+    @AfterViews
     protected void initViews() {
-
+        if (!TextUtils.isEmpty(title)) {
+            postTitleTv.setText(title);
+        }
         mLocIcon.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -265,7 +266,15 @@ public class PostFeedActivity extends BaseFragmentActivity implements
         }
         if (!isForwardFeed) {
             startAnimationForTopicTipView();
+            Worker.postMain(new Runnable() {
+                @Override
+                public void run() {
+                    mTopicTipView.clearAnimation();
+                    mTopicTipView.setVisibility(View.GONE);
+                }
+            }, 3000);
         }
+        initLocationLayout();
     }
 
     /**
@@ -618,7 +627,7 @@ public class PostFeedActivity extends BaseFragmentActivity implements
             public void onRemove(Topic topic) {
                 mTopicFragment.uncheckTopic(topic);
                 if (mEditText.mTopicMap.size() == 0 && !isForwardFeed) {
-                    startAnimationForTopicTipView();
+
                 }
             }
 

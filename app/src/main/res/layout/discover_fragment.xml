@@ -138,6 +138,7 @@
         android:background="#eee" />
 
     <LinearLayout
+        android:id="@+id/recommended_user"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/white"
@@ -165,6 +166,7 @@
         android:background="#eee" />
 
     <LinearLayout
+        android:id="@+id/near_feed"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/white"

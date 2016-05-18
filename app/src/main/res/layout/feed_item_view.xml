@@ -25,7 +25,6 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="6dp"
         android:layout_marginTop="8dp"
-        android:contentDescription="@string/umeng_comm_desc"
         android:scaleType="centerCrop"
         fresco:failureImage="@drawable/avator_default"
         fresco:roundAsCircle="true" />
