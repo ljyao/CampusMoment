@@ -67,12 +67,13 @@ public class DiscoverFragment extends Fragment {
     @AfterViews
     public void initView() {
         mTopicPrvdr = new TopicPrvdr();
-        mTopicPrvdr.loadTopicList(new NetLoaderListener<List<Topic>>() {
+        List<Topic> topics = mTopicPrvdr.loadTopicList(new NetLoaderListener<List<Topic>>() {
             @Override
             public void onComplete(boolean statue, List<Topic> result) {
                 setData(result);
             }
         });
+        setData(topics);
     }
 
     public void setData(List<Topic> result) {

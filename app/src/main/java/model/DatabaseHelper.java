@@ -24,6 +24,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
      */
     private Dao<User, String> userDao;
     private Dao<FeedItem, String> feedDao;
+    private Dao<Topic, String> topicDao;
 
 
     private DatabaseHelper(Context context) {
@@ -86,7 +87,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     public Dao<FeedItem, String> getFeedDao() {
-
         if (feedDao == null) {
             try {
                 feedDao = getDao(FeedItem.class);
@@ -97,6 +97,17 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return feedDao;
     }
 
+    public Dao<Topic, String> getTopicDao() {
+        if (topicDao == null) {
+            try {
+                topicDao = getDao(Topic.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return topicDao;
+    }
+
     /**
      * 释放资源
      */
@@ -105,5 +116,4 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         super.close();
         userDao = null;
     }
-
 }

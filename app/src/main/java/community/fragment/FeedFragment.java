@@ -101,7 +101,7 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
             adapter.setTopic(topic, followTopicListener);
         } else if (feedType == FeedPrvdr.FeedType.LocationFeed) {
             feedPrvdr.setLocation(location);
-        } else if (feedType == FeedPrvdr.FeedType.FollowFeed) {
+        } else if (feedType == FeedPrvdr.FeedType.UserFeed) {
             feedPrvdr.setUserId(userId);
         }
         List<FeedItem> feeds = feedPrvdr.getLocalData();
@@ -142,7 +142,8 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
             @Override
             public void onComplete(boolean statue, List<FeedItem> result) {
                 setRefreshState(false);
-                adapter.append(result);
+                if (statue)
+                    adapter.append(result);
             }
         });
     }
