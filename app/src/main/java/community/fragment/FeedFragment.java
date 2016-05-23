@@ -101,9 +101,11 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
             adapter.setTopic(topic, followTopicListener);
         } else if (feedType == FeedPrvdr.FeedType.LocationFeed) {
             feedPrvdr.setLocation(location);
-        } else if (feedType == FeedPrvdr.FeedType.UserFeed) {
+        } else if (feedType == FeedPrvdr.FeedType.FollowFeed) {
             feedPrvdr.setUserId(userId);
         }
+        List<FeedItem> feeds = feedPrvdr.getLocalData();
+        adapter.update(feeds);
         adapter.setListener(feedListListener);
         listView.setAdapter(adapter);
         listView.addItemDecoration(new FeedDecoration());
@@ -174,6 +176,7 @@ public class FeedFragment extends RefreshRecycleFragment<FeedAdapter> {
 
     public interface FeedListListener {
         void onCommentClickListener(FeedItem mFeedItem);
+
         void onShowFeedDetail(FeedItem mFeedItem);
     }
 

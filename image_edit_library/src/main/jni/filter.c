@@ -14,12 +14,7 @@
  * limitations under the License.
  */
 
-#include <bitmap.h>
-#include <mem_utils.h>
-#include <colour_space.h>
 #include <math.h>
-#include <android/log.h>
-#include <stdlib.h>
 
 #define  LOG_TAG    "filter.c"
 #define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
@@ -108,14 +103,17 @@ static float applyContrastToPixelComponent(float pixelComponent, float contrast)
 
 void applyBlackAndWhiteFilter(Bitmap* bitmap) {
 	register unsigned int i;
+	//像素点数组长度
 	unsigned int length = (*bitmap).width * (*bitmap).height;
+	//灰度
 	register unsigned char grey;
 	unsigned char* red = (*bitmap).red;
 	unsigned char* green = (*bitmap).green;
 	unsigned char* blue = (*bitmap).blue;
+	//遍历像素点
 	for (i = length; i--;) {
+		//灰度计算
 		grey = blackAndWhite(red[i], green[i], blue[i]);
-
 		red[i] = grey;
 		green[i] = grey;
 		blue[i] = grey;

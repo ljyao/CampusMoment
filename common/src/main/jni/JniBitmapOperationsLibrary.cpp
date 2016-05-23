@@ -118,12 +118,13 @@ JNIEXPORT void JNICALL Java_com_jni_bitmap_1operations_JniBitmapHolder_jniRotate
     // XY. ... ... ..X
     // ...>Y..>...>..Y
     // ... X.. .YX ...
-    for (int x = 0; x < newWidth; ++x)
+    for (int x = 0; x < newWidth; ++x) {
         for (int y = newHeight - 1; y >= 0; --y) {
             //take from each row (up to bottom), from left to right
             uint32_t pixel = previousData[whereToGet++];
             newBitmapPixels[newWidth * y + x] = pixel;
         }
+    }
     delete[] previousData;
     jniBitmap->_storedBitmapPixels = newBitmapPixels;
 }

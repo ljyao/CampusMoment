@@ -11,6 +11,7 @@ import org.androidannotations.annotations.EActivity;
 
 import community.providable.LoginPrvdr;
 import helper.common_util.SharePrefUtils;
+import model.User;
 
 /**
  * Created by Shine on 2016/2/12.
@@ -21,19 +22,18 @@ public class WelcomeActivity extends Activity {
 
     @AfterViews
     public void init() {
-        sharePrefUtils = new SharePrefUtils("user", this);
         loginOrFeed();
     }
 
 
     public void loginOrFeed() {
-        boolean status = sharePrefUtils.getBoolean("loginStatus");
-        String userId = sharePrefUtils.getString("userId");
+
+        User user = User.getCurrentUser(this);
         final Intent intent;
-        if (status) {
+        if (user != null) {
             intent = new Intent(this, MainActivity_.class);
             LoginPrvdr loginPrvdr = new LoginPrvdr();
-            loginPrvdr.loginToUM(this, userId);
+            loginPrvdr.loginToUM(this, user);
         } else {
             intent = new Intent(this, LoginActivity.class);
         }

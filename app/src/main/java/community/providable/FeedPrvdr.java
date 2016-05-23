@@ -4,6 +4,8 @@ import android.content.Context;
 import android.location.Location;
 import android.text.TextUtils;
 
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.DeleteBuilder;
 import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.CommUser;
@@ -19,8 +21,12 @@ import com.umeng.comm.core.utils.ToastMsg;
 import com.uy.App;
 
 import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import model.DatabaseHelper;
 
 /**
  * Created by ljy on 15/12/28.
@@ -33,6 +39,24 @@ public class FeedPrvdr {
     private String userId;
     private Location location;
     private NetLoaderListener<List<FeedItem>> feedFragmentListener;
+    protected Listeners.SimpleFetchListener<FeedCommentResponse> mCommentListener = new Listeners.SimpleFetchListener<FeedCommentResponse>() {
+
+        @Override
+        public void onStart() {
+
+        }
+
+        @Override
+        public void onComplete(FeedCommentResponse response) {
+            if (NetworkUtils.handleResponseAll(response)) {
+                return;
+            }
+            mNextPageUrl = response.nextPageUrl;
+            feedFragmentListener.onComplete(true, response.result);
+        }
+    };
+    private Dao<model.FeedItem, String> feedDao;
+    private boolean isFirstLoad = true;
     Listeners.FetchListener<FeedsResponse> fetchListener = new Listeners.FetchListener<FeedsResponse>() {
         @Override
         public void onStart() {
@@ -51,22 +75,8 @@ public class FeedPrvdr {
                 return;
             }
             mNextPageUrl = response.nextPageUrl;
-            feedFragmentListener.onComplete(true, response.result);
-        }
-    };
-    protected Listeners.SimpleFetchListener<FeedCommentResponse> mCommentListener = new Listeners.SimpleFetchListener<FeedCommentResponse>() {
-
-        @Override
-        public void onStart() {
-
-        }
-
-        @Override
-        public void onComplete(FeedCommentResponse response) {
-            if (NetworkUtils.handleResponseAll(response)) {
-                return;
-            }
-            mNextPageUrl = response.nextPageUrl;
+            updateLocalData(response.result, isFirstLoad);
+            isFirstLoad = false;
             feedFragmentListener.onComplete(true, response.result);
         }
     };
@@ -89,7 +99,21 @@ public class FeedPrvdr {
         return result;
     }
 
+    public List<FeedItem> getLocalData() {
+        List<FeedItem> feeds = new ArrayList<>();
+        feedDao = DatabaseHelper.getHelper(App.getApp()).getFeedDao();
+        try {
+            List<model.FeedItem> localFeeds = feedDao.queryForEq("feedType", mFeedType.ordinal());
+            for (model.FeedItem localFeed : localFeeds) {
+                feeds.add(model.FeedItem.toValueOf(localFeed));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return feeds;
+    }
     public void getFirstPageData(NetLoaderListener<List<FeedItem>> listener) {
+        isFirstLoad = true;
         this.feedFragmentListener = listener;
         switch (mFeedType) {
             case FollowFeed:
@@ -121,6 +145,25 @@ public class FeedPrvdr {
             case LikedMe:
                 getLikeMe();
                 break;
+        }
+    }
+
+    public void updateLocalData(List<FeedItem> feeds, boolean isFirstLoad) {
+        if (feeds == null || feeds.size() == 0) {
+            return;
+        }
+        try {
+            feedDao = DatabaseHelper.getHelper(App.getApp()).getFeedDao();
+            if (isFirstLoad) {
+                DeleteBuilder<model.FeedItem, String> deleteBuilder = feedDao.deleteBuilder();
+                deleteBuilder.where().eq("feedType", mFeedType.ordinal());
+                deleteBuilder.delete();
+            }
+            for (FeedItem feedItme : feeds) {
+                feedDao.create(model.FeedItem.valueOf(feedItme, mFeedType.ordinal()));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/umeng_comm_desc"
-        android:src="@drawable/umeng_comm_announce" />
+        android:src="@drawable/umeng_comm_announce"
+        android:visibility="gone" />
 
     <!-- 头像 -->
 
@@ -55,7 +56,7 @@
         android:ellipsize="end"
         android:gravity="top"
         android:singleLine="true"
-        android:text="UY"
+        android:text=""
         android:textSize="18sp"
         android:textStyle="bold" />
 

@@ -1,6 +1,6 @@
 package activity;
 
-import android.content.Intent;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -12,11 +12,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.umeng.comm.core.beans.CommUser;
+import com.bluelinelabs.logansquare.LoganSquare;
 import com.uy.bbs.R;
+import com.uy.util.Worker;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import community.providable.LoginPrvdr;
 import helper.common_util.SharePrefUtils;
+import model.User;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+import provider.NetWorkPrvdr;
+import provider.ToastUtil;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -25,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private SharePrefUtils sharePrefUtils;
     private TextView registerTv;
+    private TextView reSetPasswordTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +48,14 @@ public class LoginActivity extends AppCompatActivity {
         registerTv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                DeanLogin_.intent(LoginActivity.this).start();
+                DeanLogin_.intent(LoginActivity.this).isRegister(true).start();
+            }
+        });
+        reSetPasswordTv = (TextView) findViewById(R.id.reset_password);
+        reSetPasswordTv.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DeanLogin_.intent(LoginActivity.this).isRegister(false).start();
             }
         });
         mUserId = (EditText) findViewById(R.id.userid);
@@ -101,25 +120,41 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(final String userId, final String password) {
-        LoginPrvdr loginPrvdr = new LoginPrvdr();
-        loginPrvdr.login(this, userId, password, new LoginPrvdr.UMLoginListener() {
+        NetWorkPrvdr netWorkPrvdr = new NetWorkPrvdr(this);
+        Map<String, String> params = new HashMap<>();
+        params.put("userid", userId);
+        params.put("password", password);
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.show();
+        progressDialog.setMessage("登录中...");
+        netWorkPrvdr.post(NetWorkPrvdr.login, params, new Callback() {
             @Override
-            public void onLoginSuccess(CommUser commUser) {
-                sharePrefUtils.putBoolean("loginStatus", true);
-                sharePrefUtils.putString("userId", userId);
-                sharePrefUtils.putString("password", password);
-                Intent intent = new Intent(LoginActivity.this, MainActivity_.class);
-                startActivity(intent);
-                finish();
+            public void onFailure(Call call, IOException e) {
+                progressDialog.dismiss();
             }
 
             @Override
-            public void onLoginFail(int stCode) {
-                mPasswordView.setError("密码错误");
-                mPasswordView.requestFocus();
-                mPasswordView.setText("");
+            public void onResponse(Call call, Response response) throws IOException {
+                progressDialog.dismiss();
+                String result = response.body().string();
+                final User.Pojo pojo = LoganSquare.parse(result, User.Pojo.class);
+                ToastUtil.showLongToast(LoginActivity.this, pojo.reason);
+                if (pojo.code == 0) {
+                    User.updateUser(LoginActivity.this, pojo.user);
+                    Worker.postMain(new Runnable() {
+                        @Override
+                        public void run() {
+                            LoginPrvdr loginPrvdr = new LoginPrvdr();
+                            loginPrvdr.login(LoginActivity.this, pojo.user, null);
+                            MainActivity_.intent(LoginActivity.this).start();
+                            finish();
+                        }
+                    });
+
+                }
             }
         });
+
     }
 
 }

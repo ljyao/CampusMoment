@@ -44,6 +44,7 @@ import community.providable.FeedPrvdr;
  */
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity {
+
     public final static int FEED_FRAGMENT_ID = 0;
     public final static int MESSAGE_FRAGMENT_ID = 1;
     public final static int DISCOVER_FRAGMENT_ID = 2;

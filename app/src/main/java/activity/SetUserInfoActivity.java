@@ -1,9 +1,11 @@
 package activity;
 
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -17,6 +19,10 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+
+import community.providable.NetLoaderListener;
+import community.providable.UserPrvdr;
+import provider.ToastUtil;
 
 /**
  * Created by ljy on 15/12/29.
@@ -43,6 +49,12 @@ public class SetUserInfoActivity extends AppCompatActivity {
     @AfterViews
     public void initView() {
         setUserHeader();
+        if (!TextUtils.isEmpty(user.name)) {
+            nickName.setText(user.name);
+        }
+        if (user.gender != null) {
+            userSex.setText(user.gender == CommUser.Gender.MALE ? "男" : "女");
+        }
     }
 
     private void setUserHeader() {
@@ -81,11 +93,27 @@ public class SetUserInfoActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.menu_userinfo_save:
-                finish();
+                updateUser();
                 break;
             default:
                 break;
         }
         return false;
+    }
+
+    private void updateUser() {
+        UserPrvdr userPrvdr = new UserPrvdr();
+        user.name = nickName.getText().toString();
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("保存中...");
+        progressDialog.show();
+        userPrvdr.cancelFollowUser(user, new NetLoaderListener<Boolean>() {
+            @Override
+            public void onComplete(boolean statue, Boolean result) {
+                ToastUtil.showLongToast(SetUserInfoActivity.this, "保存成功！");
+                progressDialog.dismiss();
+                SetUserInfoActivity.this.finish();
+            }
+        });
     }
 }

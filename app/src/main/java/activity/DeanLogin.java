@@ -14,21 +14,37 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
+import com.bluelinelabs.logansquare.LoganSquare;
 import com.uy.bbs.R;
+import com.uy.util.Worker;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 import org.weixvn.http.AsyncWaeHttpClient;
 import org.weixvn.util.NetworkHelper;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import community.providable.LoginPrvdr;
+import model.User;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 import provider.LoginDean;
+import provider.NetWorkPrvdr;
+import provider.ToastUtil;
 
 @EActivity(R.layout.plugin_login)
 public class DeanLogin extends AppCompatActivity implements OnClickListener,
         OnEditorActionListener {
     public static final String ACTIVITY_MARK = "activity_mark";
     public static AsyncWaeHttpClient deanHttpClient = new AsyncWaeHttpClient(true, 80, 443);
+    @Extra
+    public boolean isRegister = false;
     @ViewById(R.id.userid)
     EditText userIdEditText;
     @ViewById(R.id.password)
@@ -36,6 +52,9 @@ public class DeanLogin extends AppCompatActivity implements OnClickListener,
     @ViewById(R.id.sign_in_button)
     Button loginButton;
     private ProgressDialog progressDialog;
+    private boolean isSetPassword = false;
+    private String mUserId;
+    private String mPassword;
 
     @AfterViews
     protected void initViews() {
@@ -67,10 +86,10 @@ public class DeanLogin extends AppCompatActivity implements OnClickListener,
     private void prepareLogin() {
         boolean cancel = false;
         View focusView = null;
-        String mUserId = userIdEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
-        // Check for a valid password, if the uer entered one.
-        if (TextUtils.isEmpty(password)) {
+        mUserId = userIdEditText.getText().toString();
+        mPassword = passwordEditText.getText().toString();
+        // Check for a valid mPassword, if the uer entered one.
+        if (TextUtils.isEmpty(mPassword)) {
             passwordEditText.setError(getString(R.string.error_invalid_password));
             focusView = passwordEditText;
             cancel = true;
@@ -96,7 +115,80 @@ public class DeanLogin extends AppCompatActivity implements OnClickListener,
         progressDialog.show();
         progressDialog.setMessage(getResources().getString(
                 R.string.login_logining));
-        loginDean();
+        if (isSetPassword) {
+            if (isRegister) {
+                register();
+            } else {
+                reSetPassword();
+            }
+        } else {
+            loginDean();
+        }
+    }
+
+    private void register() {
+        NetWorkPrvdr netWorkPrvdr = new NetWorkPrvdr(this);
+        Map<String, String> params = new HashMap<>();
+        params.put("userid", mUserId);
+        params.put("password", mPassword);
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.show();
+        progressDialog.setMessage("注册中...");
+        netWorkPrvdr.post(NetWorkPrvdr.register, params, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String result = response.body().string();
+                final User.Pojo pojo = LoganSquare.parse(result, User.Pojo.class);
+                Worker.postMain(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        ToastUtil.showLongToast(DeanLogin.this, pojo.reason);
+                        if (pojo.code == 0) {
+                            LoginPrvdr loginPrvdr = new LoginPrvdr();
+                            loginPrvdr.loginToUM(DeanLogin.this, pojo.user);
+                            SetUserInfoActivity_.intent(DeanLogin.this).start();
+                            DeanLogin.this.finish();
+                        }
+                    }
+                });
+            }
+        });
+
+    }
+
+    private void reSetPassword() {
+        NetWorkPrvdr netWorkPrvdr = new NetWorkPrvdr(this);
+        Map<String, String> params = new HashMap<>();
+        params.put("userid", mUserId);
+        params.put("mPassword", mPassword);
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.show();
+        progressDialog.setMessage("重置密码中...");
+        netWorkPrvdr.post(NetWorkPrvdr.updateUser, params, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                progressDialog.dismiss();
+                String result = response.body().string();
+                User.Pojo pojo = LoganSquare.parse(result, User.Pojo.class);
+                ToastUtil.showLongToast(DeanLogin.this, pojo.reason);
+                if (pojo.code == 0) {
+                    SetUserInfoActivity_.intent(DeanLogin.this).start();
+                    DeanLogin.this.finish();
+                }
+
+            }
+        });
     }
 
     /**
@@ -116,10 +208,9 @@ public class DeanLogin extends AppCompatActivity implements OnClickListener,
 
             @Override
             public void onSuccess() {
-
                 progressDialog.cancel();
-
-                DeanLogin.this.finish();
+                ToastUtil.showLongToast(DeanLogin.this, "验证成功!");
+                setPassword();
             }
 
             @Override
@@ -132,6 +223,20 @@ public class DeanLogin extends AppCompatActivity implements OnClickListener,
                         .show();
             }
         }.run();
+    }
+
+    private void setPassword() {
+        isSetPassword = true;
+        userIdEditText.setEnabled(false);
+        passwordEditText.setText("");
+        String titleStr;
+        if (isRegister) {
+            titleStr = "注册";
+        } else {
+            titleStr = "重设密码";
+        }
+        setTitle(titleStr);
+        loginButton.setText(titleStr);
     }
 
     @Override
@@ -151,14 +256,6 @@ public class DeanLogin extends AppCompatActivity implements OnClickListener,
             loginButton.performClick();
         }
         return false;
-    }
-
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            finish();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
 }
