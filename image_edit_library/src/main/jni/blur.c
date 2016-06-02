@@ -1,7 +1,3 @@
-// Stack Blur Algorithm by Mario Klingemann <mario@quasimondo.com>
-// Ported to C by Nilesh Patel from the source code found here
-// http://incubator.quasimondo.com/processing/stackblur.pde
-// and altered to process each colour channel (r, g, b) separately.
 
 #include <mem_utils.h>
 #include <stdlib.h>

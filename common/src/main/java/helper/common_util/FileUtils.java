@@ -111,8 +111,10 @@ public class FileUtils {
             } else {
                 imgFile.createNewFile();
             }
+            //创建文件
             imgFile.createNewFile();
             out = new FileOutputStream(imgFile);
+            //保存压缩后的图片
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
             out.flush();
             out.close();

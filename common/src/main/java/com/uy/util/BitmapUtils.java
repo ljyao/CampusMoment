@@ -15,9 +15,10 @@ import helper.common_util.ScreenUtils;
 public class BitmapUtils {
     public static Bitmap compressBitmap(CompressType compressType, String filePath, int smallRate, Activity mContext) {
         BitmapFactory.Options opt = new BitmapFactory.Options();
+        //不加载到内存中
         opt.inJustDecodeBounds = true;
+        //读取图片
         BitmapFactory.decodeFile(filePath, opt);
-
         // 获取到这个图片的原始宽度和高度
         float picWidth = opt.outWidth;
         float picHeight = opt.outHeight;
@@ -68,12 +69,12 @@ public class BitmapUtils {
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;
-
+        //图片是否大于请求压缩的大小，大于压缩
         if (height > reqHeight || width > reqWidth) {
-
+            //计算压缩比例
             final int heightRatio = Math.round((float) height / reqHeight);
             final int widthRatio = Math.round((float) width / reqWidth);
-
+            //降低精度丢失引起的误差
             inSampleSize = heightRatio < widthRatio ? widthRatio : heightRatio;
         }
         return inSampleSize;

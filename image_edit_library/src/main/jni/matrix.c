@@ -1,5 +1,3 @@
-// Based on work preseted here presented http://www.graficaobscura.com/matrix/index.html
-// By Paul Haeberli - 1993
 
 #include <math.h>
 #include "bitmap.h"

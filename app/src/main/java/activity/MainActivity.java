@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     public final static int FEED_FRAGMENT_ID = 0;
     public final static int MESSAGE_FRAGMENT_ID = 1;
     public final static int DISCOVER_FRAGMENT_ID = 2;
-    public final static int AT_FRAGMENT_ID = 3;
+    public final static int ME_FRAGMENT_ID = 3;
     private static final int REQUEST_CODE_CHOOSEPHOTO = 0;
     @ViewById(R.id.action_feed_img)
     public ImageView mActionFeed;
@@ -152,8 +152,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Click(R.id.action_me)
     public void onClickMe() {
-        chooseAction(AT_FRAGMENT_ID);
-        showFragment(AT_FRAGMENT_ID);
+        chooseAction(ME_FRAGMENT_ID);
+        showFragment(ME_FRAGMENT_ID);
     }
 
     public void chooseAction(int id) {
@@ -163,15 +163,19 @@ public class MainActivity extends AppCompatActivity {
         mActionMe.setBackgroundResource(R.drawable.icon_me_n);
         switch (id) {
             case FEED_FRAGMENT_ID:
+                setTitle("校园微社区");
                 mActionFeed.setBackgroundResource(R.drawable.icon_feed_d);
                 break;
             case MESSAGE_FRAGMENT_ID:
+                setTitle("消息");
                 mActionMessage.setBackgroundResource(R.drawable.icon_message_d);
                 break;
             case DISCOVER_FRAGMENT_ID:
+                setTitle("发现");
                 mActionDiscover.setBackgroundResource(R.drawable.icon_discover_d);
                 break;
-            case AT_FRAGMENT_ID:
+            case ME_FRAGMENT_ID:
+                setTitle("我");
                 mActionMe.setBackgroundResource(R.drawable.icon_me_d);
                 break;
         }
@@ -186,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         fragments.put(FEED_FRAGMENT_ID, feedFragment);
         fragments.put(MESSAGE_FRAGMENT_ID, messageFragment);
         fragments.put(DISCOVER_FRAGMENT_ID, discoverFragment);
-        fragments.put(AT_FRAGMENT_ID, meFragment);
+        fragments.put(ME_FRAGMENT_ID, meFragment);
     }
 
     public void showFragment(int i) {

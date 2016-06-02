@@ -47,17 +47,14 @@ public class ImageLoader {
 
         // 获取应用程序最大可用内存
         int maxMemory = (int) Runtime.getRuntime().maxMemory();
-        int cacheSize = maxMemory / 2;
-
-        // 设置图片缓存大小为程序最大可用内存
-        if (imageCachePool == null) {
-            imageCachePool = new LruCache<String, Bitmap>(cacheSize) {
-                @Override
-                protected int sizeOf(String key, Bitmap value) {
-                    return value.getByteCount();
-                }
-            };
-        }
+        int cacheSize = maxMemory / 4;
+        // 设置图片缓存大小为程序1/4可用内存
+        imageCachePool = new LruCache<String, Bitmap>(cacheSize) {
+            @Override
+            protected int sizeOf(String key, Bitmap value) {
+                return value.getByteCount();
+            }
+        };
     }
 
     public static ImageLoader getInstance(Context context) {
@@ -281,24 +278,28 @@ public class ImageLoader {
         @Override
         public void run() {
             try {
-
+                //缩略图文件
                 File cacheDir = new File(cacheDirPath);
                 if (!cacheDir.exists()) {
                     cacheDir.mkdir();
                 }
                 File imgFile = new File(filePath);
                 File imgCacheFile = new File(cacheDir, imgFile.getName());
+                //判断缩略图是否存在
                 if (imgCacheFile.exists()) {
+                    //存在直接读取缩略图
                     final Bitmap bitmap = BitmapFactory.decodeFile(imgCacheFile.getPath());
+                    //保存到内存缓存区
                     imageCachePool.put(filePath, bitmap);
+                    //显示在UI
                     Worker.postMain(new Runnable() {
                         @Override
                         public void run() {
                             callback.imageLoaded(bitmap);
                         }
                     });
-
                 } else {
+                    //不存在加载SD
                     loadSDFileImage(imgCacheFile);
                 }
 

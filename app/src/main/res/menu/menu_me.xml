@@ -9,5 +9,9 @@
         android:id="@+id/menu_user_info"
         android:title="编辑资料"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_logout"
+        android:title="注销登录"
+        app:showAsAction="never" />
 
 </menu>

@@ -118,11 +118,13 @@ public class CameraActivity extends Activity {
             @Override
             public void onClick(View v) {
                 try {
+                    //调用camera api 拍照
                     cameraInst.takePicture(null, null, new Camera.PictureCallback() {
                         @Override
                         public void onPictureTaken(byte[] data, Camera camera) {
                             bundle = new Bundle();
                             bundle.putByteArray("bytes", data);
+                            //把照片byte数据保存到文件
                             new SavePicTask(data).execute();
                         }
                     });

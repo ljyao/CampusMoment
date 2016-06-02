@@ -40,6 +40,7 @@ import community.fragment.TopicListFragment_;
 import community.providable.FeedPrvdr;
 import community.providable.NetLoaderListener;
 import community.providable.UserPrvdr;
+import model.User;
 
 /**
  * Created by ljy on 15/12/25.
@@ -165,17 +166,30 @@ public class UserDetailActivity extends AppCompatActivity {
             case R.id.menu_follow_user:
                 followUser();
                 break;
+            case R.id.menu_logout:
+                logout();
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logout() {
+        Intent intent=new Intent(this,LoginActivity.class);
+        User.logout(this);
+        startActivity(intent);
+        finish();
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem followUserMenu = menu.findItem(R.id.menu_follow_user);
+        MenuItem logoutMenu=menu.findItem(R.id.menu_logout);
         CommUser me = CommConfig.getConfig().loginedUser;
         if (isMe) {
             followUserMenu.setVisible(false);
+            logoutMenu.setVisible(true);
         } else {
+            logoutMenu.setVisible(false);
             followUserMenu.setVisible(true);
             if (user.isFollowed) {
                 followUserMenu.setTitle("取消关注");

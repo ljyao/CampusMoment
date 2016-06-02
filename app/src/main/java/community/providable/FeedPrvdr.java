@@ -49,6 +49,7 @@ public class FeedPrvdr {
         @Override
         public void onComplete(FeedCommentResponse response) {
             if (NetworkUtils.handleResponseAll(response)) {
+                feedFragmentListener.onComplete(false, response.result);
                 return;
             }
             mNextPageUrl = response.nextPageUrl;
