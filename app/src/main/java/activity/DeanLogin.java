@@ -112,9 +112,6 @@ public class DeanLogin extends AppCompatActivity implements OnClickListener,
                     Toast.LENGTH_SHORT).show();
             return;
         }
-        progressDialog.show();
-        progressDialog.setMessage(getResources().getString(
-                R.string.login_logining));
         if (isSetPassword) {
             if (isRegister) {
                 register();
@@ -122,6 +119,8 @@ public class DeanLogin extends AppCompatActivity implements OnClickListener,
                 reSetPassword();
             }
         } else {
+            progressDialog.setMessage("登录教务处...");
+            progressDialog.show();
             loginDean();
         }
     }
@@ -148,13 +147,15 @@ public class DeanLogin extends AppCompatActivity implements OnClickListener,
                     @Override
                     public void run() {
                         progressDialog.dismiss();
-                        ToastUtil.showLongToast(DeanLogin.this, pojo.reason);
-                        if (pojo.code == 0) {
+                        ToastUtil.showLongToast(DeanLogin.this, "注册成功！");
+                  //      if (pojo.code == 0) {
                             LoginPrvdr loginPrvdr = new LoginPrvdr();
-                            loginPrvdr.loginToUM(DeanLogin.this, pojo.user);
+                            User user=new User();
+                            user.userid=mUserId;
+                            loginPrvdr.loginToUM(DeanLogin.this, user);
                             SetUserInfoActivity_.intent(DeanLogin.this).start();
                             DeanLogin.this.finish();
-                        }
+                  //      }
                     }
                 });
             }
